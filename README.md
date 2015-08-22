@@ -10,5 +10,10 @@ open localhost:3000
   + get statuses
   + get tasks
   + change status
-+ normalize statuses by id
+
 + toggle 'play/stop'
++ set new task in progress
+
++ filters
+  + by id
+  + by name

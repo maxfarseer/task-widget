@@ -1,7 +1,7 @@
 # API
 
-#### changeStatus(id)
-изменить статус на указанный id
+#### changeStatus(task_id, status_id)
+изменить статус task_id на указанный status_id
 
 ````js
 {
@@ -24,7 +24,7 @@
 }
 ````
 
-#### getAvailableStatuses(id)
+#### getAvailableStatuses(task_id, status_id)
 получить доступные статусы
 
 ````js

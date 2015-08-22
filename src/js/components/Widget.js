@@ -4,17 +4,18 @@ import Task from './Task';
 export default class Widget extends Component {
 
   componentWillMount(nextProps) {
-    const { actions, widget } = this.props;
-    actions.getAvailableStatuses(widget.status);
+    const { actions, widget:{currentTask} } = this.props;
+    actions.getAvailableStatuses(currentTask.id, currentTask.status);
   }
 
   onSelectStatus(e) {
-    this.props.actions.changeStatus(e.target.value);
+    let task = this.props.widget.currentTask;
+    this.props.actions.changeStatus(task, e.target.value);
   }
 
   render() {
     const { actions, widget } = this.props;
-    let tasks = widget.allTasks.map( (item, index) => (<Task data={item} key={index} />));
+    let tasks = widget.allTasks.map( (item, index) => (<Task data={item} key={index} actions={actions}/>));
 
     let selectStatusOption = widget.availableStatuses.map( (statusId, index) => {
       return (
@@ -26,6 +27,7 @@ export default class Widget extends Component {
 
     let currentTask = widget.currentTask;
 
+    //в actions первым аргументом, после this, передавать %task%
     return (
       <div className="main">
         <div className="widget">
@@ -39,7 +41,7 @@ export default class Widget extends Component {
             </select>
           </div>
         </div>
-        <h4>Tasks:</h4>
+        <h4>Tasks query:</h4>
         {tasks}
       </div>
     );
