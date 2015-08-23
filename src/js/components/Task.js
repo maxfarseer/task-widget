@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import SelectStatus from './SelectStatus';
 
 export default class Task extends Component {
 
@@ -11,6 +12,7 @@ export default class Task extends Component {
         <div className='task__header'>{id} {name} | Status: {status}</div>
         <div className='task__desc'>{desc}</div>
         <button onClick={actions.changeStatus.bind(this,task,1)}>PLAY</button>
+        <SelectStatus task={task} actions={actions} />
       </div>
     );
   }

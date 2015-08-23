@@ -11,11 +11,11 @@ import * as status from '../constants/Statuses_ids';
    * @param  {string|number}   status_id - status ID
    */
 export function changeStatus(task, status_id) {
-  if (status_id === status.IN_PROGRESS) {
+  /*if (status_id === status.IN_PROGRESS) {
     return function(dispatch, getState) {
       debugger
     }
-  }
+  }*/
   return {
     type: CHANGE_STATUS,
     task,
