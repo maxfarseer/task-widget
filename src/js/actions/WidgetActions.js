@@ -11,16 +11,38 @@ import * as status from '../constants/Statuses_ids';
    * @param  {string|number}   status_id - status ID
    */
 export function changeStatus(task, status_id) {
-  /*if (status_id === status.IN_PROGRESS) {
-    return function(dispatch, getState) {
-      debugger
+
+  return (dispatch, getState) => {
+    if (status_id === status.IN_PROGRESS) {
+
+      let taskQueue = getState().widget.tasksQueue;
+
+      let alreadyInProggress = _.find(taskQueue, (item) => {
+        return item.status === status.IN_PROGRESS
+      });
+
+      if (alreadyInProggress) {
+        dispatch({
+          type: CHANGE_STATUS,
+          task: alreadyInProggress,
+          status_id: status.SUSPEND
+        });
+      }
+
+      dispatch({
+        type: CHANGE_STATUS,
+        task,
+        status_id
+      });
+
+    } else {
+      dispatch({
+        type: CHANGE_STATUS,
+        task,
+        status_id
+      });
     }
-  }*/
-  return {
-    type: CHANGE_STATUS,
-    task,
-    status_id
-  };
+  }
 }
 
 /**
