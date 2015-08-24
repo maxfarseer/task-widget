@@ -2,33 +2,16 @@ import _ from 'lodash';
 
 import {
   CHANGE_STATUS,
-  GET_AVAILABLE_STATUSES
+  GET_TASKS_QUEUE_REQUEST,
+  GET_TASKS_QUEUE_SUCCESS,
+  GET_TASKS_QUEUE_FAILURE
 } from '../constants/Widget';
 
 import * as status from '../constants/Statuses_ids';
 
 const initialState = {
-  tasksQueue: [
-    //first task = current task
-    {
-      id: 412,
-      status: 1,
-      name: 'Fix another bug',
-      desc: 'this is bug waits for fix'
-    },
-    {
-      id: 25124,
-      status: 4,
-      name: 'Database error',
-      desc: 'fix last query'
-    },
-    {
-      id: 6481,
-      status: 3,
-      name: 'Buy the milk',
-      desc: '10 packs enough'
-    }
-  ]
+  tasksQueue: [],
+  fetching: false
 };
 
 export default function widget(state = initialState, action) {
@@ -49,6 +32,13 @@ export default function widget(state = initialState, action) {
       }
 
       return {...state, tasksQueue: nextTaskQueue};
+
+    case GET_TASKS_QUEUE_REQUEST:
+      return {...state, fetching: true}
+
+    case GET_TASKS_QUEUE_SUCCESS:
+      let nextTasksQueue = action.payload;
+      return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     default:
       return state;

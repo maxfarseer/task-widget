@@ -1,10 +1,14 @@
 import {
   CHANGE_STATUS,
-  GET_AVAILABLE_STATUSES
+  GET_AVAILABLE_STATUSES,
+  GET_TASKS_QUEUE_REQUEST,
+  GET_TASKS_QUEUE_SUCCESS,
+  GET_TASKS_QUEUE_FAILURE
 } from '../constants/Widget';
-
 import * as status from '../constants/Statuses_ids';
+import 'isomorphic-fetch';
 
+const API_ROOT = 'http://localhost:8080/api';
  /**
    * change task status
    * @param  {object}   task - task item
@@ -56,4 +60,32 @@ export function getAvailableStatuses(task_id, status_id) {
     task_id,
     status_id
   };
+}
+
+export function getTasksQueue(user_id) {
+  return (dispatch) => {
+
+    dispatch({
+      type: GET_TASKS_QUEUE_REQUEST,
+    });
+
+    fetch(API_ROOT+'/get-tasks-queue')
+      .then(response =>
+        response.json().then(json => ({ json, response}))
+      )
+      .then(({ json, response }) => {
+        if (!response.ok) {
+          dispatch({
+            type: GET_TASKS_QUEUE_FAILURE,
+            payload: new Error('get tasks failure'),
+            error: true
+          })
+        } else {
+          dispatch({
+            type: GET_TASKS_QUEUE_SUCCESS,
+            payload: json
+          })
+        }
+      });
+  }
 }
