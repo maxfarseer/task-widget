@@ -31,10 +31,14 @@ export default class Widget extends Component {
 
     return (
       <div className="main">
-        <div className={'preloader ' + (fetching ? '' : 'none')}></div>
-        {currentTaskTemplate}
-        <h4>Tasks query:</h4>
-        {tasks}
+        <div className="widget-wrapper">
+          <div className={'preloader ' + (fetching ? '' : 'none')}></div>
+          {currentTaskTemplate}
+        </div>
+        <div className="task-queue">
+          <h4>Tasks queue:</h4>
+          {tasks}
+        </div>
       </div>
     );
   }

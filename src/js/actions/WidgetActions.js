@@ -1,6 +1,11 @@
 import {
   CHANGE_STATUS,
   GET_AVAILABLE_STATUSES,
+
+  CHANGE_STATUS_REQUEST,
+  CHANGE_STATUS_SUCCESS,
+  CHANGE_STATUS_FAILURE,
+
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
   GET_TASKS_QUEUE_FAILURE
@@ -9,11 +14,12 @@ import * as status from '../constants/Statuses_ids';
 import 'isomorphic-fetch';
 
 const API_ROOT = 'http://localhost:8080/api';
- /**
-   * change task status
-   * @param  {object}   task - task item
-   * @param  {string|number}   status_id - status ID
-   */
+
+/**
+ * change task status
+ * @param  {object}   task - task item
+ * @param  {string|number}   status_id - status ID
+ */
 export function changeStatus(task, status_id) {
 
   return (dispatch, getState) => {
@@ -50,10 +56,10 @@ export function changeStatus(task, status_id) {
 }
 
 /**
-   * get available statuses for task
-   * @param  {string|number}   task_id - task ID
-   * @param  {string|number}   status_id - status ID
-   */
+ * get available statuses for task
+ * @param  {string|number}   task_id - task ID
+ * @param  {string|number}   status_id - status ID
+ */
 export function getAvailableStatuses(task_id, status_id) {
   return {
     type: GET_AVAILABLE_STATUSES,
@@ -62,6 +68,10 @@ export function getAvailableStatuses(task_id, status_id) {
   };
 }
 
+/**
+ * get tasks queue
+ * @param  {string|number}   user_id - user ID
+ */
 export function getTasksQueue(user_id) {
   return (dispatch) => {
 
