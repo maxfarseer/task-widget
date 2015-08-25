@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import {
   CHANGE_STATUS,
+  CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_SUCCESS,
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
@@ -18,14 +19,25 @@ const initialState = {
 export default function widget(state = initialState, action) {
 
   let nextTasksQueue;
+  let task;
 
   switch (action.type) {
 
+    case CHANGE_STATUS_REQUEST:
+      task = action.payload;
+
+      nextTasksQueue = state.tasksQueue;
+      task.fetching = true;
+      nextTasksQueue[task.id] = task;
+
+      return {...state, tasksQueue: nextTasksQueue};
+
     case CHANGE_STATUS_SUCCESS:
-      let task = action.payload;
+      task = action.payload;
       //task.status = action.status_id;
 
       nextTasksQueue = state.tasksQueue;
+      task.fetching = false;
       nextTasksQueue[task.id] = task;
 
       /*let taskInProgress = _.remove(nextTasksQueue, (item) => {

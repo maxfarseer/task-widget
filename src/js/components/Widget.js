@@ -41,9 +41,9 @@ export default class Widget extends Component {
         </div>*/}
         <div className="task-queue">
           <h4>Tasks queue:</h4>
-          <div className={'preloader ' + (fetching ? '' : 'none')}></div>
           {tasks}
         </div>
+        <div className={'preloader ' + (fetching ? '' : 'none')}></div>
       </div>
     );
   }

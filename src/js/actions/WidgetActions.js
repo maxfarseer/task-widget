@@ -16,6 +16,12 @@ import 'isomorphic-fetch';
 const API_ROOT = 'http://localhost:8080/api';
 
 function fetchChangeStatus(dispatch, task, status, callback) {
+
+  dispatch({
+    type: CHANGE_STATUS_REQUEST,
+    payload: task
+  })
+
   fetch(`${API_ROOT}/change-status/${task.id}/${status}`)
     .then(response =>
       response.json().then(json => ({ json, response}))
