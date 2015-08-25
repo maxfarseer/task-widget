@@ -39,18 +39,44 @@ export function changeStatus(task, status_id) {
         });
       }
 
-      dispatch({
-        type: CHANGE_STATUS,
-        task,
-        status_id
-      });
+      fetch(`${API_ROOT}/change-status/${task.id}/${status_id}`)
+        .then(response =>
+          response.json().then(json => ({ json, response}))
+        )
+        .then(({ json, response }) => {
+          if (!response.ok) {
+            dispatch({
+              type: CHANGE_STATUS_FAILURE,
+              payload: new Error('get tasks failure'),
+              error: true
+            })
+          } else {
+            dispatch({
+              type: CHANGE_STATUS_SUCCESS,
+              payload: json.result
+            })
+          }
+        });
 
     } else {
-      dispatch({
-        type: CHANGE_STATUS,
-        task,
-        status_id
-      });
+      fetch(`${API_ROOT}/change-status/${task.id}/${status_id}`)
+        .then(response =>
+          response.json().then(json => ({ json, response}))
+        )
+        .then(({ json, response }) => {
+          if (!response.ok) {
+            dispatch({
+              type: CHANGE_STATUS_FAILURE,
+              payload: new Error('get tasks failure'),
+              error: true
+            })
+          } else {
+            dispatch({
+              type: CHANGE_STATUS_SUCCESS,
+              payload: json.result
+            })
+          }
+        });
     }
   }
 }
@@ -73,13 +99,14 @@ export function getAvailableStatuses(task_id, status_id) {
  * @param  {string|number}   user_id - user ID
  */
 export function getTasksQueue(user_id) {
+  let fake_user_id = 1; //fake
   return (dispatch) => {
 
     dispatch({
       type: GET_TASKS_QUEUE_REQUEST,
     });
 
-    fetch(API_ROOT+'/get-tasks-queue')
+    fetch(`${API_ROOT}/get-tasks-queue/${fake_user_id}`)
       .then(response =>
         response.json().then(json => ({ json, response}))
       )
@@ -93,7 +120,7 @@ export function getTasksQueue(user_id) {
         } else {
           dispatch({
             type: GET_TASKS_QUEUE_SUCCESS,
-            payload: json
+            payload: json.result
           })
         }
       });

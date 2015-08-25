@@ -1,6 +1,6 @@
 # API
 
-#### changeStatus(task_id, status_id)
+#### change-status/:task_id/:status_id
 изменить статус task_id на указанный status_id
 
 ````js
@@ -10,7 +10,7 @@
 }
 ````
 
-#### getAllStatuses()
+#### get-all-statuses
 получить все статусы
 
 ````js
@@ -24,7 +24,7 @@
 }
 ````
 
-#### getAvailableStatuses(task_id, status_id)
+#### get-available-statuses/:task_id/:status_id
 получить доступные статусы
 
 ````js
@@ -34,8 +34,8 @@
 }
 ````
 
-#### getAllTasks(user_id)
-получить все таски юзера, которые нуждаются в его участии, причем первым в массиве результатов, должен стоять таск, над которым он работал в последний раз (по timestamp?)
+#### get-tasks-queue/:user_id
+получить все таски юзера, в порядке выполнения
 
 ````js
 {

@@ -16,30 +16,51 @@ router.get('/', function(req, res) {
 });
 
 // REGISTER OUR ROUTES
-router.route('/get-tasks-queue')
+router.route('/get-tasks-queue/:user_id')
   .get(function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     setTimeout(function() {
-      res.json([
-        {
-          id: 412,
-          status: 1,
-          name: 'Fix another bug',
-          desc: 'this is bug waits for fix'
-        },
-        {
-          id: 25124,
-          status: 4,
-          name: 'Database error',
-          desc: 'fix last query'
-        },
-        {
-          id: 6481,
-          status: 3,
-          name: 'Buy the milk',
-          desc: '10 packs enough'
+      res.json({
+        status: 200,
+        result:
+          [
+            {
+              id: 412,
+              status: 1,
+              name: 'Fix another bug',
+              desc: 'this is bug waits for fix'
+            },
+            {
+              id: 25124,
+              status: 4,
+              name: 'Database error',
+              desc: 'fix last query'
+            },
+            {
+              id: 6481,
+              status: 3,
+              name: 'Buy the milk',
+              desc: '10 packs enough'
+            }
+          ]
+        })
+    }, 1000);
+
+  });
+
+router.route('/change-status/:task_id/:status_id')
+  .get(function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    setTimeout(function() {
+      res.json({
+        status: 200,
+        result: {
+          id: +req.params.task_id,
+          status: +req.params.status_id,
+          name: 'from api server',
+          desc: 'full description ' + new Date()
         }
-      ])
+      })
     }, 1000);
 
   });
