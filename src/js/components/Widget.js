@@ -9,13 +9,17 @@ export default class Widget extends Component {
   }
 
   render() {
-    const { actions, widget } = this.props;
-    let tasks = widget.tasksQueue.map( (item, index) => (<Task data={item} key={index} actions={actions}/>));
-    let currentTask = widget.tasksQueue[0] ? widget.tasksQueue[0] : '';
-    let fetching = widget.fetching;
-    let currentTaskTemplate;
+    const { actions, widget:{tasksQueue}, widget:{fetching} } = this.props;
+    let currentTask;
 
-    if (currentTask) {
+    let tasks = Object.keys(tasksQueue).map( (key, index) => {
+      return <Task data={tasksQueue[key]} key={index} actions={actions}/>
+    });
+
+    //let currentTask = tasksQueue[412] ? tasksQueue[412] : '';
+    //let currentTaskTemplate;
+
+    /*if (currentTask) {
       currentTaskTemplate = (
         <div className="widget">
           <h4>{currentTask.id}: {currentTask.name} | status: {currentTask.status}</h4>
@@ -27,16 +31,17 @@ export default class Widget extends Component {
           </div>
         </div>
       )
-    }
+    }*/
 
     return (
       <div className="main">
-        <div className="widget-wrapper">
+        {/*<div className="widget-wrapper">
           <div className={'preloader ' + (fetching ? '' : 'none')}></div>
           {currentTaskTemplate}
-        </div>
+        </div>*/}
         <div className="task-queue">
           <h4>Tasks queue:</h4>
+          <div className={'preloader ' + (fetching ? '' : 'none')}></div>
           {tasks}
         </div>
       </div>

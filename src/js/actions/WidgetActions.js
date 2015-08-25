@@ -24,41 +24,58 @@ export function changeStatus(task, status_id) {
 
   return (dispatch, getState) => {
     if (status_id === status.IN_PROGRESS) {
+      let alreadyInProggress;
+      let tasksQueue = getState().widget.tasksQueue;
 
-      let taskQueue = getState().widget.tasksQueue;
-
-      let alreadyInProggress = _.find(taskQueue, (item) => {
-        return item.status === status.IN_PROGRESS
+      Object.keys(tasksQueue).map( (key, index) => {
+        if (tasksQueue[key].status === status.IN_PROGRESS) {
+          alreadyInProggress = tasksQueue[key]
+        }
       });
 
+      //переводим таск, который уже в IN_PROGRESS в статус SUSPEND
       if (alreadyInProggress) {
-        dispatch({
-          type: CHANGE_STATUS,
-          task: alreadyInProggress,
-          status_id: status.SUSPEND
-        });
+        fetch(`${API_ROOT}/change-status/${alreadyInProggress.id}/${status.SUSPEND}`)
+          .then(response =>
+            response.json().then(json => ({ json, response}))
+          )
+          .then(({ json, response }) => {
+            if (!response.ok) {
+              dispatch({
+                type: CHANGE_STATUS_FAILURE,
+                payload: new Error('get tasks failure'),
+                error: true
+              })
+            } else {
+              dispatch({
+                type: CHANGE_STATUS_SUCCESS,
+                payload: json.result
+              })
+
+              //если все ок - переводим в IN_PROGRESS таск-инициатор
+              fetch(`${API_ROOT}/change-status/${task.id}/${status_id}`)
+                .then(response =>
+                  response.json().then(json => ({ json, response}))
+                )
+                .then(({ json, response }) => {
+                  if (!response.ok) {
+                    dispatch({
+                      type: CHANGE_STATUS_FAILURE,
+                      payload: new Error('get tasks failure'),
+                      error: true
+                    })
+                  } else {
+                    dispatch({
+                      type: CHANGE_STATUS_SUCCESS,
+                      payload: json.result
+                    })
+                  }
+                });
+            }
+          });
       }
-
-      fetch(`${API_ROOT}/change-status/${task.id}/${status_id}`)
-        .then(response =>
-          response.json().then(json => ({ json, response}))
-        )
-        .then(({ json, response }) => {
-          if (!response.ok) {
-            dispatch({
-              type: CHANGE_STATUS_FAILURE,
-              payload: new Error('get tasks failure'),
-              error: true
-            })
-          } else {
-            dispatch({
-              type: CHANGE_STATUS_SUCCESS,
-              payload: json.result
-            })
-          }
-        });
-
     } else {
+
       fetch(`${API_ROOT}/change-status/${task.id}/${status_id}`)
         .then(response =>
           response.json().then(json => ({ json, response}))
@@ -78,9 +95,9 @@ export function changeStatus(task, status_id) {
           }
         });
     }
+
   }
 }
-
 /**
  * get available statuses for task
  * @param  {string|number}   task_id - task ID

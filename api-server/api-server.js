@@ -23,26 +23,26 @@ router.route('/get-tasks-queue/:user_id')
       res.json({
         status: 200,
         result:
-          [
-            {
+          {
+            412: {
               id: 412,
               status: 1,
               name: 'Fix another bug',
               desc: 'this is bug waits for fix'
             },
-            {
+            25124: {
               id: 25124,
               status: 4,
               name: 'Database error',
               desc: 'fix last query'
             },
-            {
+            6481: {
               id: 6481,
               status: 3,
               name: 'Buy the milk',
               desc: '10 packs enough'
             }
-          ]
+          }
         })
     }, 1000);
 

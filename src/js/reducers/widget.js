@@ -25,17 +25,16 @@ export default function widget(state = initialState, action) {
       let task = action.payload;
       //task.status = action.status_id;
 
-      debugger
-
       nextTasksQueue = state.tasksQueue;
+      nextTasksQueue[task.id] = task;
 
-      let taskInProgress = _.remove(nextTasksQueue, (item) => {
+      /*let taskInProgress = _.remove(nextTasksQueue, (item) => {
         return item.status === status.IN_PROGRESS
       });
 
       if (taskInProgress.length > 0) {
         nextTasksQueue.unshift(taskInProgress[0]);
-      }
+      }*/
 
       return {...state, tasksQueue: nextTasksQueue};
 
