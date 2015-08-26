@@ -22,28 +22,34 @@ router.route('/get-tasks-queue/:user_id')
     setTimeout(function() {
       res.json({
         status: 200,
-        result:
-          {
-            412: {
-              id: 412,
-              status: 1,
-              name: 'Fix another bug',
-              desc: 'this is bug waits for fix'
-            },
-            25124: {
-              id: 25124,
-              status: 4,
-              name: 'Database error',
-              desc: 'fix last query'
-            },
-            6481: {
-              id: 6481,
-              status: 3,
-              name: 'Buy the milk',
-              desc: '10 packs enough'
-            }
-          }
-        })
+        result: {
+          412: {
+            id: 412,
+            status: 2,
+            name: 'Fix another bug',
+            desc: 'this is bug waits for fix'
+          },
+          25124: {
+            id: 25124,
+            status: 4,
+            name: 'Database error',
+            desc: 'fix last query'
+          },
+          6481: {
+            id: 6481,
+            status: 1, // <-- IN_PROGRESS не первый в очереди. Уточнить у backend
+            name: 'Buy the milk',
+            desc: '10 packs enough'
+          },
+          5000: {
+            id: 5000,
+            status: 3,
+            name: 'Task 5000',
+            desc: '5000 rub для закупки графики'
+          },
+          order: [412, 25124, 6481, 5000]
+        },
+      })
     }, 1000);
 
   });

@@ -60,13 +60,17 @@ export function changeStatus(task, status_id) {
         }
       });
 
-      //переводим таск, который уже в IN_PROGRESS в статус SUSPEND
+      //если уже есть таск в IN_PROGRESS
+      //переводим его в статус SUSPEND
       //если все ок - переводим в IN_PROGRESS таск-инициатор;
       if (alreadyInProggress) {
         fetchChangeStatus(dispatch, alreadyInProggress, status.SUSPEND, function() {
           fetchChangeStatus(dispatch,task,status_id);
         });
+      } else {
+        fetchChangeStatus(dispatch,task,status_id);
       }
+    //если статус не IN_PROGRESS - обычный сценарий смены статуса.
     } else {
       fetchChangeStatus(dispatch,task,status_id);
     }

@@ -9,36 +9,16 @@ export default class Widget extends Component {
   }
 
   render() {
-    const { actions, widget:{tasksQueue}, widget:{fetching} } = this.props;
+    const { actions } = this.props;
+    const { tasksQueue, fetching, tasksQueue: {order} } = this.props.widget;
     let currentTask;
 
-    let tasks = Object.keys(tasksQueue).map( (key, index) => {
-      return <Task data={tasksQueue[key]} key={index} actions={actions}/>
+    let tasks = order.map( (item, key) => {
+      return <Task data={tasksQueue[item]} key={key} actions={actions} />
     });
-
-    //let currentTask = tasksQueue[412] ? tasksQueue[412] : '';
-    //let currentTaskTemplate;
-
-    /*if (currentTask) {
-      currentTaskTemplate = (
-        <div className="widget">
-          <h4>{currentTask.id}: {currentTask.name} | status: {currentTask.status}</h4>
-          <div className="widget-btns">
-            <button onClick={actions.changeStatus.bind(this,currentTask,1)}>PLAY</button>
-            <button onClick={actions.changeStatus.bind(this,currentTask,2)}>PAUSE</button>
-            <button onClick={actions.changeStatus.bind(this,currentTask,3)}>RESOLVE</button>
-            <SelectStatus task={currentTask} actions={actions} />
-          </div>
-        </div>
-      )
-    }*/
 
     return (
       <div className="main">
-        {/*<div className="widget-wrapper">
-          <div className={'preloader ' + (fetching ? '' : 'none')}></div>
-          {currentTaskTemplate}
-        </div>*/}
         <div className="task-queue">
           <h4>Tasks queue:</h4>
           {tasks}

@@ -12,7 +12,9 @@ import {
 import * as status from '../constants/Statuses_ids';
 
 const initialState = {
-  tasksQueue: [],
+  tasksQueue: {
+    order: []
+  },
   fetching: false
 };
 
@@ -20,6 +22,14 @@ export default function widget(state = initialState, action) {
 
   let nextTasksQueue;
   let task;
+
+  function inProgressFirst(queue) {
+    let taskInProgress = _.find(queue, {status: 1});
+    if (taskInProgress) {
+      let removedTask_id = _.remove(queue.order, (elem) => elem === taskInProgress.id)[0];
+      queue.order.unshift(removedTask_id);
+    }
+  }
 
   switch (action.type) {
 
@@ -34,20 +44,12 @@ export default function widget(state = initialState, action) {
 
     case CHANGE_STATUS_SUCCESS:
       task = action.payload;
-      //task.status = action.status_id;
 
       nextTasksQueue = state.tasksQueue;
       task.fetching = false;
       nextTasksQueue[task.id] = task;
 
-      /*let taskInProgress = _.remove(nextTasksQueue, (item) => {
-        return item.status === status.IN_PROGRESS
-      });
-
-      if (taskInProgress.length > 0) {
-        nextTasksQueue.unshift(taskInProgress[0]);
-      }*/
-
+      inProgressFirst(nextTasksQueue);
       return {...state, tasksQueue: nextTasksQueue};
 
     case GET_TASKS_QUEUE_REQUEST:
@@ -55,6 +57,7 @@ export default function widget(state = initialState, action) {
 
     case GET_TASKS_QUEUE_SUCCESS:
       nextTasksQueue = action.payload;
+      inProgressFirst(nextTasksQueue);
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     default:
