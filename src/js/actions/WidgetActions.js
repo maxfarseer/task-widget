@@ -11,7 +11,7 @@ import {
   GET_TASKS_QUEUE_FAILURE
 } from '../constants/Widget';
 import * as status from '../constants/Statuses_ids';
-import 'isomorphic-fetch';
+let request = require('superagent-bluebird-promise');
 
 const API_ROOT = 'http://localhost:8080/api';
 
@@ -22,12 +22,9 @@ function fetchChangeStatus(dispatch, task, status, callback) {
     payload: task
   })
 
-  fetch(`${API_ROOT}/change-status/${task.id}/${status}`)
-    .then(response =>
-      response.json().then(json => ({ json, response}))
-    )
-    .then(({ json, response }) => {
-      if (!response.ok) {
+  request(`${API_ROOT}/change-status/${task.id}/${status}`)
+    .then(res => {
+      if (!res.ok) {
         dispatch({
           type: CHANGE_STATUS_FAILURE,
           payload: new Error('get tasks failure'),
@@ -36,10 +33,12 @@ function fetchChangeStatus(dispatch, task, status, callback) {
       } else {
         dispatch({
           type: CHANGE_STATUS_SUCCESS,
-          payload: json.result
+          payload: res.body.result
         })
         if (callback) callback();
       }
+    }, err => {
+      console.warn('Promise error: ' + err);
     });
 }
 /**
@@ -102,12 +101,9 @@ export function getTasksQueue(user_id) {
       type: GET_TASKS_QUEUE_REQUEST,
     });
 
-    fetch(`${API_ROOT}/get-tasks-queue/${fake_user_id}`)
-      .then(response =>
-        response.json().then(json => ({ json, response}))
-      )
-      .then(({ json, response }) => {
-        if (!response.ok) {
+    request.get(`${API_ROOT}/get-tasks-queue/${fake_user_id}`)
+      .then(res => {
+        if (!res.ok) {
           dispatch({
             type: GET_TASKS_QUEUE_FAILURE,
             payload: new Error('get tasks failure'),
@@ -116,9 +112,11 @@ export function getTasksQueue(user_id) {
         } else {
           dispatch({
             type: GET_TASKS_QUEUE_SUCCESS,
-            payload: json.result
+            payload: res.body.result
           })
         }
-      });
+      }, err => {
+        console.warn('Promise error: ' + err);
+      })
   }
 }
