@@ -1,11 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 import SelectStatus from './SelectStatus';
-
 import * as _status from '../constants/Statuses_ids';
 
 export default class Task extends Component {
 
+  shouldComponentUpdate(newProps) {
+    return newProps.data !== this.props.data;
+  }
+
   render() {
+    console.log('<Tasks />');
     const task = this.props.data;
     const {name, desc, id, status, fetching} = task;
     const {actions} = this.props;

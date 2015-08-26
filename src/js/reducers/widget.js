@@ -21,6 +21,7 @@ const initialState = {
 export default function widget(state = initialState, action) {
 
   let nextTasksQueue;
+  let nextTask;
   let task;
 
   function inProgressFirst(queue) {
@@ -35,17 +36,24 @@ export default function widget(state = initialState, action) {
 
     case CHANGE_STATUS_REQUEST:
       task = action.payload;
-
       nextTasksQueue = state.tasksQueue;
-      task.fetching = true;
-      nextTasksQueue[task.id] = task;
+
+      nextTask = {...task, fetching: true};
+      nextTasksQueue[nextTask.id] = nextTask;
+
+      //task.fetching = true;
+      //nextTasksQueue[task.id] = task;
 
       return {...state, tasksQueue: nextTasksQueue};
 
     case CHANGE_STATUS_SUCCESS:
       task = action.payload;
-
       nextTasksQueue = state.tasksQueue;
+
+      //TODO: почему равно в <Task />
+      //nextTask = {...task, fetching: true};
+      //nextTasksQueue[nextTask.id] = nextTask;
+
       task.fetching = false;
       nextTasksQueue[task.id] = task;
 
