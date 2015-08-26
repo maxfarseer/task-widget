@@ -47,7 +47,31 @@ router.route('/get-tasks-queue/:user_id')
             name: 'Task 5000',
             desc: '5000 rub для закупки графики'
           },
-          order: [412, 25124, 6481, 5000]
+          1: {
+            id: 1,
+            status: 2,
+            name: 'Task 1',
+            desc: 'description 1'
+          },
+          2: {
+            id: 2,
+            status: 4,
+            name: 'Task 2',
+            desc: 'desc desc 2'
+          },
+          3: {
+            id: 3,
+            status: 4,
+            name: 'Task 3',
+            desc: 'desc desc desc 3'
+          },
+          37: {
+            id: 37,
+            status: 2,
+            name: 'Task 37',
+            desc: 'bla bla bla'
+          },
+          order: [412, 25124, 6481, 5000, 1, 2, 3, 37]
         },
       })
     }, 1000);

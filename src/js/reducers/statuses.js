@@ -13,13 +13,7 @@ const initialState = {
     [status.CLOSED]: 'closed'
   },
   availableStatuses: {
-    /*412: [1,2,3],
-    25124: [2,3],
-    6481: [3,4]*/
-    412: [],
-    25124: [],
-    6481: [],
-    5000: []
+
   }
 }
 

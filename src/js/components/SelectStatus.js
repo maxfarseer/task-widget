@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 
 export default class SelectStatus extends Component {
 
-  //todo: запрашивать статусы по клику
-  componentWillMount(nextProps) {
-    const { actions, task } = this.props;
-    //actions.getAvailableStatuses(task.id, task.status);
+  componentWillReceiveProps(nextProps) {
+    //console.log(nextProps.statuses.availableStatuses);
   }
 
   onSelectStatus(e) {
@@ -17,18 +15,27 @@ export default class SelectStatus extends Component {
   render() {
     const { task, actions } = this.props;
     const availableStatuses = this.props.statuses.availableStatuses[task.id];
-    let selectStatusOption = availableStatuses.map( (statusId, index) => {
-      return (
-        <option value={statusId} key={index}>
-          {this.props.statuses.allStatuses[statusId]}
-        </option>
-      )
-    });
+
+    let selectStatusOption;
+
+    if (availableStatuses) {
+      selectStatusOption = availableStatuses.map( (statusId, index) => {
+        return (
+          <option value={statusId} key={index}>
+            {this.props.statuses.allStatuses[statusId]}
+          </option>
+        )
+      });
+    }
 
     return (
       <div>
-        <button onClick={actions.getAvailableStatuses.bind(this,task.id,task.status)}>Other</button>
-        <select onChange={::this.onSelectStatus}>
+        <button
+          className={availableStatuses ? 'none': ''}
+          onClick={actions.getAvailableStatuses.bind(this,task.id,task.status)}>Other
+        </button>
+        {/*<span className={'preloader-inline ' + (availableStatuses ? 'none': '')}>&nbsp;</span>*/}
+        <select onChange={::this.onSelectStatus} value={task.status} className={availableStatuses ? '': 'none'}>
           {selectStatusOption}
         </select>
       </div>
