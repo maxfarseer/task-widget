@@ -3,8 +3,15 @@ import { connect } from 'react-redux';
 
 export default class SelectStatus extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    //console.log(nextProps.statuses.availableStatuses);
+  shouldComponentUpdate(newProps) {
+    console.log(newProps);
+    console.log(this.props);
+    return true;
+  }
+
+  componentWillMount() {
+    let task = this.props.task;
+    //this.props.actions.getAvailableStatuses(task.id, task.satus);
   }
 
   onSelectStatus(e) {

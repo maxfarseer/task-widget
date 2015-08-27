@@ -95,6 +95,18 @@ router.route('/change-status/:task_id/:status_id')
 
   });
 
+router.route('/get-available-statuses/:task_id/:status_id')
+  .get(function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    setTimeout(function() {
+      res.json({
+        status: 200,
+        result: [1,2,3,4]
+      })
+    }, 1000);
+
+  });
+
 
 // all of our routes will be prefixed with /api
 app.use('/api', router);

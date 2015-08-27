@@ -6,7 +6,7 @@ import {
   CHANGE_STATUS_SUCCESS,
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
-  GET_TASKS_QUEUE_FAILURE
+  GET_TASKS_QUEUE_FAILURE //todo
 } from '../constants/Widget';
 
 import * as status from '../constants/Statuses_ids';

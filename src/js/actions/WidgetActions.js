@@ -1,6 +1,8 @@
 import {
   CHANGE_STATUS,
-  GET_AVAILABLE_STATUSES,
+  GET_AVAILABLE_STATUSES_REQUEST,
+  GET_AVAILABLE_STATUSES_SUCCESS,
+  GET_AVAILABLE_STATUSES_FAILURE,
 
   CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_SUCCESS,
@@ -8,7 +10,7 @@ import {
 
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
-  GET_TASKS_QUEUE_FAILURE
+  GET_TASKS_QUEUE_FAILURE,
 } from '../constants/Widget';
 import * as status from '../constants/Statuses_ids';
 let request = require('superagent-bluebird-promise');
@@ -36,10 +38,39 @@ function fetchChangeStatus(dispatch, task, status, callback) {
           payload: res.body.result
         })
         if (callback) callback();
+        fetchAvailableStatuses(dispatch, task.id, task.status);
       }
     }, err => {
       console.warn('Promise error: ' + err);
     });
+}
+
+function fetchAvailableStatuses(dispatch, task_id, status_id) {
+
+  dispatch({
+      type: GET_AVAILABLE_STATUSES_REQUEST
+    });
+
+  request.get(`${API_ROOT}/get-available-statuses/${task_id}/${status_id}`)
+    .then(res => {
+      if (!res.ok) {
+        dispatch({
+          type: GET_AVAILABLE_STATUSES_FAILURE,
+          payload: new Error('get tasks failure'),
+          error: true
+        })
+      } else {
+          dispatch({
+            type: GET_AVAILABLE_STATUSES_SUCCESS,
+            payload: {
+              task_id: task_id,
+              statuses: res.body.result
+            }
+          })
+        }
+      },err => {
+        console.warn('getAvailableStatuses request error: ' + err);
+      })
 }
 /**
  * change task status
@@ -82,11 +113,10 @@ export function changeStatus(task, status_id) {
  * @param  {string|number}   status_id - status ID
  */
 export function getAvailableStatuses(task_id, status_id) {
-  return {
-    type: GET_AVAILABLE_STATUSES,
-    task_id,
-    status_id
-  };
+
+  return (dispatch) => {
+    fetchAvailableStatuses(dispatch, task_id, status_id);
+  }
 }
 
 /**
@@ -98,7 +128,7 @@ export function getTasksQueue(user_id) {
   return (dispatch) => {
 
     dispatch({
-      type: GET_TASKS_QUEUE_REQUEST,
+      type: GET_TASKS_QUEUE_REQUEST
     });
 
     request.get(`${API_ROOT}/get-tasks-queue/${fake_user_id}`)
@@ -116,7 +146,7 @@ export function getTasksQueue(user_id) {
           })
         }
       }, err => {
-        console.warn('Promise error: ' + err);
+        console.warn('getTasksQueue request error: ' + err);
       })
   }
 }
