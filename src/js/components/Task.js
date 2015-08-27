@@ -9,7 +9,6 @@ export default class Task extends Component {
   }
 
   render() {
-    console.log('<Tasks />');
     const task = this.props.data;
     const {name, desc, id, status, fetching} = task;
     const {actions} = this.props;

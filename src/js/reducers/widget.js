@@ -41,21 +41,14 @@ export default function widget(state = initialState, action) {
       nextTask = {...task, fetching: true};
       nextTasksQueue[nextTask.id] = nextTask;
 
-      //task.fetching = true;
-      //nextTasksQueue[task.id] = task;
-
       return {...state, tasksQueue: nextTasksQueue};
 
     case CHANGE_STATUS_SUCCESS:
       task = action.payload;
       nextTasksQueue = state.tasksQueue;
 
-      //TODO: почему равно в <Task />
-      //nextTask = {...task, fetching: true};
-      //nextTasksQueue[nextTask.id] = nextTask;
-
-      task.fetching = false;
-      nextTasksQueue[task.id] = task;
+      nextTask = {...task, fetching: false};
+      nextTasksQueue[nextTask.id] = nextTask;
 
       inProgressFirst(nextTasksQueue);
       return {...state, tasksQueue: nextTasksQueue};
