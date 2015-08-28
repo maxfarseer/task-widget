@@ -26,48 +26,56 @@ router.route('/get-tasks-queue/:user_id')
           412: {
             id: 412,
             status: 2,
+            //availableStatuses: [1,2,3,4],
             name: 'Fix another bug',
             desc: 'this is bug waits for fix'
           },
           25124: {
             id: 25124,
             status: 4,
+            //availableStatuses: [1,2,3,4],
             name: 'Database error',
             desc: 'fix last query'
           },
           6481: {
             id: 6481,
-            status: 1, // <-- IN_PROGRESS не первый в очереди. Уточнить у backend
+            status: 1,
+            //availableStatuses: [1,2,3,4], // <-- IN_PROGRESS не первый в очереди. Уточнить у backend
             name: 'Buy the milk',
             desc: '10 packs enough'
           },
           5000: {
             id: 5000,
             status: 3,
+            //availableStatuses: [1,2,3,4],
             name: 'Task 5000',
             desc: '5000 rub для закупки графики'
           },
           1: {
             id: 1,
             status: 2,
+            //availableStatuses: [1,2,3,4],
             name: 'Task 1',
             desc: 'description 1'
           },
           2: {
             id: 2,
             status: 4,
+            //availableStatuses: [1,2,3,4],
             name: 'Task 2',
             desc: 'desc desc 2'
           },
           3: {
             id: 3,
             status: 4,
+            //availableStatuses: [1,2,3,4],
             name: 'Task 3',
             desc: 'desc desc desc 3'
           },
           37: {
             id: 37,
             status: 2,
+            //availableStatuses: [1,2,3,4],
             name: 'Task 37',
             desc: 'bla bla bla'
           },

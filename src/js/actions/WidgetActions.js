@@ -38,40 +38,12 @@ function fetchChangeStatus(dispatch, task, status, callback) {
           payload: res.body.result
         })
         if (callback) callback();
-        fetchAvailableStatuses(dispatch, task.id, task.status);
       }
     }, err => {
       console.warn('Promise error: ' + err);
     });
 }
 
-function fetchAvailableStatuses(dispatch, task_id, status_id) {
-
-  dispatch({
-      type: GET_AVAILABLE_STATUSES_REQUEST
-    });
-
-  request.get(`${API_ROOT}/get-available-statuses/${task_id}/${status_id}`)
-    .then(res => {
-      if (!res.ok) {
-        dispatch({
-          type: GET_AVAILABLE_STATUSES_FAILURE,
-          payload: new Error('get tasks failure'),
-          error: true
-        })
-      } else {
-          dispatch({
-            type: GET_AVAILABLE_STATUSES_SUCCESS,
-            payload: {
-              task_id: task_id,
-              statuses: res.body.result
-            }
-          })
-        }
-      },err => {
-        console.warn('getAvailableStatuses request error: ' + err);
-      })
-}
 /**
  * change task status
  * @param  {object}   task - task item
@@ -105,17 +77,6 @@ export function changeStatus(task, status_id) {
       fetchChangeStatus(dispatch,task,status_id);
     }
 
-  }
-}
-/**
- * get available statuses for task
- * @param  {string|number}   task_id - task ID
- * @param  {string|number}   status_id - status ID
- */
-export function getAvailableStatuses(task_id, status_id) {
-
-  return (dispatch) => {
-    fetchAvailableStatuses(dispatch, task_id, status_id);
   }
 }
 

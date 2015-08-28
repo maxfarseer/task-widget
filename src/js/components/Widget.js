@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import Task from './Task';
-import SelectStatus from './SelectStatus';
 
 export default class Widget extends Component {
 
@@ -10,14 +9,14 @@ export default class Widget extends Component {
 
   render() {
     const { actions } = this.props;
-    const { tasksQueue, fetching, tasksQueue: {order} } = this.props.widget;
+    const { tasksQueue, fetching, tasksQueue: {order} , allStatuses} = this.props.widget;
     let currentTask;
 
     //TODO: real user_id
     const user_id = 1;
 
     let tasks = order.map( (item, key) => {
-      return <Task data={tasksQueue[item]} key={key} actions={actions} />
+      return <Task data={tasksQueue[item]} key={key} actions={actions} allStatuses={allStatuses}/>
     });
 
     return (
