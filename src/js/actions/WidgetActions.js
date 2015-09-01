@@ -1,4 +1,5 @@
 import {
+  TOGGLE_COMPACT_VIEW,
   CHANGE_STATUS,
   GET_AVAILABLE_STATUSES_REQUEST,
   GET_AVAILABLE_STATUSES_SUCCESS,
@@ -12,7 +13,9 @@ import {
   GET_TASKS_QUEUE_SUCCESS,
   GET_TASKS_QUEUE_FAILURE,
 } from '../constants/Widget';
+
 import * as status from '../constants/Statuses_ids';
+
 let request = require('superagent-bluebird-promise');
 
 const API_ROOT = 'http://localhost:8080/api';
@@ -109,5 +112,12 @@ export function getTasksQueue(user_id) {
       }, err => {
         console.warn('getTasksQueue request error: ' + err);
       })
+  }
+}
+
+
+export function toggleCompactView() {
+  return {
+    type: TOGGLE_COMPACT_VIEW
   }
 }

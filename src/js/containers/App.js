@@ -23,7 +23,7 @@ export default class App extends Component {
     return (
       <div>
         <div className='app'>
-          <Header actions={actions} user={user} />
+          {/*<Header actions={actions} user={user} />*/}
           {children}
           <AuthPopup actions={actions} user={user}  authPopup={authPopup} />
         </div>

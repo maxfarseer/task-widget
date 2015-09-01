@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import {
+  TOGGLE_COMPACT_VIEW,
   CHANGE_STATUS,
   CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_SUCCESS,
@@ -22,6 +23,7 @@ const initialState = {
   tasksQueue: {
     order: []
   },
+  compactView: true,
   fetching: false
 };
 
@@ -67,6 +69,9 @@ export default function widget(state = initialState, action) {
       nextTasksQueue = action.payload;
       inProgressFirst(nextTasksQueue);
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
+
+    case TOGGLE_COMPACT_VIEW:
+      return {...state, compactView: !state.compactView};
 
     default:
       return state;

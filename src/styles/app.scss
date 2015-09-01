@@ -37,6 +37,9 @@ body {
 .app {
   width: 300px;
   padding: 5px;
+  height: auto;
+  overflow: auto;
+  border: 2px solid #F0C;
 }
 
 .main {
@@ -102,11 +105,16 @@ body {
   width: 300px;
   height: 100px;
   position: relative;
+  transition: all .5s linear 0s;
 }
 .task__id,
 .task__name,
 .task__status {
   padding: 0 15px 0 0;
+}
+
+.task-queue__header {
+  margin: 0 0 5px 0;
 }
 
 //WIDGET

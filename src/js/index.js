@@ -1,3 +1,4 @@
+import '../styles/reset.scss';
 import '../styles/app.scss';
 import React from 'react';
 import Root from './containers/Root';
