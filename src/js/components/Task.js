@@ -22,7 +22,7 @@ export default class Task extends Component {
         <div className='task__header'>
           <span className="task__id">{id}</span>
           <span className="task__name">{name}</span>
-          <span className="task__status">Status: {allStatuses[status]}</span>
+          <span className="task__status" data-task-status={status}>Status: {allStatuses[status]}</span>
         </div>
         <div className='task__desc'>{desc}</div>
         <button onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>PLAY</button>

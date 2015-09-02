@@ -1,10 +1,9 @@
 {
-  "name": "Frameless Window",
-  "description": "Chrome platform app.",
-  "version": "0.1",
+  "name": "Task_Widget",
+  "description": "redmine plugin",
   "main": "index.html",
   "window": {
-    "icon": "icon_128.png",
+    "icon": "./i/icon_128.png",
     "show": false,
     "toolbar": true,
     "frame": true,
@@ -14,5 +13,9 @@
     "height": 330,
     "min_width": 220,
     "min_height": 220
+  },
+  "devDependencies": {
+    "node-notifier": "^4.2.3",
+    "nw-dev": "^1.2.3"
   }
 }
