@@ -11,16 +11,10 @@
 
 open localhost:3000
 
+3) start desktop
+
++ npm install nw -g
++ cd desktop/
++ nw
+
 --
-#### PLAN
-+ emulate async functions
-  + get statuses
-  + get tasks
-  + change status
-
-+ toggle 'play/stop'
-+ set new task in progress
-
-+ filters
-  + by id
-  + by name
