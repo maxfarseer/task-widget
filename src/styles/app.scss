@@ -99,22 +99,35 @@ body {
 
 
 //TASK
+.task-queue {
+  margin-top: 105px;
+}
 .task {
+  background: #CCC;
   border: 1px solid #000;
   margin: 0 0 5px 0;
   width: 300px;
   height: 100px;
   position: relative;
   transition: all .5s linear 0s;
+  z-index: 1;
+}
+.task_0 {
+  position: fixed;
+  top: 6px;
+  left: 7px;
+  z-index: 2;
 }
 .task__id,
 .task__name,
 .task__status {
   padding: 0 15px 0 0;
 }
-
 .task-queue__header {
   margin: 0 0 5px 0;
+}
+.task:first-child {
+  background: #FF0000;
 }
 
 //WIDGET

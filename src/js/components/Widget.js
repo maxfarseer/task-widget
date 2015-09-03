@@ -16,7 +16,7 @@ export default class Widget extends Component {
     const user_id = 1;
 
     let tasks = order.map( (item, key) => {
-      return <Task data={tasksQueue[item]} key={key} actions={actions} allStatuses={allStatuses}/>
+      return <Task data={tasksQueue[item]} key={key} actions={actions} allStatuses={allStatuses} index={key}/>
     });
 
     if (compactView) {

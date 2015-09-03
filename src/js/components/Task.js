@@ -15,10 +15,10 @@ export default class Task extends Component {
   render() {
     const task = this.props.data;
     const {name, desc, id, status, fetching} = task;
-    const {actions, allStatuses} = this.props;
+    const {actions, allStatuses, index} = this.props;
 
     return (
-      <div className='task'>
+      <div className={`task task_${index}`}>
         <div className='task__header'>
           <span className="task__id">{id}</span>
           <span className="task__name">{name}</span>
