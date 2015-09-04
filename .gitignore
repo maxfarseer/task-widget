@@ -12,3 +12,4 @@ node_modules/
 build/
 
 api-server/node_modules/
+bundle.js

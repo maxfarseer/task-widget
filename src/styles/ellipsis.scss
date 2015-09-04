@@ -1,0 +1,31 @@
+// http://stackoverflow.com/questions/9789723/css-text-overflow-in-a-table-cell
+
+.ellipsis {
+    overflow: hidden;
+    height: 50px; }
+
+.ellipsis:before {
+    content:"";
+    float: left;
+    width: 5px; height: 50px; }
+
+.ellipsis > *:first-child {
+    float: right;
+    width: 100%;
+    margin-left: -5px; }
+
+.ellipsis:after {
+    content: "\02026";
+
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+
+    float: right; position: relative;
+    top: -17px; left: 100%;
+    width: 3em; margin-left: -3em;
+    padding-right: 5px;
+
+    text-align: right;
+
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #B7DEFF 50%, #B7DEFF); }

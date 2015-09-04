@@ -29,6 +29,9 @@ body {
   display: inline-block;
   margin: 0 0 0 5px;
 }
+.preloader_main {
+  z-index: 2;
+}
 .none {
   display: none;
 }
@@ -103,14 +106,21 @@ body {
   margin-top: 105px;
 }
 .task {
-  background: #CCC;
+  font: 14px sans-serif;
+  background: #B7DEFF;
   border: 1px solid #000;
   margin: 0 0 5px 0;
   width: 300px;
-  height: 100px;
+  height: 105px;
   position: relative;
   transition: all .5s linear 0s;
   z-index: 1;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.task__header {
+  border-bottom: 1px solid #FFF;
+  margin: 0 0 5px 0;
 }
 .task_0 {
   position: fixed;
@@ -121,13 +131,25 @@ body {
 .task__id,
 .task__name,
 .task__status {
-  padding: 0 15px 0 0;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+.task__id {
+  width: 45px;
+}
+.task__name {
+  font-weight: bold;
+  width: 160px;
+}
+.task__status {
+  text-align: right;
+  width: 75px;
+}
+
 .task-queue__header {
   margin: 0 0 5px 0;
-}
-.task:first-child {
-  background: #FF0000;
 }
 
 //WIDGET

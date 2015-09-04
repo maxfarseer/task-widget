@@ -1,3 +1,4 @@
+import '../../styles/ellipsis.scss';
 import React, { PropTypes, Component } from 'react';
 import * as _status from '../constants/Statuses_ids';
 
@@ -22,9 +23,13 @@ export default class Task extends Component {
         <div className='task__header'>
           <span className="task__id">{id}</span>
           <span className="task__name">{name}</span>
-          <span className="task__status" data-task-status={status}>Status: {allStatuses[status]}</span>
+          <span className="task__status" data-task-status={status}>{allStatuses[status]}</span>
         </div>
-        <div className='task__desc'>{desc}</div>
+        <div className='task__desc ellipsis'>
+          <div>
+            <p>{desc}</p>
+          </div>
+        </div>
         <button onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>PLAY</button>
         <button onClick={actions.changeStatus.bind(this,task,_status.RESOLVED)}>RESOLVE</button>
 

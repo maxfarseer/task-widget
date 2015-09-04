@@ -28,7 +28,7 @@ router.route('/get-tasks-queue/:user_id')
             status: 2,
             //availableStatuses: [1,2,3,4],
             name: 'Fix another bug',
-            desc: 'this is bug waits for fix'
+            desc: 'this is bug waits for fix, this is bug waits for fix, this is bug waits for fix 123123123'
           },
           25124: {
             id: 25124,
@@ -41,7 +41,7 @@ router.route('/get-tasks-queue/:user_id')
             id: 6481,
             status: 1,
             //availableStatuses: [1,2,3,4], // <-- IN_PROGRESS не первый в очереди. Уточнить у backend
-            name: 'Buy the milk',
+            name: 'Buy the milk named 98q981g2gfdsfsd8a afdsfsd8 sfsdf',
             desc: '10 packs enough'
           },
           5000: {
@@ -49,7 +49,7 @@ router.route('/get-tasks-queue/:user_id')
             status: 3,
             //availableStatuses: [1,2,3,4],
             name: 'Task 5000',
-            desc: '5000 rub для закупки графики'
+            desc: '5000 rub для закупки графики, 4000 rub для закупки графики, 3510 rub для закупки графики, 170000 rub для закупки графики, 5000 rub для закупки графики, 5000 rub для закупки графики'
           },
           1: {
             id: 1,

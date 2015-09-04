@@ -25,6 +25,7 @@ export default class Widget extends Component {
 
     return (
       <div className="main">
+        <div className={'preloader preloader_main ' + (fetching ? '' : 'none')}></div>
         <div className="task-queue">
           <h4 className="task-queue__header">Tasks queue: <button onClick={actions.getTasksQueue.bind(null,user_id)}>refresh from server</button></h4>
           {tasks}
@@ -32,7 +33,6 @@ export default class Widget extends Component {
         <button className="task-queue__showall js-toggle-compact-view" data-compact={compactView} onClick={actions.toggleCompactView}>
           {compactView ? 'show all':'hide all'}
         </button>
-        <div className={'preloader ' + (fetching ? '' : 'none')}></div>
       </div>
     );
   }
