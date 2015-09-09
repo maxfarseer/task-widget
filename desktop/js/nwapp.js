@@ -1,10 +1,20 @@
 'use strict';
 
+//global
+window.NW_APP = {
+  timers: {
+    //inProgressCheck: 60000 * 5, //раз в 5 минут проверять - есть ли IN_PROGRESS
+    //idle: 60000 * 240
+    inProgressCheck: 1000 * 2,
+    idle: 1000 * 10
+  },
+  idleFlag: true
+};
+
 var path = require('path');
 var NW = require('nw.gui');
 var win = NW.Window.get();
 var appWidth = 320;
-var noTaskInProgressTimer;
 
 var mb = new NW.Menu({type:"menubar"});
 mb.createMacBuiltin("Task widget");
@@ -13,23 +23,35 @@ NW.Window.get().menu = mb;
 win.moveTo(window.screen.availWidth - appWidth, 40);
 win.show();
 
-function checkInProgress() {
+win.showDevTools();
+
+//NW.Shell.openExternal('http://redmine.kama.gs');
+
+NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');
-  if (taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1' ) {
-    var timer = global.setTimeout(function() {
-      //в течении 5 минут нет задачи в IN_PROGRESS
-      noTaskInProgressTimer = global.setTimeout(checkNoOneInProgress,60000 * 240);
-    },60000 * 5);
-  }
+  return taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1'
 }
 
-function checkNoOneInProgress() {
-  var taskStatus = $('.task__status');
-  if (taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1' ) {
-    showNativeNotification('./i/icon_128.png','Внимание','Отсутствует активная задача!');
+NW_APP.checkInProgress = function() {
+  console.log('checkInProgress: start');
+
+  if ( NW_APP.hasInProgress() ) {
+
+    //если в течении 4 часов {options.timers.idle} не появится таск в in_progress - покажи notification
+    if (!NW_APP.idleFlag) {
+      NW_APP.noTaskInProgressTimer = global.setTimeout(NW_APP.showNoInprogressWarning, NW_APP.timers.idle);
+    }
+    NW_APP.idleFlag = true;
   } else {
-    global.clearInterval(noTaskInProgressTimer);
+    //есть задача в in_progress
+    global.clearTimeout(NW_APP.noTaskInProgressTimer);
+    NW_APP.idleFlag = false;
   }
+  NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
+}
+
+NW_APP.showNoInprogressWarning = function() {
+  showNativeNotification('./i/icon_128.png','Внимание','Отсутствует активная задача!');
 }
 
 $(function() {
@@ -43,6 +65,6 @@ $(function() {
 
   });
 
-  var checkInProgressTimer = global.setInterval(checkInProgress, 1000);
+  NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
 
 });

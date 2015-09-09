@@ -9,7 +9,7 @@ var config = {
     './src/js/index.js'
   ],
   output: {
-    filename: 'bundle.js'
+    filename: './desktop/js/bundle.js'
   },
   module: {
     loaders: [
