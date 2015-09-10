@@ -2,6 +2,8 @@ import '../../styles/ellipsis.scss';
 import React, { PropTypes, Component } from 'react';
 import * as _status from '../constants/Statuses_ids';
 
+import ChangeStatusProblem from './ChangeStatusProblem';
+
 export default class Task extends Component {
 
   shouldComponentUpdate(newProps) {
@@ -18,8 +20,8 @@ export default class Task extends Component {
     const {name, desc, id, status, fetching} = task;
     const {actions, allStatuses, index} = this.props;
 
-    return (
-      <div className={`task task_${index}`}>
+    const taskTemplate = (
+      <div>
         <div className='task__header'>
           <span className="task__id">{id}</span>
           <span className="task__name">{name}</span>
@@ -36,5 +38,17 @@ export default class Task extends Component {
         <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
       </div>
     );
+
+    const taskWithProblemTemplate = (
+      <ChangeStatusProblem task_id={id} />
+    );
+
+    let template = task.changeStatusProblem ? taskWithProblemTemplate : taskTemplate;
+
+    return (
+      <div className={`task task_${index}`}>
+        {template}
+      </div>
+    )
   }
 }

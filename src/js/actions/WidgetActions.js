@@ -40,7 +40,7 @@ function fetchChangeStatus(dispatch, task, status, callback) {
           type: CHANGE_STATUS_SUCCESS,
           payload: res.body.result
         })
-        if (callback) callback();
+        if (!res.body.result.changeStatusProblem && callback) callback();
       }
     }, err => {
       console.warn('Promise error: ' + err);

@@ -25,8 +25,6 @@ win.show();
 
 win.showDevTools();
 
-//NW.Shell.openExternal('http://redmine.kama.gs');
-
 NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');
   return taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1'
@@ -66,5 +64,10 @@ $(function() {
   });
 
   NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
+
+  $('.app').on('click', '.js-change-status', function(e) {
+    NW.Shell.openExternal(e.target.href);
+    return false;
+  });
 
 });
