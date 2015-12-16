@@ -13,16 +13,14 @@ import {
 import * as status from '../constants/Statuses_ids';
 
 const initialState = {
-  allStatuses: {
+  /*allStatuses: {
     [status.NONE]: 'none',
     [status.IN_PROGRESS]: 'in progress',
     [status.SUSPEND]: 'suspend',
     [status.RESOLVED]: 'resolved',
     [status.CLOSED]: 'closed'
-  },
-  tasksQueue: {
-    order: []
-  },
+  },*/
+  tasksQueue: [],
   compactView: true,
   fetching: false
 };
@@ -67,7 +65,8 @@ export default function widget(state = initialState, action) {
 
     case GET_TASKS_QUEUE_SUCCESS:
       nextTasksQueue = action.payload;
-      inProgressFirst(nextTasksQueue);
+      //inProgressFirst(nextTasksQueue);
+
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     case TOGGLE_COMPACT_VIEW:

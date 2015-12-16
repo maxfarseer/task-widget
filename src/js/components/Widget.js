@@ -9,14 +9,13 @@ export default class Widget extends Component {
 
   render() {
     const { actions } = this.props;
-    const { tasksQueue, fetching, tasksQueue: {order} , allStatuses, compactView} = this.props.widget;
+    const { tasksQueue, fetching, allStatuses, compactView} = this.props.widget;
     let currentTask;
 
     //TODO: real user_id
     const user_id = 1;
-
-    let tasks = order.map( (item, key) => {
-      return <Task data={tasksQueue[item]} key={key} actions={actions} allStatuses={allStatuses} index={key}/>
+    let tasks = tasksQueue.map( (item, key) => {
+      return <Task data={item} key={key} actions={actions} index={key}/>
     });
 
     if (compactView) {

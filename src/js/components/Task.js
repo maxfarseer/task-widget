@@ -17,23 +17,23 @@ export default class Task extends Component {
 
   render() {
     const task = this.props.data;
-    const {name, desc, id, status, fetching} = task;
-    const {actions, allStatuses, index} = this.props;
+    const {subject, description, id, status, fetching} = task;
+    const {actions, index} = this.props;
 
     const taskTemplate = (
       <div>
         <div className='task__header'>
           <span className="task__id">{id}</span>
-          <span className="task__name">{name}</span>
-          <span className="task__status" data-task-status={status}>{allStatuses[status]}</span>
+          <span className="task__name">{subject}</span>
+          <span className="task__status" data-task-status={status.id}>{status.name}</span>
         </div>
         <div className='task__desc ellipsis'>
           <div>
-            <p>{desc}</p>
+            <p>{description}</p>
           </div>
         </div>
         <button onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>PLAY</button>
-        <button onClick={actions.changeStatus.bind(this,task,_status.RESOLVED)}>RESOLVE</button>
+        <button onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>PAUSE</button>
 
         <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
       </div>

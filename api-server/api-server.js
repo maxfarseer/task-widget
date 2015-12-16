@@ -83,7 +83,7 @@ router.route('/change-status/:task_id/:status_id')
     res.header("Access-Control-Allow-Origin", "*");
     var changeStatusProblem;
     if (+req.params.task_id === 5000) {
-      changeStatusProblem = true;
+      changeStatusProblem = false;
     }
     console.log('change status for task ID ' + req.params.task_id);
     setTimeout(function() {

@@ -1,5 +1,7 @@
-export const NONE = 0;
-export const IN_PROGRESS = 1;
-export const SUSPEND = 2;
+//http://redmine-qa.kama.gs/issue_statuses.json
+
+export const NEW = 1;
+export const IN_PROGRESS = 2;
+export const SUSPEND = 10;
 export const RESOLVED = 3;
-export const CLOSED = 4;
+export const CLOSED = 5;

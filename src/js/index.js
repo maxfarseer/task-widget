@@ -2,9 +2,9 @@ import '../styles/reset.scss';
 import '../styles/app.scss';
 import React from 'react';
 import Root from './containers/Root';
-import HashHistory from 'react-router/lib/HashHistory'
+import createBrowserHistory from 'history/lib/createBrowserHistory';
 
-const history = new HashHistory();
+const history = new createBrowserHistory();
 
 React.render(
   <Root history={history} />,
