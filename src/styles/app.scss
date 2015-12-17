@@ -2,6 +2,7 @@ body {
   background: #EEE;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
 }
 .loading {
   width: 100%;
@@ -38,11 +39,11 @@ body {
 
 //APP
 .app {
+  background: #FFF;
   width: 300px;
   padding: 5px;
-  height: auto;
-  overflow: auto;
-  border: 2px solid #F0C;
+  height: 603px;
+  color: #000;
 }
 
 .main {
@@ -100,63 +101,86 @@ body {
   background: #000;
 }
 
+//UPDATE from 17.12.2015 все что выше не проверял нужно ли еще
+
+.badge {
+  width: 5px;
+  height: 100%;
+  float: left;
+  background: #E2E2E3;
+}
+.stripe-wrapper {
+  background: #F8F8F8;
+  height: 35px;
+  margin: 0 0 2px;
+}
+.stripe {
+  color: #A3A3A5;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+}
+.stripe__link {
+  color: #A3A3A5;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 //TASK
-.task-queue {
-  margin-top: 105px;
-}
 .task {
   font: 14px sans-serif;
-  background: #B7DEFF;
-  border: 1px solid #000;
-  margin: 0 0 5px 0;
-  width: 300px;
-  height: 105px;
+  border-bottom: 1px solid #F3F3F4;
+  height: 100px;
   position: relative;
   transition: all .5s linear 0s;
   z-index: 1;
-  padding: 5px;
+  padding: 20px 0px 0 20px;
   box-sizing: border-box;
 }
-.task__header {
-  border-bottom: 1px solid #FFF;
-  margin: 0 0 5px 0;
+.task__left {
+  float: left;
+  width: 240px;
 }
-.task_0 {
-  position: fixed;
-  top: 6px;
-  left: 7px;
-  z-index: 2;
+.task__right {
+  float: left;
+  width: 30px;
 }
-.task__id,
-.task__name,
-.task__status {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.task-btn {
+  width: 24px;
+  height: 24px;
+  color: #15B9F0;
+  background: transparent;
+  border: 1px solid #15B9F0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 1px 0 0 1px;
+  transition: all .2s ease-in;
+  margin: 0 0 5px;
+  &:hover {
+    background: #15B9F0;
+    color: #FFF;
+  }
 }
-.task__id {
-  width: 45px;
+.task-btn_pause {
+  padding: 0 0 0 0px;
+  line-height: 12px;
 }
 .task__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: bold;
-  width: 160px;
 }
-.task__status {
-  text-align: right;
-  width: 75px;
+.task__clock {
+  margin: 15px 40px 0 0;
+  display: inline-block;
 }
-
-.task-queue__header {
-  margin: 0 0 5px 0;
-}
-
-//WIDGET
-.widget-wrapper {
-  border: 2px solid #B6D1EC;
-  margin: 5px;
-  width: 300px;
-  height: 100px;
-  position: relative;
+.task__project {
+  margin: 15px 0 0 0;
+  display: inline-block;
 }

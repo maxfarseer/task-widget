@@ -21,7 +21,7 @@ const initialState = {
     [status.CLOSED]: 'closed'
   },*/
   tasksQueue: [],
-  compactView: true,
+  compactView: false,
   fetching: false
 };
 

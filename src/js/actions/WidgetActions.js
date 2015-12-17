@@ -15,14 +15,14 @@ import {
 } from '../constants/Widget';
 
 import {
-  API_KEY
+  API_KEY,
+  API_ROOT
 } from '../constants/Secret';
 
 import * as status from '../constants/Statuses_ids';
 
 let request = require('superagent-bluebird-promise');
 
-const API_ROOT = 'http://redmine-qa.kama.gs';
 const API_QUEUE = '/issues.json?utf8=%E2%9C%93&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=%3D&v%5Bstatus_id%5D%5B%5D=1&v%5Bstatus_id%5D%5B%5D=2&v%5Bstatus_id%5D%5B%5D=10&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%3D&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=project_id&op%5Bproject_id%5D=%3D&v%5Bproject_id%5D%5B%5D=mine&f%5B%5D=&c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=subject&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=fixed_version&c%5B%5D=estimated_hours';
 
 function fetchChangeStatus(dispatch, task, status, callback) {

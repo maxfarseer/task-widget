@@ -1,4 +1,3 @@
-import '../../styles/ellipsis.scss';
 import React, { PropTypes, Component } from 'react';
 import * as _status from '../constants/Statuses_ids';
 
@@ -22,32 +21,25 @@ export default class Task extends Component {
 
     const taskTemplate = (
       <div>
-        <div className='task__header'>
-          <span className="task__id">{id}</span>
-          <span className="task__name">{subject}</span>
-          <span className="task__status" data-task-status={status.id}>{status.name}</span>
+        <div className='task__left'>
+          <div className="task__name">{subject}</div>
+          <div className="task__clock">00:00</div>
+          <div className="task__project">Casino Unity</div>
         </div>
-        <div className='task__desc ellipsis'>
-          <div>
-            <p>{description}</p>
-          </div>
+        <div className='task__right'>
+          {task.status.id === 2 ? 
+            <button className="task-btn task-btn_pause" onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>||</button> :
+            <button className="task-btn" onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
+          }
+          <button className="task-btn task-btn_resolve" onClick={actions.changeStatus.bind(this,task,_status.RESOLVE)}>&#10003;</button>
         </div>
-        <button onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>PLAY</button>
-        <button onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>PAUSE</button>
-
         <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
       </div>
     );
 
-    const taskWithProblemTemplate = (
-      <ChangeStatusProblem task_id={id} />
-    );
-
-    let template = task.changeStatusProblem ? taskWithProblemTemplate : taskTemplate;
-
     return (
       <div className={`task task_${index}`}>
-        {template}
+        {taskTemplate}
       </div>
     )
   }
