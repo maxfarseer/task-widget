@@ -24,10 +24,16 @@ export default class Task extends Component {
           </div>
           <div className='task__right'>
             {task.status.id === 2 ? 
-              <button className="task-btn task-btn_pause" onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>||</button> :
-              <button className="task-btn task-btn_play" onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
+              <div>
+                <button className="task-btn task-btn_pause" onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>||</button>
+                <button className="task-btn task-btn_resolve" onClick={actions.changeStatus.bind(this,task,_status.RESOLVED)}>&#10003;</button>
+              </div>
+              :
+              <div>
+                <button className="task-btn task-btn_play" onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
+              </div>
             }
-            <button className="task-btn task-btn_resolve" onClick={actions.changeStatus.bind(this,task,_status.RESOLVE)}>&#10003;</button>
+            
           </div>
           <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>

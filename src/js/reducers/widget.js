@@ -38,9 +38,16 @@ export default function widget(state = initialState, action) {
 
     case GET_ISSUE_SUCCESS:
     case CHANGE_STATUS_PROBLEM:
-      taskIndex = _.findIndex(state.tasksQueue, {id: action.payload.id});
+      nextTask = action.payload;
+      taskIndex = _.findIndex(state.tasksQueue, {id: nextTask.id});
       nextTasksQueue = state.tasksQueue;
-      nextTasksQueue.splice(taskIndex, 1, action.payload);
+
+      if (nextTask.status.id === status.RESOLVED) {
+        nextTasksQueue.splice(taskIndex, 1);  
+      } else {
+        nextTasksQueue.splice(taskIndex, 1, nextTask);  
+      }
+      
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     default:

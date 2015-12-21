@@ -3,5 +3,6 @@
 export const NEW = 1;
 export const IN_PROGRESS = 2;
 export const SUSPEND = 10;
-export const RESOLVE = 3;
+export const RESOLVED = 3;
 export const CLOSED = 5;
+export const REOPEN = 7;
