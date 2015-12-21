@@ -1,13 +1,12 @@
 import {
-  TOGGLE_COMPACT_VIEW,
-  CHANGE_STATUS,
-  GET_AVAILABLE_STATUSES_REQUEST,
-  GET_AVAILABLE_STATUSES_SUCCESS,
-  GET_AVAILABLE_STATUSES_FAILURE,
+  GET_ISSUE_REQUEST,
+  GET_ISSUE_SUCCESS,
+  GET_ISSUE_FAILURE,
 
   CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_SUCCESS,
   CHANGE_STATUS_FAILURE,
+  CHANGE_STATUS_PROBLEM,
 
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
@@ -23,29 +22,42 @@ import * as status from '../constants/Statuses_ids';
 
 let request = require('superagent-bluebird-promise');
 
-const API_QUEUE = '/issues.json?utf8=%E2%9C%93&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=%3D&v%5Bstatus_id%5D%5B%5D=1&v%5Bstatus_id%5D%5B%5D=2&v%5Bstatus_id%5D%5B%5D=10&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%3D&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=project_id&op%5Bproject_id%5D=%3D&v%5Bproject_id%5D%5B%5D=mine&f%5B%5D=&c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=subject&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=fixed_version&c%5B%5D=estimated_hours';
+const API_QUEUE = '/issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=subject&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=fixed_version&c%5B%5D=estimated_hours&f%5B%5D=status_id&f%5B%5D=assigned_to_id&f%5B%5D=project_id&f%5B%5D=tracker_id&f%5B%5D=&group_by=&op%5Bassigned_to_id%5D=%3D&op%5Bproject_id%5D=%3D&op%5Bstatus_id%5D=%3D&op%5Btracker_id%5D=%3D&set_filter=1&sort=priority%3Adesc%2Cstatus%2Csubject&utf8=%E2%9C%93&v%5Bassigned_to_id%5D%5B%5D=me&v%5Bproject_id%5D%5B%5D=mine&v%5Bstatus_id%5D%5B%5D=1&v%5Bstatus_id%5D%5B%5D=2&v%5Bstatus_id%5D%5B%5D=10&v%5Btracker_id%5D%5B%5D=2&v%5Btracker_id%5D%5B%5D=1';
 
-function fetchChangeStatus(dispatch, task, status, callback) {
+/**
+ * helper for call getIssue from view
+ * @param  {string|number}   id - issue id
+ */
+export function refreshIssue(id) {
+  return (dispatch) => {getIssue(dispatch,id)};
+};
 
+/**
+ * get issue
+ * @param  {function}   dispatch - dispatch function
+ * @param  {string|number}   id - issue id
+ */
+function getIssue(dispatch, id) {
   dispatch({
-    type: CHANGE_STATUS_REQUEST,
-    payload: task
-  })
+    type: GET_ISSUE_REQUEST,
+    meta: {
+      remote: true
+    }
+  });
 
-  request.put(`${API_ROOT}/issues/${task.id}.json?${API_KEY}`).send(`issue[status_id]=${status}`)
+  request(`${API_ROOT}/issues/${id}.json?${API_KEY}`)
     .then(res => {
       if (!res.ok) {
         dispatch({
-          type: CHANGE_STATUS_FAILURE,
-          payload: new Error('get tasks failure'),
+          type: GET_ISSUE_FAILURE,
+          payload: new Error('get issue failure'),
           error: true
         })
       } else {
         dispatch({
-          type: CHANGE_STATUS_SUCCESS,
-          payload: res.body.result
+          type: GET_ISSUE_SUCCESS,
+          payload: res.body.issue
         })
-        if (!res.body.result.changeStatusProblem && callback) callback();
       }
     }, err => {
       console.warn('Promise error: ' + err);
@@ -53,47 +65,45 @@ function fetchChangeStatus(dispatch, task, status, callback) {
 }
 
 /**
- * change task status
+ * change issue status
  * @param  {object}   task - task item
  * @param  {string|number}   status_id - status ID
  */
-export function changeStatus(task, status_id) {
-
-  return (dispatch, getState) => {
-    if (status_id === status.IN_PROGRESS) {
-      let alreadyInProggress;
-      let tasksQueue = getState().widget.tasksQueue;
-
-      Object.keys(tasksQueue).map( (key, index) => {
-        if (tasksQueue[key].status === status.IN_PROGRESS) {
-          alreadyInProggress = tasksQueue[key]
-        }
-      });
-
-      //если уже есть таск в IN_PROGRESS
-      //переводим его в статус SUSPEND
-      //если все ок - переводим в IN_PROGRESS таск-инициатор;
-      if (alreadyInProggress) {
-        fetchChangeStatus(dispatch, alreadyInProggress, status.SUSPEND, function() {
-          fetchChangeStatus(dispatch,task,status_id);
-        });
-      } else {
-        fetchChangeStatus(dispatch,task,status_id);
+export function changeStatus(issue, status_id) {
+  const _status_id = status_id;
+  return (dispatch) => {
+  
+    dispatch({
+      type: CHANGE_STATUS_REQUEST,
+      meta: {
+        remote: true
       }
-    //если статус не IN_PROGRESS - обычный сценарий смены статуса.
-    } else {
-      fetchChangeStatus(dispatch,task,status_id);
-    }
+    });
 
-  }
+    request.put(`${API_ROOT}/issues/${issue.id}.json?${API_KEY}`)
+      .send(`issue[status_id]=${_status_id}`)
+      .then(res => {
+        if (!res.ok) {
+          dispatch({
+            type: CHANGE_STATUS_FAILURE,
+            payload: new Error('get tasks failure'),
+            error: true
+          });
+        } else {
+          getIssue(dispatch, issue.id);
+        }
+      }, err => {
+        console.warn('Change status error: ' + err);
+        dispatch({
+          type: CHANGE_STATUS_PROBLEM,
+          payload: {...issue, _error: true, _errorArr: err.body.errors},
+          error: true
+        });
+      });
+    }
 }
 
-/**
- * get tasks queue
- * @param  {string|number}   user_id - user ID
- */
-export function getTasksQueue(user_id) {
-  let fake_user_id = 1; //fake
+export function getIssuesQueue() {
   return (dispatch) => {
 
     dispatch({
@@ -105,24 +115,17 @@ export function getTasksQueue(user_id) {
         if (!res.ok) {
           dispatch({
             type: GET_TASKS_QUEUE_FAILURE,
-            payload: new Error('get tasks failure'),
+            payload: new Error('get issue failure'),
             error: true
           })
         } else {
           dispatch({
             type: GET_TASKS_QUEUE_SUCCESS,
-            payload: JSON.parse(res.text).issues
+            payload: res.body.issues
           })
         }
       }, err => {
-        console.warn('getTasksQueue request error: ' + err);
+        console.warn('getIssuesQueue request error: ' + err);
       })
-  }
-}
-
-
-export function toggleCompactView() {
-  return {
-    type: TOGGLE_COMPACT_VIEW
   }
 }

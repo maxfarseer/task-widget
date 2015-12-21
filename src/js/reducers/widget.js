@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
 import {
-  TOGGLE_COMPACT_VIEW,
-  CHANGE_STATUS,
+  GET_ISSUE_SUCCESS,
+  GET_ISSUE_REQUEST,
   CHANGE_STATUS_REQUEST,
-  CHANGE_STATUS_SUCCESS,
+  //CHANGE_STATUS_SUCCESS,
+  CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
   GET_TASKS_QUEUE_FAILURE //todo
@@ -13,15 +14,7 @@ import {
 import * as status from '../constants/Statuses_ids';
 
 const initialState = {
-  /*allStatuses: {
-    [status.NONE]: 'none',
-    [status.IN_PROGRESS]: 'in progress',
-    [status.SUSPEND]: 'suspend',
-    [status.RESOLVED]: 'resolved',
-    [status.CLOSED]: 'closed'
-  },*/
   tasksQueue: [],
-  compactView: false,
   fetching: false
 };
 
@@ -30,47 +23,25 @@ export default function widget(state = initialState, action) {
   let nextTasksQueue;
   let nextTask;
   let task;
-
-  function inProgressFirst(queue) {
-    let taskInProgress = _.find(queue, {status: 1});
-    if (taskInProgress) {
-      let removedTask_id = _.remove(queue.order, (elem) => elem === taskInProgress.id)[0];
-      queue.order.unshift(removedTask_id);
-    }
-  }
+  let taskIndex;
 
   switch (action.type) {
 
     case CHANGE_STATUS_REQUEST:
-      task = action.payload;
-      nextTasksQueue = state.tasksQueue;
-
-      nextTask = {...task, fetching: true};
-      nextTasksQueue[nextTask.id] = nextTask;
-
-      return {...state, tasksQueue: nextTasksQueue};
-
-    case CHANGE_STATUS_SUCCESS:
-      task = action.payload;
-      nextTasksQueue = state.tasksQueue;
-
-      nextTask = {...task, fetching: false};
-      nextTasksQueue[nextTask.id] = nextTask;
-
-      inProgressFirst(nextTasksQueue);
-      return {...state, tasksQueue: nextTasksQueue};
-
     case GET_TASKS_QUEUE_REQUEST:
+    case GET_ISSUE_REQUEST:
       return {...state, fetching: true}
 
     case GET_TASKS_QUEUE_SUCCESS:
       nextTasksQueue = action.payload;
-      //inProgressFirst(nextTasksQueue);
-
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
-    case TOGGLE_COMPACT_VIEW:
-      return {...state, compactView: !state.compactView};
+    case GET_ISSUE_SUCCESS:
+    case CHANGE_STATUS_PROBLEM:
+      taskIndex = _.findIndex(state.tasksQueue, {id: action.payload.id});
+      nextTasksQueue = state.tasksQueue;
+      nextTasksQueue.splice(taskIndex, 1, action.payload);
+      return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     default:
       return state;
