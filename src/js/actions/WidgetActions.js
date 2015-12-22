@@ -14,13 +14,12 @@ import {
 } from '../constants/Widget';
 
 import {
-  API_KEY,
   API_ROOT
 } from '../constants/Secret';
 
 import * as status from '../constants/Statuses_ids';
 
-let request = require('superagent-bluebird-promise');
+const request = require('superagent-bluebird-promise'); //import ?
 
 const API_QUEUE = '/issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=subject&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=fixed_version&c%5B%5D=estimated_hours&f%5B%5D=status_id&f%5B%5D=assigned_to_id&f%5B%5D=project_id&f%5B%5D=tracker_id&f%5B%5D=&group_by=&op%5Bassigned_to_id%5D=%3D&op%5Bproject_id%5D=%3D&op%5Bstatus_id%5D=%3D&op%5Btracker_id%5D=%3D&set_filter=1&sort=priority%3Adesc%2Cstatus%2Csubject&utf8=✓&v%5Bassigned_to_id%5D%5B%5D=me&v%5Bproject_id%5D%5B%5D=mine&v%5Bstatus_id%5D%5B%5D=1&v%5Bstatus_id%5D%5B%5D=7&v%5Bstatus_id%5D%5B%5D=2&v%5Bstatus_id%5D%5B%5D=10&v%5Btracker_id%5D%5B%5D=2&v%5Btracker_id%5D%5B%5D=1';
 /**
@@ -28,7 +27,7 @@ const API_QUEUE = '/issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c
  * @param  {string|number}   id - issue id
  */
 export function refreshIssue(id) {
-  return (dispatch) => {getIssue(dispatch,id)};
+  return (dispatch,getState) => {getIssue(dispatch, getState, id)};
 };
 
 /**
@@ -36,7 +35,10 @@ export function refreshIssue(id) {
  * @param  {function}   dispatch - dispatch function
  * @param  {string|number}   id - issue id
  */
-function getIssue(dispatch, id) {
+function getIssue(dispatch, getState, id) {
+
+  const API_KEY = getState().user.api_key;
+
   dispatch({
     type: GET_ISSUE_REQUEST,
     meta: {
@@ -70,7 +72,9 @@ function getIssue(dispatch, id) {
  */
 export function changeStatus(issue, status_id) {
   const _status_id = status_id;
-  return (dispatch) => {
+  return (dispatch, getState) => {
+
+    const API_KEY = getState().user.api_key;
   
     dispatch({
       type: CHANGE_STATUS_REQUEST,
@@ -103,7 +107,9 @@ export function changeStatus(issue, status_id) {
 }
 
 export function getIssuesQueue() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+
+    const API_KEY = getState().user.api_key;
 
     dispatch({
       type: GET_TASKS_QUEUE_REQUEST

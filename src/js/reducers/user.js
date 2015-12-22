@@ -1,19 +1,24 @@
 import {
-  LOGIN, LOGOUT,
-} from '../constants/Types';
+  LOGIN_REQUEST,
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  LOGOUT_REQUEST,
+  LOGOUT_FAIL,
+  LOGOUT_SUCCESS
+} from '../constants/Login';
 
-const initialState = {
-  login: '',
-  pass: ''
-};
+const initialState = {};
 
 export default function mainstate(state = initialState, action) {
+  let nextState;
+  
   switch (action.type) {
-  case LOGIN:
-    return {...state,login: action.user, pass: 'fakepass'}
+  case LOGIN_SUCCESS:
+    nextState = action.payload;
+    return nextState;
 
-  case LOGOUT:
-    return {...state,login: '', pass: ''}
+  case LOGOUT_SUCCESS:
+    return {};
 
   default:
     return state;
