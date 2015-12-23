@@ -19,7 +19,7 @@ class MainPage extends Component {
 
 function select(state) {
   return {
-    widget: state.widget
+    widget: state.app.widget
   };
 }
 

@@ -19,7 +19,7 @@ class LoginPage extends Component {
 
 function select(state) {
   return {
-    user: state.user
+    user: state.app.user
   };
 }
 
