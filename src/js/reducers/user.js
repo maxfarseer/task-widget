@@ -7,11 +7,12 @@ import {
   LOGOUT_SUCCESS
 } from '../constants/Login';
 
-const initialState = {};
+const initialState = {
+};
 
 export default function mainstate(state = initialState, action) {
   let nextState;
-  
+
   switch (action.type) {
   case LOGIN_SUCCESS:
     nextState = action.payload;

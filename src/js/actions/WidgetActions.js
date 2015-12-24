@@ -37,7 +37,7 @@ export function refreshIssue(id) {
  */
 function getIssue(dispatch, getState, id) {
 
-  const API_KEY = getState().user.api_key;
+  const API_KEY = getState().app.user.api_key;
 
   dispatch({
     type: GET_ISSUE_REQUEST,
@@ -46,7 +46,7 @@ function getIssue(dispatch, getState, id) {
     }
   });
 
-  request(`${API_ROOT}/issues/${id}.json?${API_KEY}`)
+  request(`${API_ROOT}/issues/${id}.json?key=${API_KEY}`)
     .then(res => {
       if (!res.ok) {
         dispatch({
@@ -74,8 +74,8 @@ export function changeStatus(issue, status_id) {
   const _status_id = status_id;
   return (dispatch, getState) => {
 
-    const API_KEY = getState().user.api_key;
-  
+    const API_KEY = getState().app.user.api_key;
+
     dispatch({
       type: CHANGE_STATUS_REQUEST,
       meta: {
@@ -83,7 +83,7 @@ export function changeStatus(issue, status_id) {
       }
     });
 
-    request.put(`${API_ROOT}/issues/${issue.id}.json?${API_KEY}`)
+    request.put(`${API_ROOT}/issues/${issue.id}.json?key=${API_KEY}`)
       .send(`issue[status_id]=${_status_id}`)
       .then(res => {
         if (!res.ok) {
@@ -93,7 +93,7 @@ export function changeStatus(issue, status_id) {
             error: true
           });
         } else {
-          getIssue(dispatch, issue.id);
+          getIssue(dispatch, getState, issue.id);
         }
       }, err => {
         console.warn('Change status error: ' + err);
@@ -109,13 +109,13 @@ export function changeStatus(issue, status_id) {
 export function getIssuesQueue() {
   return (dispatch, getState) => {
 
-    const API_KEY = getState().user.api_key;
+    const API_KEY = getState().app.user.api_key;
 
     dispatch({
       type: GET_TASKS_QUEUE_REQUEST
     });
 
-    request.get(`${API_ROOT}${API_QUEUE}&${API_KEY}`)
+    request.get(`${API_ROOT}${API_QUEUE}&key=${API_KEY}`)
       .then(res => {
         if (!res.ok) {
           dispatch({

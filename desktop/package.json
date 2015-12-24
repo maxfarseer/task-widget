@@ -4,18 +4,21 @@
   "main": "index.html",
   "window": {
     "icon": "./i/icon_128.png",
-    "show": false,
-    "toolbar": true,
+    "show": true,
+    "toolbar": false,
     "frame": false,
-    "resizable": true,
+    "resizable": false,
     "position": "center",
     "width": 320,
-    "height": 330,
     "min_width": 220,
-    "min_height": 220
+    "min_height": 220,
+    "max_height": 600
   },
   "devDependencies": {
     "node-notifier": "^4.2.3",
     "nw-dev": "^1.2.3"
+  },
+  "webkit": {
+    "plugin": true
   }
 }

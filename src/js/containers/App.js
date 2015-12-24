@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentWillMount() {
+    this.props.routerActions.pushState(null, 'login')
+  }
+
   render() {
-    const { children, user } = this.props;
-    
+    const { children } = this.props;
+
     return (
       <div>
         <div className='app'>
@@ -21,10 +26,14 @@ export default class App extends Component {
   }
 }
 
-function select(state) {
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
   return {
-    user: state.user
+    routerActions: bindActionCreators({pushState}, dispatch)
   };
 }
 
-export default connect(select)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

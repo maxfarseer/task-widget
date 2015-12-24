@@ -12,8 +12,9 @@ export default class Widget extends Component {
   }
 
   render() {
-    const { actions } = this.props;
+    const { actions, user } = this.props;
     const { tasksQueue, fetching, allStatuses} = this.props.widget;
+
     let tasksInProgress = [],
         otherTasks = [];
 
@@ -28,15 +29,15 @@ export default class Widget extends Component {
         )
       }
     })
-    
-    const otherTasksLength = (otherTasks.length > 4 ? otherTasks.length - 4 : otherTasks.length);    
+
+    const otherTasksLength = (otherTasks.length > 4 ? otherTasks.length - 4 : otherTasks.length);
     otherTasks = otherTasks.slice(0,3);
 
     return (
       <div className="main">
         <div className={'preloader preloader_main ' + (fetching ? '' : 'none')}></div>
-        <button onClick={actions.getIssuesQueue.bind(null)}>refresh from server</button>
-        <h4 className="task-queue__header">Maxim Patsianskiy, 16.12.2015:</h4>
+        {/*<button onClick={actions.getIssuesQueue.bind(null)}>refresh from server</button>*/}
+        <h4 className="task-queue__header">{user.login}</h4>
         <div className="stripe-wrapper">
           <div className="badge"></div>
           <div className="stripe">В работе</div>

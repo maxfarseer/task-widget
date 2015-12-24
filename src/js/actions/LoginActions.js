@@ -13,15 +13,15 @@ import {
 
 const request = require('superagent-bluebird-promise');
 
-export function login(username, pass) {
-	return (dispatch) => {
+export function login(username, pass, redirect) {
+	return (dispatch, getState) => {
 
 		dispatch({
 			type: LOGIN_REQUEST,
 			meta: {
 				remote: true
 			}
-		})
+		});
 
 		const encodedUserInfo = 'Basic '+btoa(username+':'+pass);
 
@@ -36,8 +36,12 @@ export function login(username, pass) {
       } else {
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: res.body.user
+          payload: res.body.user,
+          meta: {
+            redirectUrl: '/main'
+          }
         })
+        if (redirect) redirect();
       }
     }, err => {
       console.warn('Login error: ' + err);

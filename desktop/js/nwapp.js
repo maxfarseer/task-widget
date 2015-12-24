@@ -25,7 +25,7 @@ win.show();
 
 win.showDevTools();
 
-NW_APP.hasInProgress = function() {
+/*NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');
   return taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1'
 }
@@ -70,4 +70,4 @@ $(function() {
     return false;
   });
 
-});
+});*/

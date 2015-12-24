@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { ReduxRouter } from 'redux-router'
 
-import configureStore from '../store/configureStore';
-
-const store = configureStore();
-
 export default class Root extends Component {
   render() {
+    const { store } = this.props;
     return (
       <Provider store={store}>
         <div>
@@ -17,4 +13,8 @@ export default class Root extends Component {
       </Provider>
     );
   }
+}
+
+Root.propTypes = {
+  store: PropTypes.object.isRequired
 }

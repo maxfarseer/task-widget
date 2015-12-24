@@ -1,7 +1,8 @@
 import React from 'react';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import { reduxReactRouter, routerStateReducer, ReduxRouter } from 'redux-router';
-import { createHistory } from 'history';
+import { reduxReactRouter, routerStateReducer } from 'redux-router';
+//import { createHistory } from 'history';
+import createHistory from 'history/lib/createHashHistory'
 import { Route, Redirect } from 'react-router';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
@@ -17,28 +18,19 @@ const reducer = combineReducers({
 });
 
 const routes = (
-  <Route component={App}>
+  <Route path='/' component={App}>
     <Route path='/main' component={MainPage} />
     <Route path='/login' component={LoginPage} />
     <Redirect from="/" to="main" />
   </Route>
 );
 
-
-
-
 export default function configureStore(initialState) {
   // Compose reduxReactRouter with other store enhancers
   const store = compose(
-    applyMiddleware(
-      thunkMiddleware,
-      createLogger()
-    ),
-    reduxReactRouter({
-      routes,
-      createHistory
-    })
-    //devTools()
+    applyMiddleware(thunkMiddleware),
+    reduxReactRouter({routes,createHistory}),
+    applyMiddleware(createLogger())
   )(createStore)(reducer);
 
   if (module.hot) {
