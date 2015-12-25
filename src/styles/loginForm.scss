@@ -1,0 +1,23 @@
+//login form
+.loginform {
+  text-align: center;
+}
+.loginform-input {
+  font-family: sans-serif;
+  clear: both;
+  display: block;
+  margin: 0 0 5px 0;
+  width: 280px;
+  font-size: 16px;
+}
+.loginform-btn {
+  cursor: pointer;
+  font-size: 16px;
+  padding: 3px;
+  border: 1px solid #15B9F0;
+  transition: all .2s ease-in;
+  &:hover {
+    color: #FFF;
+    background: #15B9F0;
+  }
+}

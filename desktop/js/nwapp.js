@@ -23,7 +23,7 @@ NW.Window.get().menu = mb;
 win.moveTo(window.screen.availWidth - appWidth, 40);
 win.show();
 
-win.showDevTools();
+//win.showDevTools();
 
 /*NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');

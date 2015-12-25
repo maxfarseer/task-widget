@@ -1,3 +1,5 @@
+import '../../styles/reset-button.scss';
+import '../../styles/loginForm.scss';
 import React, { PropTypes, Component } from 'react';
 import {pushState ,goBack} from 'redux-router';
 import ReactDOM from 'react-dom';
@@ -21,14 +23,13 @@ export default class LoginForm extends Component {
 
   render() {
     return (
-      <div>
-        <p>Login</p>
+      <div className="loginform">
+        <p>Please login</p>
         <form onSubmit={this.handleSubmitClick}>
-          <input className="loginform" type='text' ref='username' placeholder='username' />
-          <input className="loginform" type='password' ref='pass' placeholder='password'/>
-          <button>Login</button>
+          <input className="loginform-input" type='text' ref='username' placeholder='username' />
+          <input className="loginform-input" type='password' ref='pass' placeholder='password'/>
+          <button className="loginform-btn">Login</button>
         </form>
-        <div className="userinfo">{this.props.user.api_key}</div>
       </div>
     );
   }
