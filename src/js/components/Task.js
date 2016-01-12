@@ -4,10 +4,6 @@ import {API_ROOT} from '../constants/Secret';
 
 export default class Task extends Component {
 
-  shouldComponentUpdate(newProps) {
-    return newProps.data !== this.props.data;
-  }
-
   render() {
     const task = this.props.data;
     const {subject, description, id, status, fetching} = task;
