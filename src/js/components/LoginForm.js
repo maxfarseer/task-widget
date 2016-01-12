@@ -3,12 +3,18 @@ import '../../styles/loginForm.scss';
 import React, { PropTypes, Component } from 'react';
 import {pushState ,goBack} from 'redux-router';
 import ReactDOM from 'react-dom';
+import {DEMO_LOGIN, DEMO_PASS} from '../constants/Secret';
 
 export default class LoginForm extends Component {
 
   constructor(props) {
     super(props)
     this.handleSubmitClick = this.handleSubmitClick.bind(this)
+  }
+
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.username).value = DEMO_LOGIN;
+    ReactDOM.findDOMNode(this.refs.pass).value = DEMO_PASS;
   }
 
   handleSubmitClick(e) {

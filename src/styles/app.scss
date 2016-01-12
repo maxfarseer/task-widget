@@ -182,8 +182,13 @@ body {
 .task__clock {
   margin: 15px 40px 0 0;
   display: inline-block;
+  overflow: hidden;
 }
 .task__project {
   margin: 15px 0 0 0;
   display: inline-block;
+  overflow: hidden;
+  width: 140px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
