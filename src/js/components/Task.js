@@ -7,11 +7,10 @@ export default class Task extends Component {
   render() {
     const task = this.props.data;
     const {subject, description, id, status, fetching} = task;
-    const {actions, index} = this.props;
-    let taskTemplate;
+    const {onChangeStatusClick, index} = this.props;
 
-    if (!task._error) {
-      taskTemplate = (
+    return (
+      <div className={`task task_${index}`}>
         <div>
           <div className='task__left'>
             <div className="task__name">{subject}</div>
@@ -21,41 +20,18 @@ export default class Task extends Component {
           <div className='task__right'>
             {task.status.id === 2 ?
               <div>
-                <button className="task-btn task-btn_pause" onClick={actions.changeStatus.bind(this,task,_status.SUSPEND)}>||</button>
-                <button className="task-btn task-btn_resolve" onClick={actions.changeStatus.bind(this,task,_status.RESOLVED)}>&#10003;</button>
+                <button className="task-btn task-btn_pause" onClick={onChangeStatusClick.bind(this,task,_status.SUSPEND)}>||</button>
+                <button className="task-btn task-btn_resolve" onClick={onChangeStatusClick.bind(this,task,_status.RESOLVED)}>&#10003;</button>
               </div>
               :
               <div>
-                <button className="task-btn task-btn_play" onClick={actions.changeStatus.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
+                <button className="task-btn task-btn_play" onClick={onChangeStatusClick.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
               </div>
             }
 
           </div>
           <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>
-      )
-    } else {
-      taskTemplate = (
-        <div>
-          <div className='task__left'>
-            <div>Change status error!</div>
-            <a href={`${API_ROOT}/issues/${id}`} target='_blank'>Please check this action in Redmine</a>
-            <div className="task__errors">
-              {task._errorArr.map((text, key) => <p key={key}>{text}</p>)}
-            </div>
-          </div>
-          <div className='task__right'>
-            <button className="task-btn task-btn_refresh" onClick={actions.refreshIssue.bind(this,id)}>
-              <i className="fa fa-refresh"></i>
-            </button>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className={`task task_${index}`}>
-        {taskTemplate}
       </div>
     )
   }

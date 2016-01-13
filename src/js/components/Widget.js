@@ -6,9 +6,21 @@ import {
 } from '../constants/Secret';
 
 export default class Widget extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChangeStatusClick = this.handleChangeStatusClick.bind(this);
+  }
 
   componentWillMount() {
     this.props.actions.getIssuesQueue();
+  }
+
+  _makeTaskComponent(tasksQueue) {
+    return tasksQueue.map((el,i) => <Task data={el} key={i} index={i} onChangeStatusClick={this.handleChangeStatusClick} />)
+  }
+
+  handleChangeStatusClick(task,status) {
+    this.props.actions.changeStatus(task, status);
   }
 
   render() {
@@ -18,20 +30,8 @@ export default class Widget extends Component {
     let tasksInProgress = [],
         otherTasks = [];
 
-    tasksQueue.forEach((el,i) => {
-      if (el.status.id !== _status.IN_PROGRESS) {
-        otherTasks.push(
-          <Task data={el} key={i} index={i} actions={actions} />
-        )
-      } else {
-        tasksInProgress.push(
-          <Task data={el} key={i} index={i} actions={actions} />
-        )
-      }
-    })
-
-    const otherTasksLength = (otherTasks.length > 4 ? otherTasks.length - 4 : otherTasks.length);
-    otherTasks = otherTasks.slice(0,3);
+    otherTasks = this._makeTaskComponent(tasksQueue.otherTasks);
+    tasksInProgress = this._makeTaskComponent(tasksQueue.tasksInProgress);
 
     return (
       <div className="main">
@@ -54,7 +54,7 @@ export default class Widget extends Component {
         </div>
         <div className="stripe-wrapper">
           <div className="badge"></div>
-          <div className="stripe"><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({otherTasksLength})</a></div>
+          <div className="stripe"><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({tasksQueue.otherTasksLength})</a></div>
         </div>
       </div>
     );
