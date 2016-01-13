@@ -28,11 +28,16 @@ export default class Task extends Component {
                 <button className="task-btn task-btn_play" onClick={onChangeStatusClick.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
               </div>
             }
-
           </div>
           <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>
       </div>
     )
   }
+}
+
+Task.propTypes = {
+  onChangeStatusClick: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
 }

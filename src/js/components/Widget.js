@@ -60,3 +60,7 @@ export default class Widget extends Component {
     );
   }
 }
+
+Widget.propTypes = {
+  widget: PropTypes.object.isRequired
+}

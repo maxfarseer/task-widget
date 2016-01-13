@@ -40,3 +40,7 @@ export default class LoginForm extends Component {
     );
   }
 }
+
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
+}

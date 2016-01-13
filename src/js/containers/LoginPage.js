@@ -19,10 +19,14 @@ class LoginPage extends Component {
     const { dispatch, user } = this.props;
     return (
       <div>
-        <LoginForm onSubmit={this.handleSubmit} user={user} /> {/*send actions o handleCallback?*/}
+        <LoginForm onSubmit={this.handleSubmit} />
       </div>
     )
   }
+}
+
+LoginPage.propTypes = {
+  user: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
