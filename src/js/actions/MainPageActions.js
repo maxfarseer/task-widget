@@ -8,9 +8,9 @@ import {
   CHANGE_STATUS_FAILURE,
   CHANGE_STATUS_PROBLEM,
 
-  GET_TASKS_QUEUE_REQUEST,
-  GET_TASKS_QUEUE_SUCCESS,
-  GET_TASKS_QUEUE_FAILURE,
+  GET_ISSUES_QUEUE_REQUEST,
+  GET_ISSUES_QUEUE_SUCCESS,
+  GET_ISSUES_QUEUE_FAILURE,
 
   LOAD_TIMEENTRIES_REQUEST,
   LOAD_TIMEENTRIES_SUCCESS,
@@ -111,45 +111,49 @@ export function getIssuesQueue() {
     const API_KEY = getState().app.user.api_key;
 
     dispatch({
-      type: GET_TASKS_QUEUE_REQUEST
+      type: GET_ISSUES_QUEUE_REQUEST
     });
 
     request.get(`${API_ROOT}/${API_QUEUE}&key=${API_KEY}`)
       .then(res => {
         if (!res.ok) {
           dispatch({
-            type: GET_TASKS_QUEUE_FAILURE,
+            type: GET_ISSUES_QUEUE_FAILURE,
             payload: new Error('get issue failure'),
             error: true
           })
         } else {
           //form tasks IN_PROGRESS and 3 other tasks
-          let tasksInProgress = [],
+          let inProgressFirst = [],
               otherTasks = [];
 
           res.body.issues.forEach(el => {
             if (el.status.id !== status.IN_PROGRESS) {
               otherTasks.push(el)
             } else {
-              tasksInProgress.push(el)
+              inProgressFirst.push(el)
             }
           })
 
           const otherTasksLength = (otherTasks.length > 4 ? otherTasks.length - 4 : otherTasks.length);
+          const inProgressTasksLength = inProgressFirst.length;
+
           otherTasks = otherTasks.slice(0,3);
 
+          [].push.apply(inProgressFirst,otherTasks);
+
           dispatch({
-            type: GET_TASKS_QUEUE_SUCCESS,
+            type: GET_ISSUES_QUEUE_SUCCESS,
             payload: {
-              tasksInProgress: tasksInProgress,
-              otherTasks: otherTasks,
-              otherTasksLength: otherTasksLength
+              issuesQueue: inProgressFirst,
+              otherTasksLength,
+              inProgressTasksLength
             }
           })
         }
       }, err => {
         console.warn('getIssuesQueue request error: ' + err);
-        //GET_TASKS_QUEUE_PROBLEM ??
+        //GET_ISSUES_QUEUE_PROBLEM ??
       })
   }
 }

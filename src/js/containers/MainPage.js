@@ -32,14 +32,16 @@ class MainPage extends Component {
   }
 
   render() {
-    const { dispatch, mainpage, user } = this.props;
-    const { tasksQueue, fetching, allStatuses} = this.props.mainpage;
+    const { dispatch, user } = this.props;
+    const { fetching } = this.props.mainpage;
+    const { issuesQueue, inProgressTasksLength, otherTasksLength } = this.props.mainpage.issuesData;
 
-    let tasksInProgress = [],
-    otherTasks = [];
+    let tasksInProgress = issuesQueue.splice(0,inProgressTasksLength),
+        otherTasks = issuesQueue;
 
-    otherTasks = this._makeTaskComponent(tasksQueue.otherTasks);
-    tasksInProgress = this._makeTaskComponent(tasksQueue.tasksInProgress);
+
+    otherTasks = this._makeTaskComponent(otherTasks);
+    tasksInProgress = this._makeTaskComponent(tasksInProgress);
 
     return (
       <div className="main">
@@ -61,7 +63,7 @@ class MainPage extends Component {
         </div>
         <div className="stripe-wrapper">
           <div className="badge"></div>
-          <div className="stripe"><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({tasksQueue.otherTasksLength})</a></div>
+          <div className="stripe"><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({otherTasksLength})</a></div>
         </div>
       </div>
     );

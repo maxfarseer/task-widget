@@ -7,7 +7,7 @@ export default class Task extends Component {
 
   componentDidMount() {
     let task = this.props.data;
-    this.props.loadTimeEntries(task.id);
+    //this.props.loadTimeEntries(task.id);
   }
 
   render() {

@@ -5,9 +5,9 @@ import {
   CHANGE_STATUS_REQUEST,
   //CHANGE_STATUS_SUCCESS,
   //CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
-  GET_TASKS_QUEUE_REQUEST,
-  GET_TASKS_QUEUE_SUCCESS,
-  GET_TASKS_QUEUE_FAILURE, //todo
+  GET_ISSUES_QUEUE_REQUEST,
+  GET_ISSUES_QUEUE_SUCCESS,
+  GET_ISSUES_QUEUE_FAILURE, //todo
 
   LOAD_TIMEENTRIES_REQUEST,
   LOAD_TIMEENTRIES_SUCCESS
@@ -16,16 +16,17 @@ import {
 import * as status from '../constants/Statuses_ids';
 
 const initialState = {
-  tasksQueue: {
-    tasksInProgress: [],
-    otherTasks: [],
-    otherTasksLength: 0
+  issuesData: {
+    issuesQueue: [],
+    inProgressTasksLength: 0,
+    otherTasksLength: 0,
   },
-  fetching: false
+  fetching: false,
 };
 
 export default function mainpage(state = initialState, action) {
 
+  let next;
   let nextTasksQueue;
   let nextTask;
   let task;
@@ -34,13 +35,12 @@ export default function mainpage(state = initialState, action) {
   switch (action.type) {
 
     case CHANGE_STATUS_REQUEST:
-    case GET_TASKS_QUEUE_REQUEST:
+    case GET_ISSUES_QUEUE_REQUEST:
     case GET_ISSUE_REQUEST:
       return {...state, fetching: true}
 
-    case GET_TASKS_QUEUE_SUCCESS:
-      nextTasksQueue = action.payload;
-      return {...state, tasksQueue: nextTasksQueue, fetching: false};
+    case GET_ISSUES_QUEUE_SUCCESS:
+      return {...state, issuesData: action.payload, fetching: false};
 
     case LOAD_TIMEENTRIES_SUCCESS:
       nextTasksQueue = state.tasksQueue;
