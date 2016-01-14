@@ -16,7 +16,7 @@ import {
   LOAD_TIMEENTRIES_SUCCESS,
   LOAD_TIMEENTRIES_FAILURE,
   LOAD_TIMEENTRIES_PROBLEM,
-} from '../constants/Widget';
+} from '../constants/MainPage';
 
 import {
   API_ROOT

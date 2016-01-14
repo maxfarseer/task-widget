@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import user from './user';
-import widget from './widget';
+import mainpage from './mainpage';
 
 const rootReducer = combineReducers({
   user,
-  widget
+  mainpage
 });
 
 export default rootReducer;

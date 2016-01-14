@@ -11,7 +11,7 @@ import {
 
   LOAD_TIMEENTRIES_REQUEST,
   LOAD_TIMEENTRIES_SUCCESS
-} from '../constants/Widget';
+} from '../constants/MainPage';
 
 import * as status from '../constants/Statuses_ids';
 
@@ -24,7 +24,7 @@ const initialState = {
   fetching: false
 };
 
-export default function widget(state = initialState, action) {
+export default function mainpage(state = initialState, action) {
 
   let nextTasksQueue;
   let nextTask;
