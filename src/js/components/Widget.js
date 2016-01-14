@@ -16,7 +16,12 @@ export default class Widget extends Component {
   }
 
   _makeTaskComponent(tasksQueue) {
-    return tasksQueue.map((el,i) => <Task data={el} key={i} index={i} onChangeStatusClick={this.handleChangeStatusClick} />)
+    return tasksQueue.map((el,i) => {
+      return <Task
+              data={el} key={i} index={i}
+              loadTimeEntries={this.props.actions.loadTimeEntries}
+              onChangeStatusClick={this.handleChangeStatusClick} />
+    })
   }
 
   handleChangeStatusClick(task,status) {
@@ -62,5 +67,6 @@ export default class Widget extends Component {
 }
 
 Widget.propTypes = {
-  widget: PropTypes.object.isRequired
+  widget: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 }

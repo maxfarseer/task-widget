@@ -11,6 +11,11 @@ import {
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
   GET_TASKS_QUEUE_FAILURE,
+
+  LOAD_TIMEENTRIES_REQUEST,
+  LOAD_TIMEENTRIES_SUCCESS,
+  LOAD_TIMEENTRIES_FAILURE,
+  LOAD_TIMEENTRIES_PROBLEM,
 } from '../constants/Widget';
 
 import {
@@ -144,6 +149,49 @@ export function getIssuesQueue() {
         }
       }, err => {
         console.warn('getIssuesQueue request error: ' + err);
+        //GET_TASKS_QUEUE_PROBLEM ??
       })
+  }
+}
+
+export function loadTimeEntries(id) {
+  return (dispatch, getState) => {
+
+    const user = getState().app.user;
+    const API_KEY = user.api_key;
+
+    let url = `${API_ROOT}/time_entries.json?key=${API_KEY}&issue_id=${id}&user_id=${user.id}&limit=100`;
+    let timeEntriesSum = 0;
+
+    dispatch({
+      type: LOAD_TIMEENTRIES_REQUEST
+    });
+    request.get(url)
+      .then(res => {
+        if (!res.ok) {
+          dispatch({
+            type: LOAD_TIMEENTRIES_FAILURE,
+            payload: new Error('loadTimeEntries failure'),
+            error: true
+          });
+        } else {
+          res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
+
+          dispatch({
+            type: LOAD_TIMEENTRIES_SUCCESS,
+            payload: {
+              id,
+              timeEntriesSum
+            }
+          })
+        }
+      }, err => {
+        console.warn('Change status error: ' + err);
+        dispatch({
+          type: LOAD_TIMEENTRIES_PROBLEM,
+          error: true
+        });
+      });
+
   }
 }

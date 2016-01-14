@@ -7,7 +7,10 @@ import {
   //CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
   GET_TASKS_QUEUE_REQUEST,
   GET_TASKS_QUEUE_SUCCESS,
-  GET_TASKS_QUEUE_FAILURE //todo
+  GET_TASKS_QUEUE_FAILURE, //todo
+
+  LOAD_TIMEENTRIES_REQUEST,
+  LOAD_TIMEENTRIES_SUCCESS
 } from '../constants/Widget';
 
 import * as status from '../constants/Statuses_ids';
@@ -39,6 +42,14 @@ export default function widget(state = initialState, action) {
       nextTasksQueue = action.payload;
       return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
+    case LOAD_TIMEENTRIES_SUCCESS:
+      nextTasksQueue = state.tasksQueue;
+
+      let taskId = action.payload.id;
+      nextTask = _.find(nextTasksQueue.tasksInProgress, {id:taskId}) || _.find(nextTasksQueue.otherTasks, {id:taskId});
+      nextTask._timeEntriesSum = action.payload.timeEntriesSum;
+
+      return {...state, tasksQueue: nextTasksQueue, fetching: false};
 
     default:
       return state;

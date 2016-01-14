@@ -4,6 +4,12 @@ import {API_ROOT} from '../constants/Secret';
 
 export default class Task extends Component {
 
+
+  componentDidMount() {
+    let task = this.props.data;
+    this.props.loadTimeEntries(task.id);
+  }
+
   render() {
     const task = this.props.data;
     const {subject, description, id, status, fetching} = task;
@@ -14,7 +20,7 @@ export default class Task extends Component {
         <div>
           <div className='task__left'>
             <div className="task__name">{subject}</div>
-            <div className="task__clock"><i className="fa fa-clock-o"></i> 00:00</div>
+            <div className="task__clock"><i className="fa fa-clock-o"></i>{task._timeEntriesSum}</div>
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>
@@ -38,6 +44,7 @@ export default class Task extends Component {
 
 Task.propTypes = {
   onChangeStatusClick: PropTypes.func.isRequired,
+  loadTimeEntries: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
 }
