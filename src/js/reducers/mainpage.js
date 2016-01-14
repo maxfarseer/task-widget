@@ -27,8 +27,8 @@ const initialState = {
 export default function mainpage(state = initialState, action) {
 
   let next;
-  let nextTasksQueue;
-  let nextTask;
+  let nextIssuesQueue;
+  let nextIssue;
   let task;
   let taskIndex;
 
@@ -43,13 +43,13 @@ export default function mainpage(state = initialState, action) {
       return {...state, issuesData: action.payload, fetching: false};
 
     case LOAD_TIMEENTRIES_SUCCESS:
-      nextTasksQueue = state.tasksQueue;
+      nextIssuesQueue = state.issuesData.issuesQueue;
 
-      let taskId = action.payload.id;
-      nextTask = _.find(nextTasksQueue.tasksInProgress, {id:taskId}) || _.find(nextTasksQueue.otherTasks, {id:taskId});
-      nextTask._timeEntriesSum = action.payload.timeEntriesSum;
+      let issueId = action.payload.id;
+      nextIssue = _.find(state.issuesData.issuesQueue, {id: issueId});
+      nextIssue._timeEntriesSum = action.payload.timeEntriesSum;
 
-      return {...state, tasksQueue: nextTasksQueue, fetching: false};
+      return {...state, tasksQueue: nextIssuesQueue, fetching: false};
 
     default:
       return state;

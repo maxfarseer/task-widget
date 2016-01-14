@@ -10,6 +10,10 @@ export default class Task extends Component {
     //this.props.loadTimeEntries(task.id);
   }
 
+  componentWillReceiveProps() {
+    console.log('componentWillReceiveProps');
+  }
+
   render() {
     const task = this.props.data;
     const {subject, description, id, status, fetching} = task;
@@ -20,7 +24,7 @@ export default class Task extends Component {
         <div>
           <div className='task__left'>
             <div className="task__name">{subject}</div>
-            <div className="task__clock"><i className="fa fa-clock-o"></i>{task._timeEntriesSum}</div>
+            <div className="task__clock"><i className="fa fa-clock-o"></i> {task._timeEntriesSum}</div>
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>

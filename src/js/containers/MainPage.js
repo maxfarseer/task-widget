@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as MainPageActions from '../actions/MainPageActions';
+import * as status from '../constants/Statuses_ids';
 
 import Task from '../components/Task';
 import {
@@ -36,9 +37,16 @@ class MainPage extends Component {
     const { fetching } = this.props.mainpage;
     const { issuesQueue, inProgressTasksLength, otherTasksLength } = this.props.mainpage.issuesData;
 
-    let tasksInProgress = issuesQueue.splice(0,inProgressTasksLength),
-        otherTasks = issuesQueue;
+    let tasksInProgress = [],
+        otherTasks = [];
 
+    issuesQueue.forEach(issue => {
+      if (issue.status.id !== status.IN_PROGRESS) {
+        otherTasks.push(issue)
+      } else {
+        tasksInProgress.push(issue)
+      }
+    });
 
     otherTasks = this._makeTaskComponent(otherTasks);
     tasksInProgress = this._makeTaskComponent(tasksInProgress);
