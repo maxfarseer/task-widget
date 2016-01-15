@@ -16,7 +16,7 @@ export default class Task extends Component {
         <div>
           <div className='task__left'>
             <div className="task__name">{subject}</div>
-            <TimeEntries task={task} loadTimeEntries={loadTimeEntries} />
+            <TimeEntries issue={task} loadTimeEntries={loadTimeEntries} />
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>

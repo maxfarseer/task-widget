@@ -7,15 +7,18 @@ export default class TimeEntries extends Component {
   }
 
   componentDidMount() {
-    let task = this.props.task;
-    this.props.loadTimeEntries(task);
-
-    //lsRecord = JSON.stringify({id: task.id, date: new Date(), })
-    //window.localStorage.setItem('KGtracker',lsRecord);
+    let issue = this.props.issue;
+    this.props.loadTimeEntries(issue);
   }
 
   componentWillReceiveProps() {
-
+    console.log('componentWillReceiveProps');
+    let issue = this.props.issue;
+    const issueRecord = window.sessionStorage.getItem(`kg_${issue.id}`);
+    if (issueRecord) {
+      issue._timeEntriesSum = JSON.parse(issueRecord).TESum;
+    }
+    console.log(issueRecord);
   }
 
   _makeHumanTime(serverTime) {
@@ -29,17 +32,17 @@ export default class TimeEntries extends Component {
   }
 
   render() {
-    const {task} = this.props;
+    const {issue} = this.props;
     return (
       <div className="task__clock">
-        <i className="fa fa-clock-o"></i> {this._makeHumanTime(task._timeEntriesSum) || '00:00'}
+        <i className="fa fa-clock-o"></i> {this._makeHumanTime(issue._timeEntriesSum) || '00:00'}
       </div>
     )
   }
 }
 
 TimeEntries.propTypes = {
-  task: PropTypes.object.isRequired,
+  issue: PropTypes.object.isRequired,
   loadTimeEntries: PropTypes.func.isRequired
 }
 
