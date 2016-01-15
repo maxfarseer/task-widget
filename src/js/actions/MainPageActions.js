@@ -158,14 +158,15 @@ export function getIssuesQueue() {
   }
 }
 
-export function loadTimeEntries(id) {
+export function loadTimeEntries(task) {
   return (dispatch, getState) => {
 
     const user = getState().app.user;
     const API_KEY = user.api_key;
 
-    let url = `${API_ROOT}/time_entries.json?key=${API_KEY}&issue_id=${id}&user_id=${user.id}&limit=100`;
+    let url = `${API_ROOT}/time_entries.json?key=${API_KEY}&issue_id=${task.id}&user_id=${user.id}&limit=100`;
     let timeEntriesSum = 0;
+    let isInProgress = (task.status.id === status.IN_PROGRESS ? 1 : 0);
 
     dispatch({
       type: LOAD_TIMEENTRIES_REQUEST
@@ -181,10 +182,13 @@ export function loadTimeEntries(id) {
         } else {
           res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
 
+          let ssRecord = JSON.stringify({id: task.id, TESum: timeEntriesSum, isInProgress});
+          window.sessionStorage.setItem(`kg_${task.id}`,ssRecord);
+
           dispatch({
             type: LOAD_TIMEENTRIES_SUCCESS,
             payload: {
-              id,
+              id: task.id,
               timeEntriesSum
             }
           })
