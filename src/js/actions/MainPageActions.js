@@ -16,6 +16,10 @@ import {
   LOAD_TIMEENTRIES_SUCCESS,
   LOAD_TIMEENTRIES_FAILURE,
   LOAD_TIMEENTRIES_PROBLEM,
+
+  POST_TIMEENTRY_PROBLEM,
+  POST_TIMEENTRY_FAILURE,
+
 } from '../constants/MainPage';
 
 import {
@@ -30,7 +34,8 @@ const API_QUEUE = 'issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%
 
 /**
  * get issue
- * @param  {function}   dispatch - dispatch function
+ * @param  {function}   dispatch - redux lib function
+ * @param  {function}   getState - redux lib function
  * @param  {string|number}   id - issue id
  */
 function getIssue(dispatch, getState, id) { //не вызывается нигде
@@ -64,6 +69,36 @@ function getIssue(dispatch, getState, id) { //не вызывается нигд
 }
 
 /**
+ * log time and if success get issues queue
+ * @param  {string|number}   id - issue id
+ * @param  {function}   dispatch - redux lib function
+ * @param  {function}   getState - redux lib function
+ */
+function logTimeAndGetIssuesQueue(id, dispatch, getState) {
+
+  const API_KEY = getState().app.user.api_key;
+
+  request.post(`${API_ROOT}/time_entries.json`)
+    .send(`time_entry[issue_id]=${id}&time_entry[hours]=0.1&time_entry[comments]=from kg_tracker&key=${API_KEY}`)
+    .then(res => {
+      if (!res.ok) {
+        dispatch({
+          type: POST_TIMEENTRY_FAILURE,
+          payload: new Error('post time entry failure'),
+          error: true
+        });
+      } else {
+        getIssuesQueue()(dispatch, getState)
+      }
+    }, err => {
+      dispatch({
+        type: POST_TIMEENTRY_PROBLEM,
+        error: true
+      })
+    });
+}
+
+/**
  * change issue status
  * @param  {object}   task - task item
  * @param  {string|number}   status_id - status ID
@@ -91,7 +126,8 @@ export function changeStatus(issue, status_id) {
             error: true
           });
         } else {
-          getIssuesQueue()(dispatch, getState);
+          // log time and get issues queue
+          logTimeAndGetIssuesQueue(issue.id, dispatch, getState)
         }
       }, err => {
         console.warn('Change status error: ' + err);

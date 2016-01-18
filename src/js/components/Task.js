@@ -16,7 +16,7 @@ export default class Task extends Component {
         <div>
           <div className='task__left'>
             <div className="task__name">{subject}</div>
-            <TimeEntries issue={task} />
+            <TimeEntries issue={task} isInProgress={task.status.id === _status.IN_PROGRESS}/>
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>
