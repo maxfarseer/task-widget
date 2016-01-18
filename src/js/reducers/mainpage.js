@@ -42,17 +42,6 @@ export default function mainpage(state = initialState, action) {
     case GET_ISSUES_QUEUE_SUCCESS:
       return {...state, issuesData: action.payload, fetching: false};
 
-    case LOAD_TIMEENTRIES_SUCCESS:
-      nextIssueQueue = state.issuesData.issuesQueue;
-
-      let issueId = action.payload.id;
-      nextIssue = _.find(state.issuesData.issuesQueue, {id: issueId});
-      nextIssue._timeEntriesSum = action.payload.timeEntriesSum;
-
-      let nextIssueData = {...state.issuesData, issuesQueue: nextIssueQueue};
-
-      return {...state, issuesData: nextIssueData};
-
     default:
       return state;
     }

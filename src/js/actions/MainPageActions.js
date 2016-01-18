@@ -108,7 +108,8 @@ export function changeStatus(issue, status_id) {
 export function getIssuesQueue() {
   return (dispatch, getState) => {
 
-    const API_KEY = getState().app.user.api_key;
+    const user = getState().app.user;
+    const API_KEY = user.api_key;
 
     dispatch({
       type: GET_ISSUES_QUEUE_REQUEST
@@ -142,64 +143,44 @@ export function getIssuesQueue() {
 
           [].push.apply(inProgressFirst,otherTasks);
 
-          dispatch({
-            type: GET_ISSUES_QUEUE_SUCCESS,
-            payload: {
-              issuesQueue: inProgressFirst,
-              otherTasksLength,
-              inProgressTasksLength
-            }
+          //get all time logs for issue by user
+          let timeEntreisPromisesArr =[];
+
+          inProgressFirst.forEach(issue => {
+            let url = `${API_ROOT}/time_entries.json?key=${user.api_key}&issue_id=${issue.id}&user_id=${user.id}&limit=100`;
+            timeEntreisPromisesArr.push(request.get(url)
+              .then(res => {
+              if (!res.ok) {
+                dispatch({
+                  type: LOAD_TIMEENTRIES_FAILURE,
+                  payload: new Error('loadTimeEntries failure'),
+                  error: true
+                });
+              } else {
+                let timeEntriesSum = 0;
+                res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
+                return {...issue,_timeEntriesSum: timeEntriesSum};
+              }
+            }, err => {
+              console.warn('Load TimeEntries error: ' + err);
+            }));
+
           })
+
+          Promise.all(timeEntreisPromisesArr).then(inProgressFirst => {
+              dispatch({
+                type: GET_ISSUES_QUEUE_SUCCESS,
+                payload: {
+                  issuesQueue: inProgressFirst,
+                  otherTasksLength,
+                  inProgressTasksLength
+                }
+              })
+            }).catch(values => console.warn(values));
         }
       }, err => {
         console.warn('getIssuesQueue request error: ' + err);
         //GET_ISSUES_QUEUE_PROBLEM ??
       })
-  }
-}
-
-export function loadTimeEntries(task) {
-  return (dispatch, getState) => {
-
-    const user = getState().app.user;
-    const API_KEY = user.api_key;
-
-    let url = `${API_ROOT}/time_entries.json?key=${API_KEY}&issue_id=${task.id}&user_id=${user.id}&limit=100`;
-    let timeEntriesSum = 0;
-    let isInProgress = (task.status.id === status.IN_PROGRESS ? 1 : 0);
-
-    dispatch({
-      type: LOAD_TIMEENTRIES_REQUEST
-    });
-    request.get(url)
-      .then(res => {
-        if (!res.ok) {
-          dispatch({
-            type: LOAD_TIMEENTRIES_FAILURE,
-            payload: new Error('loadTimeEntries failure'),
-            error: true
-          });
-        } else {
-          res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
-
-          let ssRecord = JSON.stringify({id: task.id, TESum: timeEntriesSum, isInProgress});
-          window.sessionStorage.setItem(`kg_${task.id}`,ssRecord);
-
-          dispatch({
-            type: LOAD_TIMEENTRIES_SUCCESS,
-            payload: {
-              id: task.id,
-              timeEntriesSum
-            }
-          })
-        }
-      }, err => {
-        console.warn('Change status error: ' + err);
-        dispatch({
-          type: LOAD_TIMEENTRIES_PROBLEM,
-          error: true
-        });
-      });
-
   }
 }

@@ -8,17 +8,10 @@ export default class TimeEntries extends Component {
 
   componentDidMount() {
     let issue = this.props.issue;
-    this.props.loadTimeEntries(issue);
   }
 
   componentWillReceiveProps() {
     console.log('componentWillReceiveProps');
-    let issue = this.props.issue;
-    const issueRecord = window.sessionStorage.getItem(`kg_${issue.id}`);
-    if (issueRecord) {
-      issue._timeEntriesSum = JSON.parse(issueRecord).TESum;
-    }
-    console.log(issueRecord);
   }
 
   _makeHumanTime(serverTime) {
@@ -42,7 +35,6 @@ export default class TimeEntries extends Component {
 }
 
 TimeEntries.propTypes = {
-  issue: PropTypes.object.isRequired,
-  loadTimeEntries: PropTypes.func.isRequired
+  issue: PropTypes.object.isRequired
 }
 

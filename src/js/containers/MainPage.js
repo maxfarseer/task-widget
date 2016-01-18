@@ -27,7 +27,6 @@ class MainPage extends Component {
     return tasksQueue.map((el,i) => {
       return <Task
               data={el} key={i} index={i}
-              loadTimeEntries={this.props.actions.loadTimeEntries}
               onChangeStatusClick={this.handleChangeStatusClick} />
     })
   }
