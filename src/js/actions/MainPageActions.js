@@ -88,6 +88,7 @@ function logTimeAndGetIssuesQueue(id, dispatch, getState) {
           error: true
         });
       } else {
+        console.log('issue '+id+' log 0.1 (6 min)');
         getIssuesQueue()(dispatch, getState)
       }
     }, err => {
@@ -108,6 +109,7 @@ export function changeStatus(issue, status_id) {
   return (dispatch, getState) => {
 
     const API_KEY = getState().app.user.api_key;
+    const wasInProgress = (issue.status.id === status.IN_PROGRESS ? true : false);
 
     dispatch({
       type: CHANGE_STATUS_REQUEST,
@@ -126,8 +128,13 @@ export function changeStatus(issue, status_id) {
             error: true
           });
         } else {
-          // log time and get issues queue
-          logTimeAndGetIssuesQueue(issue.id, dispatch, getState)
+
+          if (wasInProgress) {
+            logTimeAndGetIssuesQueue(issue.id, dispatch, getState);
+          } else {
+            getIssuesQueue()(dispatch, getState);
+          }
+
         }
       }, err => {
         console.warn('Change status error: ' + err);

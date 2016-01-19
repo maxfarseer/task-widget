@@ -53,7 +53,7 @@ class MainPage extends Component {
     return (
       <div className="main">
         <div className={'preloader preloader_main ' + (fetching ? '' : 'none')}></div>
-        <h4 className="task-queue__header">{user.login}</h4>
+        <h4 className="task-queue__header">{user.firstname} {user.lastname}</h4>
         <div className="stripe-wrapper">
           <div className="badge"></div>
           <div className="stripe">В работе</div>

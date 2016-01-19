@@ -105,6 +105,11 @@ body {
   max-height: 300px;
   overflow: auto;
 }
+.task-queue__header {
+  text-align: center;
+  font-size: 18px;
+  padding: 5px 0;
+}
 .badge {
   width: 5px;
   height: 100%;

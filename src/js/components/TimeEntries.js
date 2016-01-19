@@ -6,14 +6,6 @@ export default class TimeEntries extends Component {
     this._makeHumanTime = this._makeHumanTime.bind(this);
   }
 
-  componentDidMount() {
-    let issue = this.props.issue;
-  }
-
-  componentWillReceiveProps() {
-    console.log('componentWillReceiveProps');
-  }
-
   _makeHumanTime(serverTime) {
     if (serverTime) {
       let hours = Math.floor(serverTime);
@@ -50,9 +42,6 @@ export default class TimeEntries extends Component {
         console.log('tick from ' + issue.id);
         }, 5000);
       }*/
-
-      console.log(this.interval);
-
     }
 
     return (
