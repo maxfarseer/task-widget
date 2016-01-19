@@ -16,8 +16,15 @@ export default class TimeEntries extends Component {
     }
   }
 
+  componentDidMount() {
+    //console.log('didMount ' + this.props.issue.id + ' | ' + this.props.issue.status.name);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    //console.log('receiveProps ' + nextProps.issue.id + ' was('+this.props.issue.id+')' + ' | ' + nextProps.issue.status.name);
+  }
   componentWillUnmount() {
-    console.log('unmount');
+    console.log('unmount '+ this.props.issue.id);
   }
 
   render() {

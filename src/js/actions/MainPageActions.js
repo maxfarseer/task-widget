@@ -77,9 +77,12 @@ function getIssue(dispatch, getState, id) { //не вызывается нигд
 function logTimeAndGetIssuesQueue(id, dispatch, getState) {
 
   const API_KEY = getState().app.user.api_key;
+  const redmineMinute = 0.1 / 6;
+  const humanLogTimeValue = (+new Date() - window.sessionStorage.getItem(`${id}_startTime`))/ 1000 / 60; //in minutes
+  const redmineLogTimeValue = Math.round((humanLogTimeValue * redmineMinute * 100)) / 100;
 
   request.post(`${API_ROOT}/time_entries.json`)
-    .send(`time_entry[issue_id]=${id}&time_entry[hours]=0.1&time_entry[comments]=from kg_tracker&key=${API_KEY}`)
+    .send(`time_entry[issue_id]=${id}&time_entry[hours]=${redmineLogTimeValue}&time_entry[comments]=from kg_tracker(2)&key=${API_KEY}`)
     .then(res => {
       if (!res.ok) {
         dispatch({
@@ -88,7 +91,8 @@ function logTimeAndGetIssuesQueue(id, dispatch, getState) {
           error: true
         });
       } else {
-        console.log('issue '+id+' log 0.1 (6 min)');
+        console.log(`issue ${id} log time ${redmineLogTimeValue} (${humanLogTimeValue})`);
+        window.sessionStorage.removeItem(`${id}_startTime`);
         getIssuesQueue()(dispatch, getState)
       }
     }, err => {
@@ -128,7 +132,6 @@ export function changeStatus(issue, status_id) {
             error: true
           });
         } else {
-
           if (wasInProgress) {
             logTimeAndGetIssuesQueue(issue.id, dispatch, getState);
           } else {
@@ -173,9 +176,16 @@ export function getIssuesQueue() {
 
           res.body.issues.forEach(el => {
             if (el.status.id !== status.IN_PROGRESS) {
-              otherTasks.push(el)
+              otherTasks.push(el);
             } else {
-              inProgressFirst.push(el)
+              inProgressFirst.push(el);
+
+              //TODO: network problem on Load timeentries ?
+              let record = window.sessionStorage.getItem(`${el.id}_startTime`);
+              if (!record) {
+                window.sessionStorage.setItem(`${el.id}_startTime`, +new Date() );
+              }
+
             }
           })
 
@@ -186,7 +196,7 @@ export function getIssuesQueue() {
 
           [].push.apply(inProgressFirst,otherTasks);
 
-          //get all time logs for issue by user
+          //get all time logs for issue by user and create startWorkTime record in session storage
           let timeEntreisPromisesArr =[];
 
           inProgressFirst.forEach(issue => {
