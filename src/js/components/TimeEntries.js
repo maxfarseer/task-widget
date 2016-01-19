@@ -53,7 +53,7 @@ export default class TimeEntries extends Component {
 
     return (
       <div className="task__clock">
-        <i className="fa fa-clock-o"></i> {this._makeHumanTime(issue._timeEntriesSum) || '00:00'} ({timerTemplate})
+        <i className="fa fa-clock-o"></i> {this._makeHumanTime(issue._timeEntriesSum) || '00:00'}
       </div>
     )
   }

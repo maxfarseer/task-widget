@@ -74,15 +74,12 @@ function getIssue(dispatch, getState, id) { //не вызывается нигд
  * @param  {function}   dispatch - redux lib function
  * @param  {function}   getState - redux lib function
  */
-function logTimeAndGetIssuesQueue(id, dispatch, getState) {
+/*function logTimeAndGetIssuesQueue(id, dispatch, getState) {
 
   const API_KEY = getState().app.user.api_key;
-  const redmineMinute = 0.1 / 6;
-  const humanLogTimeValue = (+new Date() - window.sessionStorage.getItem(`${id}_startTime`))/ 1000 / 60; //in minutes
-  const redmineLogTimeValue = Math.round((humanLogTimeValue * redmineMinute * 100)) / 100;
 
   request.post(`${API_ROOT}/time_entries.json`)
-    .send(`time_entry[issue_id]=${id}&time_entry[hours]=${redmineLogTimeValue}&time_entry[comments]=from kg_tracker(2)&key=${API_KEY}`)
+    .send(`time_entry[issue_id]=${id}&time_entry[hours]=${redmineLogTimeValue}&time_entry[comments]=ticker(5min)&key=${API_KEY}`)
     .then(res => {
       if (!res.ok) {
         dispatch({
@@ -101,7 +98,7 @@ function logTimeAndGetIssuesQueue(id, dispatch, getState) {
         error: true
       })
     });
-}
+}*/
 
 /**
  * change issue status
@@ -132,12 +129,7 @@ export function changeStatus(issue, status_id) {
             error: true
           });
         } else {
-          if (wasInProgress) {
-            logTimeAndGetIssuesQueue(issue.id, dispatch, getState);
-          } else {
-            getIssuesQueue()(dispatch, getState);
-          }
-
+          getIssuesQueue()(dispatch, getState);
         }
       }, err => {
         console.warn('Change status error: ' + err);
@@ -156,6 +148,7 @@ export function getIssuesQueue() {
 
     const user = getState().app.user;
     const API_KEY = user.api_key;
+    window.kgtrckr.user = user;
 
     dispatch({
       type: GET_ISSUES_QUEUE_REQUEST
@@ -179,13 +172,6 @@ export function getIssuesQueue() {
               otherTasks.push(el);
             } else {
               inProgressFirst.push(el);
-
-              //TODO: network problem on Load timeentries ?
-              let record = window.sessionStorage.getItem(`${el.id}_startTime`);
-              if (!record) {
-                window.sessionStorage.setItem(`${el.id}_startTime`, +new Date() );
-              }
-
             }
           })
 
@@ -229,6 +215,9 @@ export function getIssuesQueue() {
                   inProgressTasksLength
                 }
               })
+              window.kgtrckr.issues = inProgressFirst;
+              let issuesLoad = new Event('issuesLoad');
+              document.body.dispatchEvent(issuesLoad);
             }).catch(values => console.warn(values));
         }
       }, err => {

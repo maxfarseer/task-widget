@@ -6,8 +6,10 @@ window.NW_APP = {
     //inProgressCheck: 60000 * 5, //раз в 5 минут проверять - есть ли IN_PROGRESS
     //idle: 60000 * 240
     inProgressCheck: 1000 * 2,
-    idle: 1000 * 10
+    idle: 1000 * 10,
+    logInterval: 1000*10*2 //3 mins
   },
+  host: 'https://new-redmine-qa.kama.gs',
   idleFlag: true
 };
 
@@ -23,7 +25,7 @@ NW.Window.get().menu = mb;
 win.moveTo(window.screen.availWidth - appWidth, 40);
 win.show();
 
-//win.showDevTools();
+win.showDevTools();
 
 /*NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');
@@ -71,3 +73,46 @@ $(function() {
   });
 
 });*/
+
+$(function() {
+
+  var IN_PROGRESS = 2;
+  var globalInterval;
+
+  $('body').on('issuesLoad', function(values) {
+    function logTime() {
+      window.kgtrckr.issues.forEach(function(issue) {
+        if (issue.status.id === IN_PROGRESS) {
+          //TODO: if alreadyLogged - PUT
+          $.ajax({
+            method: "POST",
+            url: NW_APP.host + '/time_entries.json',
+            data: {
+              'time_entry[issue_id]': issue.id,
+              'time_entry[hours]': 0.05,
+              'time_entry[comments]': 'by tracker app v0.5',
+              'key': window.kgtrckr.user.api_key
+            },
+            success: function() {
+              var startDate = new Date();
+              var startDay = startDate.getDate();
+              var startMonth = startDate.getMonth()+1;
+              var startYear = startDate.getFullYear();
+              var str = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
+              window.localStorage.setItem(str, 0.05);
+            },
+            error: function() {
+              alert(issue.id + ' fail post TimeEntry');
+            }
+          });
+        }
+      });
+    }
+
+    if (typeof globalInterval === 'undefined') {
+      console.log('timer created');
+      globalInterval = global.setInterval(logTime, NW_APP.timers.logInterval);
+    }
+
+  });
+});

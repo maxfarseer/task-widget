@@ -6,14 +6,10 @@ var webpack = require('webpack');
 var config = {
   devtool: 'eval',
   entry: [
-   'webpack-dev-server/client?http://0.0.0.0:3000',
-    'webpack/hot/only-dev-server',
     './src/js/index.js'
   ],
   output: {
-    path: path.join(__dirname, 'build'),
-    publicPath: '/build/',
-    filename: 'bundle.js'
+    filename: './desktop/js/bundle.js'
   },
   module: {
     loaders: [
@@ -36,7 +32,6 @@ var config = {
     alias: {}
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]
 };

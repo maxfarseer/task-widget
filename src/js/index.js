@@ -7,6 +7,8 @@ import configureStore from './store/configureStore';
 
 const store = configureStore();
 
+window.kgtrckr = {};
+
 render(
   <Root store={store} />,
   document.getElementById('root')
