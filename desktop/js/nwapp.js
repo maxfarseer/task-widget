@@ -80,6 +80,30 @@ $(function() {
   var globalInterval;
 
   $('body').on('issuesLoad', function(values) {
+
+    var user = window.kgtrckr.user;
+
+    function updateTimeEntry(lsRecordName, id, timeEntryId, hours) {
+      $.ajax({
+        method: 'PUT',
+        dataType: 'text',
+        url: NW_APP.host + '/time_entries/'+ timeEntryId +'.json',
+        data: {
+          'time_entry[issue_id]': id,
+          'time_entry[hours]': hours,
+          'time_entry[comments]': 'PUT by tracker app v0.14',
+          'key': user.api_key
+        },
+        success: function() {
+          console.log('PUT: '+ id +' '+hours);
+          window.localStorage.setItem(lsRecordName, hours);
+        },
+        error: function() {
+          alert(issue.id + ' fail PUT TimeEntry');
+        }
+      })
+    }
+
     function logTime() {
       var startDate = new Date();
       var startDay = startDate.getDate();
@@ -87,29 +111,37 @@ $(function() {
       var startYear = startDate.getFullYear();
 
       window.kgtrckr.issues.forEach(function(issue) {
-        var str = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
-        var alreadyLogged = window.localStorage.getItem(str);
+        var lsRecordName = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
+        var alreadyLogged = window.localStorage.getItem(lsRecordName);
 
         if (issue.status.id === IN_PROGRESS) {
-          //TODO: if alreadyLogged - PUT
           if (alreadyLogged) {
-            console.log('PUT');
+            var timeEntryId = window.localStorage.getItem(issue.id);
+            updateTimeEntry(lsRecordName, issue.id, timeEntryId, +alreadyLogged+0.05);
           } else {
             $.ajax({
-              method: "POST",
+              method: 'POST',
               url: NW_APP.host + '/time_entries.json',
               data: {
                 'time_entry[issue_id]': issue.id,
                 'time_entry[hours]': 0.05,
-                'time_entry[comments]': 'by tracker app v0.5',
-                'key': window.kgtrckr.user.api_key
+                'time_entry[comments]': 'POST by tracker app v0.14',
+                'key': user.api_key
               },
               success: function() {
-
-                window.localStorage.setItem(str, 0.05);
+                window.localStorage.setItem(lsRecordName, 0.05);
+                $.ajax({
+                  url: NW_APP.host + '/time_entries.json?issue_id='+issue.id+'&limit=1&user_id='+user.id+'&key='+user.api_key,
+                  success: function(data) {
+                    window.localStorage.setItem(issue.id,data.time_entries[0].id);
+                  },
+                  error: function() {
+                    alert('Can not get last time entry data');
+                  }
+                })
               },
               error: function() {
-                alert(issue.id + ' fail post TimeEntry');
+                alert(issue.id + ' fail POST TimeEntry');
               }
             });
           }
