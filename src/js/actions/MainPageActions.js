@@ -69,36 +69,36 @@ function getIssue(dispatch, getState, id) { //не вызывается нигд
 }
 
 /**
- * log time and if success get issues queue
- * @param  {string|number}   id - issue id
- * @param  {function}   dispatch - redux lib function
- * @param  {function}   getState - redux lib function
+ * get time entreis
+ * @param  {Object}   user - redmine user
+ * @param  {Object}   issue - issue
+ * @param  {string|number}   offset - offset for timeentries request
+ * @param  {string|number}   timeEntriesSum - current step time entries sum
  */
-/*function logTimeAndGetIssuesQueue(id, dispatch, getState) {
-
-  const API_KEY = getState().app.user.api_key;
-
-  request.post(`${API_ROOT}/time_entries.json`)
-    .send(`time_entry[issue_id]=${id}&time_entry[hours]=${redmineLogTimeValue}&time_entry[comments]=ticker(5min)&key=${API_KEY}`)
+function getTimeEntries(user, issue, offset = 0, timeEntriesSum = 0) {
+  let url = `${API_ROOT}/time_entries.json?key=${user.api_key}&issue_id=${issue.id}&user_id=${user.id}&limit=100&offset=${offset}`;
+  return request.get(url)
     .then(res => {
-      if (!res.ok) {
-        dispatch({
-          type: POST_TIMEENTRY_FAILURE,
-          payload: new Error('post time entry failure'),
-          error: true
-        });
-      } else {
-        console.log(`issue ${id} log time ${redmineLogTimeValue} (${humanLogTimeValue})`);
-        window.sessionStorage.removeItem(`${id}_startTime`);
-        getIssuesQueue()(dispatch, getState)
-      }
-    }, err => {
+    if (!res.ok) {
       dispatch({
-        type: POST_TIMEENTRY_PROBLEM,
+        type: LOAD_TIMEENTRIES_FAILURE,
+        payload: new Error('loadTimeEntries failure'),
         error: true
-      })
-    });
-}*/
+      });
+    } else {
+      if (res.body.total_count > res.body.offset + res.body.limit) {
+        let newOffset = offset + 100;
+        res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
+        return getTimeEntries(user, issue, newOffset, timeEntriesSum);
+      } else {
+        res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
+        return {...issue,_timeEntriesSum: timeEntriesSum};
+      }
+    }
+  }, err => {
+    console.warn('Load TimeEntries error: ' + err);
+  })
+}
 
 /**
  * change issue status
@@ -186,39 +186,23 @@ export function getIssuesQueue() {
           let timeEntreisPromisesArr =[];
 
           inProgressFirst.forEach(issue => {
-            let url = `${API_ROOT}/time_entries.json?key=${user.api_key}&issue_id=${issue.id}&user_id=${user.id}&limit=100`;
-            timeEntreisPromisesArr.push(request.get(url)
-              .then(res => {
-              if (!res.ok) {
-                dispatch({
-                  type: LOAD_TIMEENTRIES_FAILURE,
-                  payload: new Error('loadTimeEntries failure'),
-                  error: true
-                });
-              } else {
-                let timeEntriesSum = 0;
-                res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
-                return {...issue,_timeEntriesSum: timeEntriesSum};
-              }
-            }, err => {
-              console.warn('Load TimeEntries error: ' + err);
-            }));
+            timeEntreisPromisesArr.push( getTimeEntries(user, issue) );
+          });
 
-          })
 
           Promise.all(timeEntreisPromisesArr).then(inProgressFirst => {
-              dispatch({
-                type: GET_ISSUES_QUEUE_SUCCESS,
-                payload: {
-                  issuesQueue: inProgressFirst,
-                  otherTasksLength,
-                  inProgressTasksLength
-                }
-              })
-              window.kgtrckr.issues = inProgressFirst;
-              let issuesLoad = new Event('issuesLoad');
-              document.body.dispatchEvent(issuesLoad);
-            }).catch(values => console.warn(values));
+            dispatch({
+              type: GET_ISSUES_QUEUE_SUCCESS,
+              payload: {
+                issuesQueue: inProgressFirst,
+                otherTasksLength,
+                inProgressTasksLength
+              }
+            })
+            window.kgtrckr.issues = inProgressFirst;
+            let issuesLoad = new Event('issuesLoad');
+            document.body.dispatchEvent(issuesLoad);
+          }).catch(values => console.warn(values));
         }
       }, err => {
         console.warn('getIssuesQueue request error: ' + err);

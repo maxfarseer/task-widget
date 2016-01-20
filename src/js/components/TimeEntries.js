@@ -16,40 +16,8 @@ export default class TimeEntries extends Component {
     }
   }
 
-  componentDidMount() {
-    //console.log('didMount ' + this.props.issue.id + ' | ' + this.props.issue.status.name);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    //console.log('receiveProps ' + nextProps.issue.id + ' was('+this.props.issue.id+')' + ' | ' + nextProps.issue.status.name);
-  }
-  componentWillUnmount() {
-    console.log('unmount '+ this.props.issue.id);
-  }
-
   render() {
     const {issue, isInProgress} = this.props;
-    let timerTemplate;
-
-    if (isInProgress) {
-      timerTemplate = '00:06';
-
-      const startDate = new Date();
-      const startDay = startDate.getDay();
-      const startMonth = startDate.getMonth();
-      const startYear = startDate.getYear();
-      const str = JSON.stringify(`${issue.id}[${startDay}-${startMonth}-${startYear}]`);
-
-      let workTime = window.sessionStorage.getItem(str) ? window.sessionStorage.getItem(str) : 0;
-
-      /*if (!this.interval) {
-        this.interval = setInterval(() => {
-        workTime = Math.round(workTime * 100) / 100 + 0.1;
-        window.sessionStorage.setItem(str, workTime);
-        console.log('tick from ' + issue.id);
-        }, 5000);
-      }*/
-    }
 
     return (
       <div className="task__clock">

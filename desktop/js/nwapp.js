@@ -81,30 +81,38 @@ $(function() {
 
   $('body').on('issuesLoad', function(values) {
     function logTime() {
+      var startDate = new Date();
+      var startDay = startDate.getDate();
+      var startMonth = startDate.getMonth()+1;
+      var startYear = startDate.getFullYear();
+
       window.kgtrckr.issues.forEach(function(issue) {
+        var str = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
+        var alreadyLogged = window.localStorage.getItem(str);
+
         if (issue.status.id === IN_PROGRESS) {
           //TODO: if alreadyLogged - PUT
-          $.ajax({
-            method: "POST",
-            url: NW_APP.host + '/time_entries.json',
-            data: {
-              'time_entry[issue_id]': issue.id,
-              'time_entry[hours]': 0.05,
-              'time_entry[comments]': 'by tracker app v0.5',
-              'key': window.kgtrckr.user.api_key
-            },
-            success: function() {
-              var startDate = new Date();
-              var startDay = startDate.getDate();
-              var startMonth = startDate.getMonth()+1;
-              var startYear = startDate.getFullYear();
-              var str = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
-              window.localStorage.setItem(str, 0.05);
-            },
-            error: function() {
-              alert(issue.id + ' fail post TimeEntry');
-            }
-          });
+          if (alreadyLogged) {
+            console.log('PUT');
+          } else {
+            $.ajax({
+              method: "POST",
+              url: NW_APP.host + '/time_entries.json',
+              data: {
+                'time_entry[issue_id]': issue.id,
+                'time_entry[hours]': 0.05,
+                'time_entry[comments]': 'by tracker app v0.5',
+                'key': window.kgtrckr.user.api_key
+              },
+              success: function() {
+
+                window.localStorage.setItem(str, 0.05);
+              },
+              error: function() {
+                alert(issue.id + ' fail post TimeEntry');
+              }
+            });
+          }
         }
       });
     }
