@@ -92,7 +92,7 @@ function getTimeEntries(user, issue, offset = 0, timeEntriesSum = 0) {
         return getTimeEntries(user, issue, newOffset, timeEntriesSum);
       } else {
         res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
-        return {...issue,_timeEntriesSum: timeEntriesSum, _lastTEID: res.body.time_entries[0].id};
+        return {...issue, _timeEntriesSum: timeEntriesSum};
       }
     }
   }, err => {
