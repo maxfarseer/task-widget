@@ -21,7 +21,7 @@ const routes = (
   <Route path='/' component={App}>
     <Route path='/main' component={MainPage} />
     <Route path='/login' component={LoginPage} />
-    <Redirect from="/" to="main" />
+    <Redirect from="/" to="login" />
   </Route>
 );
 

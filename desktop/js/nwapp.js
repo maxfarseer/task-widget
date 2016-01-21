@@ -50,10 +50,6 @@ NW_APP.checkInProgress = function() {
   NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
 }
 
-NW_APP.showNoInprogressWarning = function() {
-  showNativeNotification('./i/icon_128.png','Внимание','Отсутствует активная задача!');
-}
-
 $(function() {
 
   $('.js-toggle-compact-view').on('click', function() {
@@ -74,6 +70,10 @@ $(function() {
 
 });*/
 
+NW_APP.showNoInprogressWarning = function() {
+  showNativeNotification('./i/System Report-96.png','Attention','You haven\'t issues in progress!');
+}
+
 $(function() {
 
   var IN_PROGRESS = 2;
@@ -81,9 +81,19 @@ $(function() {
 
   $('body').on('issuesLoad', function(values) {
 
+    function makeHumanTime(serverTime) {
+      if (serverTime) {
+        let hours = Math.floor(serverTime);
+        let minutes = Math.round((serverTime - hours)*60);
+        hours = hours < 10 ? '0'+hours : hours;
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        return ''+hours+':'+minutes;
+      }
+    }
+
     var user = window.kgtrckr.user;
 
-    function updateTimeEntry(lsRecordName, id, timeEntryId, hours) {
+    function updateTimeEntry(lsRecordName, id, timeEntryId, hours, $el) {
       $.ajax({
         method: 'PUT',
         dataType: 'text',
@@ -91,15 +101,17 @@ $(function() {
         data: {
           'time_entry[issue_id]': id,
           'time_entry[hours]': hours,
-          'time_entry[comments]': 'PUT by tracker app v0.14',
+          'time_entry[comments]': 'PUT by tracker app v 1.0.0',
           'key': user.api_key
         },
         success: function() {
           console.log('PUT: '+ id +' '+hours);
           window.localStorage.setItem(lsRecordName, hours);
+          $el.attr('data-server-time', +$el.attr('data-server-time') + 0.05);
+          $el.html( makeHumanTime( +$el.attr('data-server-time') ) );
         },
         error: function() {
-          alert(issue.id + ' fail PUT TimeEntry');
+          alert('Tracker: Problem with update time entry for issue with ID ' + id);
         }
       })
     }
@@ -109,15 +121,18 @@ $(function() {
       var startDay = startDate.getDate();
       var startMonth = startDate.getMonth()+1;
       var startYear = startDate.getFullYear();
+      var haveIssuesInProgress = 0;
 
       window.kgtrckr.issues.forEach(function(issue) {
         var lsRecordName = issue.id+'_'+startDay+'-'+startMonth+'-'+startYear;
         var alreadyLogged = window.localStorage.getItem(lsRecordName);
+        var $tEntry = $('#te_'+issue.id);
 
         if (issue.status.id === IN_PROGRESS) {
+          haveIssuesInProgress++;
           if (alreadyLogged) {
             var timeEntryId = window.localStorage.getItem(issue.id);
-            updateTimeEntry(lsRecordName, issue.id, timeEntryId, +alreadyLogged+0.05);
+            updateTimeEntry(lsRecordName, issue.id, timeEntryId, +alreadyLogged+0.05, $tEntry);
           } else {
             $.ajax({
               method: 'POST',
@@ -125,28 +140,38 @@ $(function() {
               data: {
                 'time_entry[issue_id]': issue.id,
                 'time_entry[hours]': 0.05,
-                'time_entry[comments]': 'POST by tracker app v0.14',
+                'time_entry[comments]': 'POST by tracker app v 1.0.0',
                 'key': user.api_key
               },
               success: function() {
                 window.localStorage.setItem(lsRecordName, 0.05);
+                console.log('POST: '+ issue.id +' '+ 0.05);
+                $tEntry.attr('data-server-time', +$tEntry.attr('data-server-time') + 0.05);
+                $tEntry.html( makeHumanTime( +$tEntry.attr('data-server-time') ) );
+
                 $.ajax({
                   url: NW_APP.host + '/time_entries.json?issue_id='+issue.id+'&limit=1&user_id='+user.id+'&key='+user.api_key,
                   success: function(data) {
                     window.localStorage.setItem(issue.id,data.time_entries[0].id);
                   },
                   error: function() {
-                    alert('Can not get last time entry data');
+                    alert('Tracker: Can not get last time entry data');
                   }
                 })
+
               },
               error: function() {
-                alert(issue.id + ' fail POST TimeEntry');
+                alert('Tracker: Problem with create time entry for issue with ID ' + issue.id);
               }
             });
           }
         }
       });
+
+      if (!haveIssuesInProgress) {
+        console.log(haveIssuesInProgress);
+        NW_APP.showNoInprogressWarning();
+      }
     }
 
     if (typeof globalInterval === 'undefined') {

@@ -2,10 +2,10 @@
   "name": "Time tracker",
   "description": "redmine plugin",
   "main": "index.html",
-  "version": "0.1.0",
-  "keywords": [ "demo", "task widget" ],
+  "version": "1.0.0",
+  "keywords": [ "redmine", "plugin", "widget" ],
   "window": {
-    "icon": "/i/icon_128.png",
+    "icon": "Clock-96.png",
     "show": true,
     "toolbar": false,
     "frame": true,

@@ -17,17 +17,21 @@ export default class TimeEntries extends Component {
   }
 
   render() {
-    const {issue, isInProgress} = this.props;
+    const {timeEntriesSum, issueId} = this.props;
 
     return (
       <div className="task__clock">
-        <i className="fa fa-clock-o"></i> {this._makeHumanTime(issue._timeEntriesSum) || '00:00'}
+        <i className="fa fa-clock-o"></i>
+        <span id={`te_${issueId}`} data-server-time={timeEntriesSum}>
+          {this._makeHumanTime(timeEntriesSum) || '00:00'}
+        </span>
       </div>
     )
   }
 }
 
 TimeEntries.propTypes = {
-  issue: PropTypes.object.isRequired
+  timeEntriesSum: PropTypes.number.isRequired,
+  issueId: PropTypes.number.isRequired
 }
 

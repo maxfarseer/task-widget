@@ -205,7 +205,10 @@ export function getIssuesQueue() {
         }
       }, err => {
         console.warn('getIssuesQueue request error: ' + err);
-        //GET_ISSUES_QUEUE_PROBLEM ??
+        let tryAgain = window.confirm('Network error with load issues queue, try again?');
+        if (tryAgain) {
+          getIssuesQueue()(dispatch, getState);
+        }
       })
   }
 }
