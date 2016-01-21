@@ -15,7 +15,9 @@ export default class Task extends Component {
       <div className={`task task_${index}`}>
         <div>
           <div className='task__left'>
-            <div className="task__name">{task.id} | {subject}</div>
+            <div className="task__name">
+              <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
+            </div>
             <TimeEntries timeEntriesSum={task._timeEntriesSum} issueId={task.id}/>
             <div className="task__project">{task.project.name}</div>
           </div>

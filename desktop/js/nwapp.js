@@ -14,18 +14,37 @@ window.NW_APP = {
 };
 
 var path = require('path');
-var NW = require('nw.gui');
-var win = NW.Window.get();
+var gui = require('nw.gui');
+//var NW = require('nw.gui');
+var win = gui.Window.get();
 var appWidth = 320;
 
-var mb = new NW.Menu({type:"menubar"});
-mb.createMacBuiltin("Task widget");
-NW.Window.get().menu = mb;
+var menu = new gui.Menu({type:"menubar"});
+var devItems = new gui.Menu();
+
+var showDevToolsItem = new gui.MenuItem({
+  label: "Show dev tools",
+  click: function() {
+    win.showDevTools();
+  },
+  key: "i",
+  modifiers: "ctrl-alt",
+});
+
+devItems.append(showDevToolsItem);
+
+menu.createMacBuiltin("Tracker");
+
+menu.append(
+  new gui.MenuItem({
+      label: 'Debug',
+      submenu: devItems
+  })
+);
+gui.Window.get().menu = menu;
 
 win.moveTo(window.screen.availWidth - appWidth, 40);
 win.show();
-
-win.showDevTools();
 
 /*NW_APP.hasInProgress = function() {
   var taskStatus = $('.task__status');
@@ -78,6 +97,11 @@ $(function() {
 
   var IN_PROGRESS = 2;
   var globalInterval;
+
+  $('body').on('click', 'a[target=_blank]', function(){
+    require('nw.gui').Shell.openExternal( this.href );
+    return false;
+  });
 
   $('body').on('issuesLoad', function(values) {
 

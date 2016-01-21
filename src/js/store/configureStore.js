@@ -5,7 +5,7 @@ import { reduxReactRouter, routerStateReducer } from 'redux-router';
 import createHistory from 'history/lib/createHashHistory'
 import { Route, Redirect } from 'react-router';
 import thunkMiddleware from 'redux-thunk';
-import createLogger from 'redux-logger';
+//import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
 
 import App from '../containers/App';
@@ -29,8 +29,8 @@ export default function configureStore(initialState) {
   // Compose reduxReactRouter with other store enhancers
   const store = compose(
     applyMiddleware(thunkMiddleware),
-    reduxReactRouter({routes,createHistory}),
-    applyMiddleware(createLogger())
+    reduxReactRouter({routes,createHistory})
+    //applyMiddleware(createLogger())
   )(createStore)(reducer);
 
   if (module.hot) {

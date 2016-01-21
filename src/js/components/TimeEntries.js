@@ -21,7 +21,7 @@ export default class TimeEntries extends Component {
 
     return (
       <div className="task__clock">
-        <i className="fa fa-clock-o"></i>
+        <i className="fa fa-clock-o"></i>{' '}
         <span id={`te_${issueId}`} data-server-time={timeEntriesSum}>
           {this._makeHumanTime(timeEntriesSum) || '00:00'}
         </span>

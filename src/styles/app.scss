@@ -184,6 +184,10 @@ body {
   white-space: nowrap;
   font-weight: bold;
 }
+.task-name-link {
+  color: #000;
+  text-decoration: none;
+}
 .task__clock {
   margin: 15px 40px 0 0;
   display: inline-block;
