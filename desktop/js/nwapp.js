@@ -46,49 +46,6 @@ gui.Window.get().menu = menu;
 win.moveTo(window.screen.availWidth - appWidth, 40);
 win.show();
 
-/*NW_APP.hasInProgress = function() {
-  var taskStatus = $('.task__status');
-  return taskStatus.length > 0 && $(taskStatus[0]).attr('data-task-status') !== '1'
-}
-
-NW_APP.checkInProgress = function() {
-  console.log('checkInProgress: start');
-
-  if ( NW_APP.hasInProgress() ) {
-
-    //если в течении 4 часов {options.timers.idle} не появится таск в in_progress - покажи notification
-    if (!NW_APP.idleFlag) {
-      NW_APP.noTaskInProgressTimer = global.setTimeout(NW_APP.showNoInprogressWarning, NW_APP.timers.idle);
-    }
-    NW_APP.idleFlag = true;
-  } else {
-    //есть задача в in_progress
-    global.clearTimeout(NW_APP.noTaskInProgressTimer);
-    NW_APP.idleFlag = false;
-  }
-  NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
-}
-
-$(function() {
-
-  $('.js-toggle-compact-view').on('click', function() {
-    if ( $(this).attr('data-compact') === 'true' ) {
-      win.resizeTo(appWidth, 800);
-    } else {
-      win.resizeTo(appWidth, 300);
-    }
-
-  });
-
-  NW_APP.checkInProgressTimer = global.setTimeout(NW_APP.checkInProgress, NW_APP.timers.inProgressCheck);
-
-  $('.app').on('click', '.js-change-status', function(e) {
-    NW.Shell.openExternal(e.target.href);
-    return false;
-  });
-
-});*/
-
 NW_APP.showNoInprogressWarning = function() {
   showNativeNotification('./i/System Report-96.png','Attention','You haven\'t issues in progress!');
 }
