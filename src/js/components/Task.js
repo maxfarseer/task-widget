@@ -9,11 +9,29 @@ export default class Task extends Component {
   render() {
     const task = this.props.data;
     const {subject, description, id, status, fetching} = task;
-    const {onChangeStatusClick, index} = this.props;
+    const {onRefreshClick, onChangeStatusClick, index} = this.props;
 
-    return (
-      <div className={`task task_${index}`}>
-        <div>
+    let template;
+    let errors;
+
+    if (task._error) {
+      errors = task._errorArr.map((error,index) => <p key={index}>{error}</p>)
+      template = (
+        <div className={`task task_${index}`}>
+          <div className='task__left'>
+            <p>You need to check this action in <a href={`${API_ROOT}/issues/${task.id}`} target='_blank'>redmine</a> because:</p>
+            {errors}
+          </div>
+          <div className='task__right'>
+            <button className="task-btn" onClick={onRefreshClick.bind(this,task)}>
+              <i className="fa fa-refresh"></i>
+            </button>
+          </div>
+        </div>
+      )
+    } else {
+      template = (
+        <div className={`task task_${index}`}>
           <div className='task__left'>
             <div className="task__name">
               <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
@@ -24,8 +42,12 @@ export default class Task extends Component {
           <div className='task__right'>
             {task.status.id === 2 ?
               <div>
-                <button className="task-btn task-btn_pause" onClick={onChangeStatusClick.bind(this,task,_status.SUSPEND)}>||</button>
-                <button className="task-btn task-btn_resolve" onClick={onChangeStatusClick.bind(this,task,_status.RESOLVED)}>&#10003;</button>
+                <button className="task-btn" onClick={onChangeStatusClick.bind(this,task,_status.SUSPEND)}>
+                  <i className="fa fa-pause"></i>
+                </button>
+                <button className="task-btn" onClick={onChangeStatusClick.bind(this,task,_status.RESOLVED)}>
+                  <i className="fa fa-check"></i>
+                </button>
               </div>
               :
               <div>
@@ -35,13 +57,16 @@ export default class Task extends Component {
           </div>
           <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>
-      </div>
-    )
+      )
+    }
+
+    return template;
   }
 }
 
 Task.propTypes = {
   onChangeStatusClick: PropTypes.func.isRequired,
+  onRefreshClick: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
 }

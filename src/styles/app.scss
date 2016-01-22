@@ -171,6 +171,9 @@ body {
     background: #15B9F0;
     color: #FFF;
   }
+  &:focus {
+    outline: none;
+  }
 }
 .task-btn_play {
   padding: 1px 0 0 1px;

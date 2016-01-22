@@ -13,6 +13,7 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.handleChangeStatusClick = this.handleChangeStatusClick.bind(this);
+    this.handleRefreshClick = this.handleRefreshClick.bind(this);
   }
 
   componentWillMount() {
@@ -23,11 +24,16 @@ class MainPage extends Component {
     this.props.actions.changeStatus(task, status);
   }
 
+  handleRefreshClick(task) {
+    this.props.actions.getIssuesQueue(task);
+  }
+
   _makeTaskComponent(tasksQueue) {
     return tasksQueue.map((el,i) => {
       return <Task
               data={el} key={i} index={i}
-              onChangeStatusClick={this.handleChangeStatusClick} />
+              onChangeStatusClick={this.handleChangeStatusClick}
+              onRefreshClick={this.handleRefreshClick} />
     })
   }
 

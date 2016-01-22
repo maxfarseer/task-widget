@@ -1,10 +1,9 @@
 import _ from 'lodash';
 
 import {
-  GET_ISSUE_REQUEST,
   CHANGE_STATUS_REQUEST,
   //CHANGE_STATUS_SUCCESS,
-  //CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
+  CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
   GET_ISSUES_QUEUE_REQUEST,
   GET_ISSUES_QUEUE_SUCCESS,
   GET_ISSUES_QUEUE_FAILURE, //todo
@@ -26,21 +25,31 @@ const initialState = {
 
 export default function mainpage(state = initialState, action) {
 
-  let next;
-  let nextIssueQueue;
-  let nextIssue;
-  let task;
-  let taskIndex;
-
   switch (action.type) {
 
     case CHANGE_STATUS_REQUEST:
     case GET_ISSUES_QUEUE_REQUEST:
-    case GET_ISSUE_REQUEST:
       return {...state, fetching: true}
 
     case GET_ISSUES_QUEUE_SUCCESS:
       return {...state, issuesData: action.payload, fetching: false};
+
+    case CHANGE_STATUS_PROBLEM:
+      let nextIssue = action.payload;
+
+      let prevIssuesQueue = state.issuesData.issuesQueue;
+
+      let nextIssueIndex = state.issuesData.issuesQueue.findIndex((issue) => issue.id === nextIssue.id);
+
+      let nextIssuesQueue = [
+        ...prevIssuesQueue.slice(0, nextIssueIndex),
+        nextIssue,
+        ...prevIssuesQueue.slice(nextIssueIndex+1)
+      ];
+
+      let nextIssuesData = {...state.issuesData, issuesQueue: nextIssuesQueue};
+
+      return {...state, issuesData: nextIssuesData, fetching: false};
 
     default:
       return state;
