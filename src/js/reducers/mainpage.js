@@ -39,7 +39,7 @@ export default function mainpage(state = initialState, action) {
 
       let prevIssuesQueue = state.issuesData.issuesQueue;
 
-      let nextIssueIndex = state.issuesData.issuesQueue.findIndex((issue) => issue.id === nextIssue.id);
+      let nextIssueIndex = _.findIndex(state.issuesData.issuesQueue, (issue) => issue.id === nextIssue.id);
 
       let nextIssuesQueue = [
         ...prevIssuesQueue.slice(0, nextIssueIndex),

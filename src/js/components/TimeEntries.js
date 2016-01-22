@@ -9,7 +9,9 @@ export default class TimeEntries extends Component {
       <div className="task__clock">
         <i className="fa fa-clock-o"></i>{' '}
         <span id={`te_${issueId}`} data-server-time={timeEntriesSum}>
-          {hours}<span className='colon'>:</span>{minutes}
+          <span className='te-hours'>{hours}</span>
+          <span className='te-colon'>:</span>
+          <span className='te-minutes'>{minutes}</span>
         </span>
       </div>
     )

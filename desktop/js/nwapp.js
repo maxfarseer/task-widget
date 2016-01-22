@@ -68,7 +68,8 @@ $(function() {
         let minutes = Math.round((serverTime - hours)*60);
         hours = hours < 10 ? '0'+hours : hours;
         minutes = minutes < 10 ? '0'+minutes : minutes;
-        return ''+hours+':'+minutes;
+        return {hours: hours, minutes: minutes};
+        //return hours+'<span class="colon">:</span>'+minutes;
       }
     }
 
@@ -86,10 +87,12 @@ $(function() {
           'key': user.api_key
         },
         success: function() {
-          console.log('PUT: '+ id +' '+hours);
           window.localStorage.setItem(lsRecordName, hours);
           $el.attr('data-server-time', +$el.attr('data-server-time') + 0.05);
-          $el.html( makeHumanTime( +$el.attr('data-server-time') ) );
+          var time = makeHumanTime( +$el.attr('data-server-time') );
+
+          $('.te-hours',$el).text(time.hours);
+          $('.te-minutes',$el).text(time.minutes);
         },
         error: function() {
           alert('Tracker: Problem with update time entry for issue with ID ' + id);
@@ -126,9 +129,11 @@ $(function() {
               },
               success: function() {
                 window.localStorage.setItem(lsRecordName, 0.05);
-                console.log('POST: '+ issue.id +' '+ 0.05);
                 $tEntry.attr('data-server-time', +$tEntry.attr('data-server-time') + 0.05);
-                $tEntry.html( makeHumanTime( +$tEntry.attr('data-server-time') ) );
+
+                var time = makeHumanTime( +$tEntry.attr('data-server-time') );
+                $('.te-hours',$tEntry).text(time.hours);
+                $('.te-minutes',$tEntry).text(time.minutes);
 
                 $.ajax({
                   url: NW_APP.host + '/time_entries.json?issue_id='+issue.id+'&limit=1&user_id='+user.id+'&key='+user.api_key,
@@ -150,13 +155,11 @@ $(function() {
       });
 
       if (!haveIssuesInProgress) {
-        console.log(haveIssuesInProgress);
         NW_APP.showNoInprogressWarning();
       }
     }
 
     if (typeof globalInterval === 'undefined') {
-      console.log('timer created');
       globalInterval = global.setInterval(logTime, NW_APP.timers.logInterval);
     }
 
