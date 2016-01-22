@@ -13,4 +13,5 @@ build/
 
 api-server/node_modules/
 bundle.js
+desktop/js/bundle.js
 src/js/constants/Secret.js
