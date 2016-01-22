@@ -204,3 +204,15 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@keyframes animate-colon {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.task-queue_inprogress .colon {
+  animation: animate-colon 1s infinite;
+}

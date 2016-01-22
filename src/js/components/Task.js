@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import * as _status from '../constants/Statuses_ids';
 import {API_ROOT} from '../constants/Secret';
+import { makeHumanTime } from '../utils/'
 
 import TimeEntries from './TimeEntries';
 
@@ -36,7 +37,7 @@ export default class Task extends Component {
             <div className="task__name">
               <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
             </div>
-            <TimeEntries timeEntriesSum={task._timeEntriesSum} issueId={task.id}/>
+            <TimeEntries timeEntriesSum={task._timeEntriesSum} issueId={task.id} time={makeHumanTime(task._timeEntriesSum)}/>
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>
