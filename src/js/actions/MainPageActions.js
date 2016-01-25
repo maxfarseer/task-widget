@@ -27,6 +27,7 @@ import {
 } from '../constants/Secret';
 
 import * as status from '../constants/Statuses_ids';
+import {logout} from './LoginPageActions';
 
 const request = require('superagent-bluebird-promise'); //import ?
 
@@ -125,20 +126,24 @@ export function changeStatus(issue, status_id) {
         if (!res.ok) {
           dispatch({
             type: CHANGE_STATUS_FAILURE,
-            payload: new Error('get tasks failure'),
+            payload: new Error('change issue status failure'),
             error: true
           });
         } else {
           getIssuesQueue()(dispatch, getState);
         }
       }, err => {
-        console.warn('Change status error: ' + err);
-        dispatch({
-          type: CHANGE_STATUS_PROBLEM,
-          payload: {...issue, _error: true, _errorArr: err.body.errors},
-          error: true
-        });
-      });
+        if (err.status === 401) {
+          alert('Your session has expired');
+          logout()(dispatch, getState);
+        } else {
+          dispatch({
+            type: CHANGE_STATUS_PROBLEM,
+            payload: {...issue, _error: true, _errorArr: err.body.errors},
+            error: true
+          });
+        }
+      })
     }
 }
 
@@ -203,10 +208,14 @@ export function getIssuesQueue() {
           }).catch(values => console.warn(values));
         }
       }, err => {
-        console.warn('getIssuesQueue request error: ' + err);
-        let tryAgain = window.confirm('Network error with load issues queue, try again?');
-        if (tryAgain) {
-          getIssuesQueue()(dispatch, getState);
+        if (err.status === 401) {
+          alert('Your session has expired');
+          logout()(dispatch, getState);
+        } else {
+          let tryAgain = window.confirm('Network error with load issues queue, try again?');
+          if (tryAgain) {
+            getIssuesQueue()(dispatch, getState);
+          }
         }
       })
   }

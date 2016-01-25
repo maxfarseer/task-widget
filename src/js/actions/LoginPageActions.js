@@ -30,7 +30,7 @@ export function login(username, pass) {
       if (!res.ok) {
         dispatch({
           type: LOGIN_FAIL,
-          payload: new Error('get issue failure'),
+          payload: new Error('Login failure'),
           error: true
         })
       } else {
@@ -46,9 +46,10 @@ export function login(username, pass) {
 	}
 }
 
-export function logout() {
-  window.localStorage.removeItem('user');
-  return {
-    type: LOGOUT_SUCCESS
+export function logout(username, pass) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: LOGOUT_SUCCESS
+    });
   }
 }
