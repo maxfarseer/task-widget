@@ -3,10 +3,6 @@
 //global
 window.NW_APP = {
   timers: {
-    //inProgressCheck: 60000 * 5, //раз в 5 минут проверять - есть ли IN_PROGRESS
-    //idle: 60000 * 240
-    inProgressCheck: 1000 * 2,
-    idle: 1000 * 10,
     logInterval: 1000*10*2 //3 mins
   },
   host: 'https://new-redmine-qa.kama.gs',

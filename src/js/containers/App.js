@@ -1,39 +1,37 @@
 import React, { Component } from 'react';
-import { pushState } from 'redux-router'
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import MainPage from './MainPage';
+import LoginPage from './LoginPage';
 
 class App extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentWillMount() {
-    this.props.routerActions.pushState(null, 'login')
-  }
-
   render() {
-    const { children } = this.props;
+    const { user } = this.props;
+    let template;
+
+    if (user.api_key) {
+      template = <MainPage />
+    } else {
+      template = <LoginPage />
+    }
 
     return (
       <div>
         <div className='app'>
-          {children}
+          {template}
         </div>
       </div>
-
     )
   }
 }
 
 function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
   return {
-    routerActions: bindActionCreators({pushState}, dispatch)
+    user: state.app.user
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

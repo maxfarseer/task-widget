@@ -13,7 +13,7 @@ import {
 
 const request = require('superagent-bluebird-promise');
 
-export function login(username, pass, redirect) {
+export function login(username, pass) {
 	return (dispatch, getState) => {
 
 		dispatch({
@@ -37,14 +37,18 @@ export function login(username, pass, redirect) {
         dispatch({
           type: LOGIN_SUCCESS,
           payload: res.body.user,
-          meta: {
-            redirectUrl: '/main'
-          }
         })
-        if (redirect) redirect();
+        window.localStorage.setItem('user', JSON.stringify(res.body.user));
       }
     }, err => {
       console.warn('Login error: ' + err);
     });
 	}
+}
+
+export function logout() {
+  window.localStorage.removeItem('user');
+  return {
+    type: LOGOUT_SUCCESS
+  }
 }

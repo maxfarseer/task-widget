@@ -7,8 +7,8 @@ import {
   LOGOUT_SUCCESS
 } from '../constants/Login';
 
-const initialState = {
-};
+
+const initialState = JSON.parse(window.localStorage.getItem('user')) || {};
 
 export default function mainstate(state = initialState, action) {
   let nextState;

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as MainPageActions from '../actions/MainPageActions';
+import {logout} from '../actions/LoginPageActions';
 import * as status from '../constants/Statuses_ids';
 
 import Task from '../components/Task';
@@ -59,7 +60,10 @@ class MainPage extends Component {
     return (
       <div className="main">
         <div className={'preloader preloader_main ' + (fetching ? '' : 'none')}></div>
-        <h4 className="task-queue__header">{user.firstname} {user.lastname}</h4>
+        <h4 className="task-queue__header">
+          {user.firstname} {user.lastname}{' '}
+          <i className="fa fa-sign-out logout-btn" onClick={this.props.logout}></i>
+        </h4>
         <div className="stripe-wrapper">
           <div className="badge"></div>
           <div className="stripe">В работе</div>
@@ -84,8 +88,9 @@ class MainPage extends Component {
 }
 
 MainPage.propTypes = {
-  mainpage: PropTypes.object,
-  user: PropTypes.object,
+  mainpage: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -98,6 +103,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(MainPageActions, dispatch),
+    logout: bindActionCreators(logout, dispatch),
   }
 }
 

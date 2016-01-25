@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { pushState } from 'redux-router';
 import { bindActionCreators } from 'redux';
-import * as LoginActions from '../actions/LoginActions';
+import * as LoginPageActions from '../actions/LoginPageActions';
 
 import LoginForm from '../components/LoginForm';
 
@@ -13,7 +12,7 @@ class LoginPage extends Component {
   }
 
   handleSubmit(username, pass, nextPath) {
-    this.props.actions.login(username, pass, () => this.props.routerActions.pushState(null, 'main'));
+    this.props.actions.login(username, pass);
   }
   render() {
     const { dispatch, user } = this.props;
@@ -25,20 +24,13 @@ class LoginPage extends Component {
   }
 }
 
-LoginPage.propTypes = {
-  user: PropTypes.object.isRequired
-}
-
 function mapStateToProps(state) {
-  return {
-    user: state.app.user
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(LoginActions, dispatch),
-    routerActions: bindActionCreators({pushState}, dispatch)
+    actions: bindActionCreators(LoginPageActions, dispatch),
   }
 }
 
