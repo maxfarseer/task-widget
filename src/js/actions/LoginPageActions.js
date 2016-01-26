@@ -48,6 +48,11 @@ export function login(username, pass) {
 
 export function logout(username, pass) {
   return (dispatch, getState) => {
+
+    let logoutSuccess = new Event('logout');
+    document.body.dispatchEvent(logoutSuccess);
+    window.localStorage.removeItem('user');
+
     dispatch({
       type: LOGOUT_SUCCESS
     });

@@ -3,7 +3,7 @@
 //global
 window.NW_APP = {
   timers: {
-    logInterval: 1000*10*2 //3 mins
+    logInterval: 1000*10 //3 mins
   },
   host: 'https://new-redmine-qa.kama.gs',
   idleFlag: true
@@ -57,6 +57,8 @@ $(function() {
   });
 
   $('body').on('issuesLoad', function(values) {
+
+    console.log('issuesLoad');
 
     function makeHumanTime(serverTime) {
       if (serverTime) {
@@ -159,5 +161,10 @@ $(function() {
       globalInterval = global.setInterval(logTime, NW_APP.timers.logInterval);
     }
 
+  });
+
+  $('body').on('logout', function(values) {
+    console.log('logout');
+    global.clearInterval(globalInterval);
   });
 });
