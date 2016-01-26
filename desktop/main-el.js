@@ -10,7 +10,7 @@ var mainWindow = null;
 
 app.on('ready', function() {
 
-  mainWindow = new BrowserWindow({width: 320, height: 600});
+  mainWindow = new BrowserWindow({width: 300, height: 600});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   mainWindow.on('closed', function() {
@@ -19,4 +19,8 @@ app.on('ready', function() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+});
+
+app.on('window-all-closed', function() {
+  app.quit();
 });

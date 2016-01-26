@@ -3,42 +3,13 @@
 //global
 window.APP = {
   timers: {
-    logInterval: 1000*10 //3 mins
+    logInterval: 1000*10 //10 sec
   },
   host: 'https://new-redmine-qa.kama.gs',
   idleFlag: true
 };
 
-var appWidth = 320;
-
 var shell = require('electron').shell;
-
-/*var menu = new gui.Menu({type:"menubar"});
-var devItems = new gui.Menu();
-
-var showDevToolsItem = new gui.MenuItem({
-  label: "Show dev tools",
-  click: function() {
-    win.showDevTools();
-  },
-  key: "i",
-  modifiers: "ctrl-alt",
-});
-
-devItems.append(showDevToolsItem);
-
-menu.createMacBuiltin("Tracker");
-
-menu.append(
-  new gui.MenuItem({
-      label: 'Debug',
-      submenu: devItems
-  })
-);
-gui.Window.get().menu = menu;
-
-win.moveTo(window.screen.availWidth - appWidth, 40);
-win.show();*/
 
 APP.showNoInprogressWarning = function() {
   showNativeNotification('Tracker:','You haven\'t issues in progress!','./i/System Report-96.png');

@@ -1,5 +1,5 @@
 {
-  "name"    : "Redmine time tracker",
+  "name"    : "Redmine-time-tracker",
   "version" : "1.0.0",
   "main"    : "main-el.js"
 }
