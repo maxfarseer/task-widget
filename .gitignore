@@ -11,7 +11,8 @@ Thumbs.db
 node_modules/
 build/
 
-api-server/node_modules/
 bundle.js
 desktop/js/bundle.js
+desktop/Tracker-darwin-x64/
+
 src/js/constants/Secret.js

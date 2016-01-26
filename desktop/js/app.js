@@ -1,7 +1,7 @@
 'use strict';
 
 //global
-window.NW_APP = {
+window.APP = {
   timers: {
     logInterval: 1000*10 //3 mins
   },
@@ -9,13 +9,11 @@ window.NW_APP = {
   idleFlag: true
 };
 
-var path = require('path');
-var gui = require('nw.gui');
-//var NW = require('nw.gui');
-var win = gui.Window.get();
 var appWidth = 320;
 
-var menu = new gui.Menu({type:"menubar"});
+var shell = require('electron').shell;
+
+/*var menu = new gui.Menu({type:"menubar"});
 var devItems = new gui.Menu();
 
 var showDevToolsItem = new gui.MenuItem({
@@ -40,20 +38,19 @@ menu.append(
 gui.Window.get().menu = menu;
 
 win.moveTo(window.screen.availWidth - appWidth, 40);
-win.show();
+win.show();*/
 
-NW_APP.showNoInprogressWarning = function() {
-  showNativeNotification('./i/System Report-96.png','Attention','You haven\'t issues in progress!');
+APP.showNoInprogressWarning = function() {
+  showNativeNotification('Tracker:','You haven\'t issues in progress!','./i/System Report-96.png');
 }
 
 $(function() {
 
   var IN_PROGRESS = 2;
-  var globalInterval;
 
   $('body').on('click', 'a[target=_blank]', function(){
-    require('nw.gui').Shell.openExternal( this.href );
-    return false;
+    event.preventDefault();
+    shell.openExternal(this.href);
   });
 
   $('body').on('issuesLoad', function(values) {
@@ -67,17 +64,16 @@ $(function() {
         hours = hours < 10 ? '0'+hours : hours;
         minutes = minutes < 10 ? '0'+minutes : minutes;
         return {hours: hours, minutes: minutes};
-        //return hours+'<span class="colon">:</span>'+minutes;
       }
     }
 
-    var user = window.kgtrckr.user;
+    var user = JSON.parse(localStorage.getItem('user'));
 
     function updateTimeEntry(lsRecordName, id, timeEntryId, hours, $el) {
       $.ajax({
         method: 'PUT',
         dataType: 'text',
-        url: NW_APP.host + '/time_entries/'+ timeEntryId +'.json',
+        url: APP.host + '/time_entries/'+ timeEntryId +'.json',
         data: {
           'time_entry[issue_id]': id,
           'time_entry[hours]': hours,
@@ -118,7 +114,7 @@ $(function() {
           } else {
             $.ajax({
               method: 'POST',
-              url: NW_APP.host + '/time_entries.json',
+              url: APP.host + '/time_entries.json',
               data: {
                 'time_entry[issue_id]': issue.id,
                 'time_entry[hours]': 0.05,
@@ -134,7 +130,7 @@ $(function() {
                 $('.te-minutes',$tEntry).text(time.minutes);
 
                 $.ajax({
-                  url: NW_APP.host + '/time_entries.json?issue_id='+issue.id+'&limit=1&user_id='+user.id+'&key='+user.api_key,
+                  url: APP.host + '/time_entries.json?issue_id='+issue.id+'&limit=1&user_id='+user.id+'&key='+user.api_key,
                   success: function(data) {
                     window.localStorage.setItem(issue.id,data.time_entries[0].id);
                   },
@@ -153,18 +149,19 @@ $(function() {
       });
 
       if (!haveIssuesInProgress) {
-        NW_APP.showNoInprogressWarning();
+        APP.showNoInprogressWarning();
       }
     }
 
-    if (typeof globalInterval === 'undefined') {
-      globalInterval = global.setInterval(logTime, NW_APP.timers.logInterval);
+    if (typeof APP.ticker === 'undefined') {
+      APP.ticker = global.setInterval(logTime, APP.timers.logInterval);
     }
 
   });
 
-  $('body').on('logout', function(values) {
-    console.log('logout');
-    global.clearInterval(globalInterval);
+  $('body').on('logout', function() {
+    global.clearInterval(APP.ticker);
+    delete APP.ticker;
+    console.log(APP.ticker)
   });
 });

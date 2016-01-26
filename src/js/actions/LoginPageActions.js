@@ -41,6 +41,7 @@ export function login(username, pass) {
         window.localStorage.setItem('user', JSON.stringify(res.body.user));
       }
     }, err => {
+      alert('Login or password was incorrect');
       console.warn('Login error: ' + err);
     });
 	}

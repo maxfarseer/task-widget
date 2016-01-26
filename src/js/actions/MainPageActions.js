@@ -152,7 +152,6 @@ export function getIssuesQueue() {
 
     const user = getState().app.user;
     const API_KEY = user.api_key;
-    window.kgtrckr.user = user;
 
     dispatch({
       type: GET_ISSUES_QUEUE_REQUEST
