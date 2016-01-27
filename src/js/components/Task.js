@@ -30,9 +30,9 @@ export default class Task extends Component {
           </div>
         </div>
       )
-    } else {
+    } else if (task.status.id === 2) {
       template = (
-        <div className={`task task_${index}`}>
+        <div className={`task task_${index} task_in-progress`}>
           <div className='task__left'>
             <div className="task__name">
               <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
@@ -41,7 +41,6 @@ export default class Task extends Component {
             <div className="task__project">{task.project.name}</div>
           </div>
           <div className='task__right'>
-            {task.status.id === 2 ?
               <div>
                 <button className="task-btn" onClick={onChangeStatusClick.bind(this,task,_status.SUSPEND)}>
                   <i className="fa fa-pause"></i>
@@ -50,11 +49,22 @@ export default class Task extends Component {
                   <i className="fa fa-check"></i>
                 </button>
               </div>
-              :
-              <div>
-                <button className="task-btn task-btn_play" onClick={onChangeStatusClick.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
-              </div>
-            }
+          </div>
+          <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
+        </div>
+      )
+    } else {
+      template = (
+        <div className={`task task_${index} task_not-in-progress`}>
+          <div className='task__left'>
+            <div className="task__name">
+              <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
+            </div>
+          </div>
+          <div className='task__right'>
+            <div>
+              <button className="task-btn task-btn_play" onClick={onChangeStatusClick.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
+            </div>
           </div>
           <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>

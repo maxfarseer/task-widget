@@ -41,7 +41,11 @@ export function login(username, pass) {
         window.localStorage.setItem('user', JSON.stringify(res.body.user));
       }
     }, err => {
-      alert('Login or password was incorrect');
+      if (err.status === 401) {
+        alert('Login or password was incorrect');
+      } else {
+        alert('Network problem, check your internet connection');
+      }
       console.warn('Login error: ' + err);
     });
 	}

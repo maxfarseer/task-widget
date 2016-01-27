@@ -146,6 +146,9 @@ body {
   padding: 20px 0px 0 20px;
   box-sizing: border-box;
 }
+.task_not-in-progress {
+  height: 60px;
+}
 .task__left {
   float: left;
   width: 240px;
@@ -173,13 +176,6 @@ body {
   }
   &:focus {
     outline: none;
-  }
-}
-.logout-btn {
-  cursor: pointer;
-  transition: color .2s ease-in;
-  &:hover {
-    color: #15B9F0;
   }
 }
 .task-btn_play {
@@ -222,4 +218,12 @@ body {
 }
 .task-queue_inprogress .te-colon {
   animation: animate-colon 1s infinite;
+}
+
+.logout-btn {
+  cursor: pointer;
+  transition: color .2s ease-in;
+  &:hover {
+    color: #15B9F0;
+  }
 }
