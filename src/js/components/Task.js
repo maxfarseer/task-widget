@@ -9,7 +9,7 @@ export default class Task extends Component {
 
   render() {
     const task = this.props.data;
-    const {subject, description, id, status, fetching} = task;
+    const {subject, description, id, status, fetching, priority} = task;
     const {onRefreshClick, onChangeStatusClick, index} = this.props;
 
     let template;
@@ -55,10 +55,11 @@ export default class Task extends Component {
       )
     } else {
       template = (
-        <div className={`task task_${index} task_not-in-progress`}>
+        <div className={`task task_${index} task_nip`}>
+          <div className={`badge-priority badge-priority-${priority.name}`}></div>
           <div className='task__left'>
-            <div className="task__name">
-              <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
+            <div className="task__name task__name_nip">
+              <a className="task-name-link task-name-link_nip" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
             </div>
           </div>
           <div className='task__right'>

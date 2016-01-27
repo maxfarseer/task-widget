@@ -116,6 +116,19 @@ body {
   float: left;
   background: #E2E2E3;
 }
+.badge-priority {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+.badge-priority-High, {
+  background: #FB64A4;
+}
+.badge-priority-Immediate {
+  background: #FE006C;
+}
 .stripe-wrapper {
   background: #F8F8F8;
   height: 35px;
@@ -139,15 +152,16 @@ body {
 .task {
   font: 14px sans-serif;
   border-bottom: 1px solid #F3F3F4;
-  height: 100px;
+  height: 65px;
   position: relative;
   transition: all .5s linear 0s;
   z-index: 1;
-  padding: 20px 0px 0 20px;
+  padding: 5px 0px 0 20px;
   box-sizing: border-box;
 }
-.task_not-in-progress {
-  height: 60px;
+.task_nip { //nip = not in progress
+  height: 35px;
+  padding: 5px 0 0 20px;
 }
 .task__left {
   float: left;
@@ -190,9 +204,15 @@ body {
   white-space: nowrap;
   font-weight: bold;
 }
+.task__name_nip {
+  font-weight: normal;
+}
 .task-name-link {
   color: #000;
   text-decoration: none;
+}
+.task-name-link_nip {
+  line-height: 23px;
 }
 .task__clock {
   margin: 15px 40px 0 0;
