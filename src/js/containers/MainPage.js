@@ -19,6 +19,7 @@ class MainPage extends Component {
 
   componentWillMount() {
     this.props.actions.getIssuesQueue();
+    window.kgtrckr.logout = this.props.logout; //for developers
   }
 
   handleChangeStatusClick(task,status) {
@@ -59,14 +60,14 @@ class MainPage extends Component {
 
     return (
       <div className="main">
-        <div className={'preloader preloader_main ' + (fetching ? '' : 'none')}></div>
-        <h4 className="task-queue__header">
-          {user.firstname} {user.lastname}{' '}
-          <i className="fa fa-sign-out logout-btn" onClick={this.props.logout}></i>
-        </h4>
         <div className="stripe-wrapper">
           <div className="badge"></div>
-          <div className="stripe">В работе</div>
+          <div className="stripe cf">
+            <div className="stripe__left">В работе</div>
+            <div className="stripe__right">
+              <i className={"fa fa-cog" + (fetching ? '' : 'none')}></i>
+            </div>
+          </div>
         </div>
         <div className="task-queue task-queue_inprogress">
           {tasksInProgress}

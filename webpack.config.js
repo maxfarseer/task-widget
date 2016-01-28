@@ -13,7 +13,8 @@ var config = {
   output: {
     path: path.join(__dirname, 'build'),
     publicPath: '/build/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    library: 'tracker'
   },
   module: {
     loaders: [
