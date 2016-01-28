@@ -103,7 +103,6 @@ body {
 //UPDATE from 17.12.2015 все что выше не проверял нужно ли еще
 .task-queue {
   max-height: 300px;
-  overflow: auto;
 }
 .task-queue__header {
   text-align: center;
@@ -158,6 +157,42 @@ body {
   z-index: 1;
   padding: 5px 0px 0 20px;
   box-sizing: border-box;
+}
+.task-modal {
+  position: absolute;
+  border: 1px solid #CCC;
+  background: #FFF;
+  width: 220px;
+  transition: all .2s ease-in;
+  font-size: 12px;
+  padding: 5px;
+  &:before {
+    border: solid;
+    border-color: #B9B9B9 transparent;
+    border-width: .4em .4em 0 .4em;
+    top: 100%;
+    content: "";
+    display: block;
+    left: 5%;
+    position: absolute;
+    z-index: 99;
+  }
+}
+.task-modal_hidden {
+  visibility: hidden;
+  opacity: 0;
+  bottom: calc(100% + 5px);
+}
+.task-modal_visible {
+  opacity: 1;
+  bottom: 100%;
+}
+.task-modal__subject {
+  font-weight: bold;
+}
+.task-modal__desc {
+  width: 220px;
+  overflow: hidden;
 }
 .task_nip { //nip = not in progress
   height: 35px;

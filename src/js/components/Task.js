@@ -1,19 +1,32 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import * as _status from '../constants/Statuses_ids';
 import {API_ROOT} from '../constants/Secret';
-import { makeHumanTime } from '../utils/'
+import { makeHumanTime } from '../utils/';
 
 import TimeEntries from './TimeEntries';
 
 export default class Task extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {tooltip: false};
+
+    this.setTooltipVisibility = _.debounce(this.setTooltipVisibility.bind(this),400);
+  }
+
+  setTooltipVisibility(status) {
+    this.setState({tooltip: status});
+  }
 
   render() {
     const task = this.props.data;
-    const {subject, description, id, status, fetching, priority} = task;
+    const {subject, description, id, status, priority} = task;
     const {onRefreshClick, onChangeStatusClick, index} = this.props;
 
-    let template;
-    let errors;
+    let template,
+        errors,
+        tooltip = this.state.tooltip;
 
     if (task._error) {
       errors = task._errorArr.map((error,index) => <p key={index}>{error}</p>)
@@ -50,14 +63,20 @@ export default class Task extends Component {
                 </button>
               </div>
           </div>
-          <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>
       )
     } else {
       template = (
         <div className={`task task_${index} task_nip`}>
           <div className={`badge-priority badge-priority-${priority.name}`}></div>
-          <div className='task__left'>
+          <div className='task__left'
+            onMouseEnter={this.setTooltipVisibility.bind(this,true)}
+            onMouseLeave={this.setTooltipVisibility.bind(this,false)}
+          >
+            <div className={` task-modal ${ (tooltip ? 'task-modal_visible' : 'task-modal_hidden') } `}>
+              <p className='task-modal__subject'>{subject}</p>
+              <p className='task-modal__desc'>{description.length > 100 ? description.slice(0,100) +'...' : description}</p>
+            </div>
             <div className="task__name task__name_nip">
               <a className="task-name-link task-name-link_nip" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
             </div>
@@ -67,7 +86,6 @@ export default class Task extends Component {
               <button className="task-btn task-btn_play" onClick={onChangeStatusClick.bind(this,task,_status.IN_PROGRESS)}>&#9654;</button>
             </div>
           </div>
-          <div className={'preloader preloader_task ' + (fetching ? '' : 'none')}></div>
         </div>
       )
     }
