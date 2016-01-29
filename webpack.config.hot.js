@@ -16,6 +16,13 @@ var config = {
     filename: 'bundle.js'
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        include: path.join(__dirname, 'src/js')
+      }
+    ],
     loaders: [
       { test: /\.(jpe?g|png|gif|svg)$/,
         loader: 'url?limit=25000'
