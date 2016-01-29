@@ -21,8 +21,9 @@ export default class Task extends Component {
 
   render() {
     const task = this.props.data;
-    const {subject, description, id, status, priority} = task;
+    const {subject, description, id, status, priority, project} = task;
     const {onRefreshClick, onChangeStatusClick, index} = this.props;
+    const issueLink = `${API_ROOT}/issues/${task.id}`
 
     let template,
         errors,
@@ -33,7 +34,7 @@ export default class Task extends Component {
       template = (
         <div className={`task task_${index}`}>
           <div className='task__left'>
-            <p>You need to check this action in <a href={`${API_ROOT}/issues/${task.id}`} target='_blank'>redmine</a> because:</p>
+            <p>You need to check this action in <a href={issueLink} target='_blank'>redmine</a> because:</p>
             {errors}
           </div>
           <div className='task__right'>
@@ -46,12 +47,22 @@ export default class Task extends Component {
     } else if (task.status.id === 2) {
       template = (
         <div className={`task task_${index} task_in-progress`}>
-          <div className='task__left'>
+          <div className='task__left'
+            onMouseEnter={this.setTooltipVisibility.bind(this,true)}
+            onMouseLeave={this.setTooltipVisibility.bind(this,false)}
+          >
+            <a href={issueLink} className={`task-modal-ip ${ (tooltip ? 'task-modal-ip_visible' : 'task-modal-ip_hidden') } `}>
+              <div className='task-modal__subject'>
+                <div className='task-modal__project'>{project.name}</div>
+                <div>{subject}</div>
+              </div>
+              <p className='task-modal__desc'>{description.length > 100 ? description.slice(0,100) +'...' : description}</p>
+            </a>
             <div className="task__name">
               <a className="task-name-link" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
             </div>
             <TimeEntries timeEntriesSum={task._timeEntriesSum} issueId={task.id} time={makeHumanTime(task._timeEntriesSum)}/>
-            <div className="task__project">{task.project.name}</div>
+            <div className="task__project">{project.name}</div>
           </div>
           <div className='task__right'>
               <div>
@@ -73,12 +84,15 @@ export default class Task extends Component {
             onMouseEnter={this.setTooltipVisibility.bind(this,true)}
             onMouseLeave={this.setTooltipVisibility.bind(this,false)}
           >
-            <div className={` task-modal ${ (tooltip ? 'task-modal_visible' : 'task-modal_hidden') } `}>
-              <p className='task-modal__subject'>{subject}</p>
+            <a href={issueLink} className={` task-modal ${ (tooltip ? 'task-modal_visible' : 'task-modal_hidden') } `}>
+              <div className='task-modal__subject'>
+                <div className='task-modal__project'>{project.name}</div>
+                <div>{subject}</div>
+              </div>
               <p className='task-modal__desc'>{description.length > 100 ? description.slice(0,100) +'...' : description}</p>
-            </div>
+            </a>
             <div className="task__name task__name_nip">
-              <a className="task-name-link task-name-link_nip" href={`${API_ROOT}/issues/${task.id}`} target='_blank'>{subject}</a>
+              <a className="task-name-link task-name-link_nip" href={issueLink} target='_blank'>{subject}</a>
             </div>
           </div>
           <div className='task__right'>

@@ -16,3 +16,4 @@ desktop/js/bundle.js
 desktop/Tracker-darwin-x64/
 
 src/js/constants/Secret.js
+npm-debug.log

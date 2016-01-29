@@ -178,7 +178,7 @@ export function getIssuesQueue() {
             }
           })
 
-          const otherTasksLength = (otherTasks.length > 4 ? otherTasks.length - 4 : otherTasks.length);
+          const otherTasksLength = (otherTasks.length >= 3 ? otherTasks.length - 3 : otherTasks.length);
           const inProgressTasksLength = inProgressFirst.length;
 
           otherTasks = otherTasks.slice(0,3);

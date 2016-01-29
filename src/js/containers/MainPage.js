@@ -65,7 +65,7 @@ class MainPage extends Component {
           <div className="stripe cf">
             <div className="stripe__left">В работе</div>
             <div className="stripe__right">
-              <i className={"fa fa-cog" + (fetching ? '' : 'none')}></i>
+              <i className={"fa fa-refresh rotate " + (fetching ? '' : 'none')}></i>
             </div>
           </div>
         </div>

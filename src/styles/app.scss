@@ -132,11 +132,13 @@ body {
   height: 65px;
   position: relative;
   transition: all .5s linear 0s;
-  z-index: 1;
   padding: 5px 0px 0 20px;
   box-sizing: border-box;
 }
 .task-modal {
+  display: block;
+  color: #000;
+  text-decoration: none;
   position: absolute;
   border: 1px solid #CCC;
   background: #FFF;
@@ -144,11 +146,36 @@ body {
   transition: all .2s ease-in;
   font-size: 12px;
   padding: 5px;
+  z-index: 2;
   &:before {
     border: solid;
     border-color: #B9B9B9 transparent;
     border-width: .4em .4em 0 .4em;
     top: 100%;
+    content: "";
+    display: block;
+    left: 5%;
+    position: absolute;
+    z-index: 99;
+  }
+}
+.task-modal-ip {
+  display: block;
+  color: #000;
+  text-decoration: none;
+  position: absolute;
+  border: 1px solid #CCC;
+  background: #FFF;
+  width: 220px;
+  transition: all .2s ease-in;
+  font-size: 12px;
+  padding: 5px;
+  z-index: 2;
+  &:before {
+    border: solid;
+    border-color: #B9B9B9 transparent;
+    border-width: 0 .4em .4em .4em;
+    bottom: 100%;
     content: "";
     display: block;
     left: 5%;
@@ -164,6 +191,21 @@ body {
 .task-modal_visible {
   opacity: 1;
   bottom: 100%;
+}
+.task-modal-ip_hidden {
+  visibility: hidden;
+  opacity: 0;
+  top: calc(100% + 5px);
+}
+.task-modal-ip_visible {
+  opacity: 1;
+  top: 100%;
+}
+.task-modal__project {
+  color: #999;
+  font-weight: normal;
+  border-bottom: 1px solid #CCC;
+  margin: 0 0 3px;
 }
 .task-modal__subject {
   font-weight: bold;
@@ -269,6 +311,6 @@ body {
     -webkit-transform: rotate(360deg);
   }
 }
-.fa-cog {
-  animation: rotating 3s linear infinite;
+.rotate {
+  animation: rotating 2s linear infinite;
 }
