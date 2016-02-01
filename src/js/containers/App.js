@@ -20,7 +20,7 @@ class App extends Component {
 
     return (
       <div>
-        <div className='app'>
+        <div className = 'app'>
           {template}
         </div>
       </div>

@@ -2,25 +2,18 @@ import _ from 'lodash';
 
 import {
   CHANGE_STATUS_REQUEST,
-  //CHANGE_STATUS_SUCCESS,
   CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
   GET_ISSUES_QUEUE_REQUEST,
-  GET_ISSUES_QUEUE_SUCCESS,
-  GET_ISSUES_QUEUE_FAILURE, //todo
-
-  LOAD_TIMEENTRIES_REQUEST,
-  LOAD_TIMEENTRIES_SUCCESS
+  GET_ISSUES_QUEUE_SUCCESS
 } from '../constants/MainPage';
-
-import * as status from '../constants/Statuses_ids';
 
 const initialState = {
   issuesData: {
     issuesQueue: [],
     inProgressTasksLength: 0,
-    otherTasksLength: 0,
+    otherTasksLength: 0
   },
-  fetching: false,
+  fetching: false
 };
 
 export default function mainpage(state = initialState, action) {

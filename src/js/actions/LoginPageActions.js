@@ -2,9 +2,7 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
-	LOGOUT_REQUEST,
-	LOGOUT_SUCCESS,
-	LOGOUT_FAIL,
+	LOGOUT_SUCCESS
 } from '../constants/Login';
 
 import {
@@ -14,7 +12,7 @@ import {
 const request = require('superagent-bluebird-promise');
 
 export function login(username, pass) {
-	return (dispatch, getState) => {
+	return (dispatch, getState) => { // eslint-disable-line no-unused-vars
 
 		dispatch({
 			type: LOGIN_REQUEST,
@@ -36,7 +34,7 @@ export function login(username, pass) {
       } else {
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: res.body.user,
+          payload: res.body.user
         })
         window.localStorage.setItem('user', JSON.stringify(res.body.user));
       }
@@ -51,8 +49,8 @@ export function login(username, pass) {
 	}
 }
 
-export function logout(username, pass) {
-  return (dispatch, getState) => {
+export function logout() {
+  return (dispatch, getState) => { // eslint-disable-line no-unused-vars
 
     let logoutSuccess = new Event('logout');
     document.body.dispatchEvent(logoutSuccess);

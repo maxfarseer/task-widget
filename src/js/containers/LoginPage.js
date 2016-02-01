@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as LoginPageActions from '../actions/LoginPageActions';
@@ -11,11 +11,10 @@ class LoginPage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(username, pass, nextPath) {
+  handleSubmit(username, pass) {
     this.props.actions.login(username, pass);
   }
   render() {
-    const { dispatch, user } = this.props;
     return (
       <div>
         <LoginForm onSubmit={this.handleSubmit} />
@@ -24,13 +23,13 @@ class LoginPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state) { // eslint-disable-line no-unused-vars
   return {};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(LoginPageActions, dispatch),
+    actions: bindActionCreators(LoginPageActions, dispatch)
   }
 }
 

@@ -40,9 +40,8 @@ class MainPage extends Component {
   }
 
   render() {
-    const { dispatch, user } = this.props;
     const { fetching } = this.props.mainpage;
-    const { issuesQueue, inProgressTasksLength, otherTasksLength } = this.props.mainpage.issuesData;
+    const { issuesQueue, otherTasksLength } = this.props.mainpage.issuesData;
 
     let tasksInProgress = [],
         otherTasks = [];
@@ -59,29 +58,29 @@ class MainPage extends Component {
     tasksInProgress = this._makeTaskComponent(tasksInProgress);
 
     return (
-      <div className="main">
-        <div className="stripe-wrapper">
-          <div className="badge"></div>
-          <div className="stripe cf">
-            <div className="stripe__left">В работе</div>
-            <div className="stripe__right">
-              <i className={"fa fa-refresh rotate " + (fetching ? '' : 'none')}></i>
+      <div className='main'>
+        <div className='stripe-wrapper'>
+          <div className='badge'></div>
+          <div className='stripe cf'>
+            <div className='stripe__left'>В работе</div>
+            <div className='stripe__right'>
+              <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>
             </div>
           </div>
         </div>
-        <div className="task-queue task-queue_inprogress">
+        <div className='task-queue task-queue_inprogress'>
           {tasksInProgress}
         </div>
-        <div className="stripe-wrapper">
-          <div className="badge"></div>
-          <div className="stripe">Другие задачи</div>
+        <div className='stripe-wrapper'>
+          <div className='badge'></div>
+          <div className='stripe'>Другие задачи</div>
         </div>
-        <div className="task-queue">
+        <div className='task-queue'>
           {otherTasks}
         </div>
-        <div className="stripe-wrapper">
-          <div className="badge"></div>
-          <div className="stripe"><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({otherTasksLength})</a></div>
+        <div className='stripe-wrapper'>
+          <div className='badge'></div>
+          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({otherTasksLength})</a></div>
         </div>
       </div>
     );
@@ -90,21 +89,19 @@ class MainPage extends Component {
 
 MainPage.propTypes = {
   mainpage: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
   return {
-    mainpage: state.app.mainpage,
-    user: state.app.user
+    mainpage: state.app.mainpage
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(MainPageActions, dispatch),
-    logout: bindActionCreators(logout, dispatch),
+    logout: bindActionCreators(logout, dispatch)
   }
 }
 

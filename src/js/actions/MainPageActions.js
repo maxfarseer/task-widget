@@ -4,7 +4,6 @@ import {
   GET_ISSUE_FAILURE,
 
   CHANGE_STATUS_REQUEST,
-  CHANGE_STATUS_SUCCESS,
   CHANGE_STATUS_FAILURE,
   CHANGE_STATUS_PROBLEM,
 
@@ -12,14 +11,7 @@ import {
   GET_ISSUES_QUEUE_SUCCESS,
   GET_ISSUES_QUEUE_FAILURE,
 
-  LOAD_TIMEENTRIES_REQUEST,
-  LOAD_TIMEENTRIES_SUCCESS,
-  LOAD_TIMEENTRIES_FAILURE,
-  LOAD_TIMEENTRIES_PROBLEM,
-
-  POST_TIMEENTRY_PROBLEM,
-  POST_TIMEENTRY_FAILURE,
-
+  LOAD_TIMEENTRIES_FAILURE
 } from '../constants/MainPage';
 
 import {
@@ -39,7 +31,7 @@ const API_QUEUE = 'issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%
  * @param  {function}   getState - redux lib function
  * @param  {string|number}   id - issue id
  */
-function getIssue(dispatch, getState, id) { //не вызывается нигде
+function getIssue(dispatch, getState, id) { // eslint-disable-line no-unused-vars
 
   const API_KEY = getState().app.user.api_key;
 
@@ -76,7 +68,7 @@ function getIssue(dispatch, getState, id) { //не вызывается нигд
  * @param  {string|number}   offset - offset for timeentries request
  * @param  {string|number}   timeEntriesSum - current step time entries sum
  */
-function getTimeEntries(user, issue, offset = 0, timeEntriesSum = 0) {
+function getTimeEntries(dispatch, user, issue, offset = 0, timeEntriesSum = 0) {
   let url = `${API_ROOT}/time_entries.json?key=${user.api_key}&issue_id=${issue.id}&user_id=${user.id}&limit=100&offset=${offset}`;
   return request.get(url)
     .then(res => {
@@ -90,7 +82,7 @@ function getTimeEntries(user, issue, offset = 0, timeEntriesSum = 0) {
       if (res.body.total_count > res.body.offset + res.body.limit) {
         let newOffset = offset + 100;
         res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
-        return getTimeEntries(user, issue, newOffset, timeEntriesSum);
+        return getTimeEntries(dispatch, user, issue, newOffset, timeEntriesSum);
       } else {
         res.body.time_entries.forEach(item => timeEntriesSum += item.hours);
         return {...issue, _timeEntriesSum: timeEntriesSum};
@@ -111,7 +103,6 @@ export function changeStatus(issue, status_id) {
   return (dispatch, getState) => {
 
     const API_KEY = getState().app.user.api_key;
-    const wasInProgress = (issue.status.id === status.IN_PROGRESS ? true : false);
 
     dispatch({
       type: CHANGE_STATUS_REQUEST,
@@ -189,7 +180,7 @@ export function getIssuesQueue() {
           let timeEntreisPromisesArr =[];
 
           inProgressFirst.forEach(issue => {
-            timeEntreisPromisesArr.push( getTimeEntries(user, issue) );
+            timeEntreisPromisesArr.push( getTimeEntries(dispatch, user, issue) );
           });
 
           Promise.all(timeEntreisPromisesArr).then(inProgressFirst => {

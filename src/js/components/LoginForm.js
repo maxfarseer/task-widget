@@ -22,12 +22,12 @@ export default class LoginForm extends Component {
 
   render() {
     return (
-      <div className="loginform">
+      <div className='loginform'>
         <p>Please login</p>
         <form onSubmit={this.handleSubmitClick}>
-          <input className="loginform-input" type='text' ref='username' placeholder='username' />
-          <input className="loginform-input" type='password' ref='pass' placeholder='password'/>
-          <button className="loginform-btn">Login</button>
+          <input className='loginform-input' type='text' ref='username' placeholder='username' />
+          <input className='loginform-input' type='password' ref='pass' placeholder='password'/>
+          <button className='loginform-btn'>Login</button>
         </form>
       </div>
     );
