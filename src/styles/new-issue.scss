@@ -1,0 +1,41 @@
+.new-issue {
+  width: 100%;
+  height: 201px;
+  background: #FFF;
+  position: absolute;
+  z-index: 1;
+}
+.new-issue__input {
+  width: 98%;
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+.new-issue__textarea {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  width: 98%;
+  height: 70px;
+  border-color: #CCC;
+}
+.fa-plus-circle {
+  cursor: pointer;
+  transition: transform .2s ease-in, color .2s ease-in;
+}
+.fa-plus-circle_rotate {
+  transform: rotate(135deg);
+}
+.new-issue__btn {
+  float: right;
+  cursor: pointer;
+  background: #FFF;
+  color: #15B9F0;
+  border: 1px solid #15B9F0;
+  transition: all .2s ease-in;
+  padding: 5px;
+  margin: 2px 0 0 0;
+  &:hover {
+    background: #15B9F0;
+    color: #FFF;
+  }
+}

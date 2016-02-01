@@ -4,7 +4,9 @@ import {
   CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_PROBLEM, //problem from redmine (issue logic). Not allowed to change status and others
   GET_ISSUES_QUEUE_REQUEST,
-  GET_ISSUES_QUEUE_SUCCESS
+  GET_ISSUES_QUEUE_SUCCESS,
+  TOGGLE_NEW_ISSUE,
+  GET_PROJECTS_SUCCESS
 } from '../constants/MainPage';
 
 const initialState = {
@@ -13,7 +15,12 @@ const initialState = {
     inProgressTasksLength: 0,
     otherTasksLength: 0
   },
-  fetching: false
+  fetching: false,
+  newIssue: {
+    isActive: false,
+    projects: [],
+    users: []
+  }
 };
 
 export default function mainpage(state = initialState, action) {
@@ -43,6 +50,12 @@ export default function mainpage(state = initialState, action) {
       let nextIssuesData = {...state.issuesData, issuesQueue: nextIssuesQueue};
 
       return {...state, issuesData: nextIssuesData, fetching: false};
+
+    case TOGGLE_NEW_ISSUE:
+      return { ...state, newIssue: { ...state.newIssue, isActive: !state.newIssue.isActive} }
+
+    case GET_PROJECTS_SUCCESS:
+      return { ...state, newIssue: { ...state.newIssue, projects: action.payload} }
 
     default:
       return state;

@@ -11,7 +11,19 @@ import {
   GET_ISSUES_QUEUE_SUCCESS,
   GET_ISSUES_QUEUE_FAILURE,
 
-  LOAD_TIMEENTRIES_FAILURE
+  LOAD_TIMEENTRIES_FAILURE,
+
+  TOGGLE_NEW_ISSUE,
+
+  CREATE_NEW_ISSUE_REQUEST,
+  CREATE_NEW_ISSUE_SUCCESS,
+  CREATE_NEW_ISSUE_FAILURE,
+  CREATE_NEW_ISSUE_PROBLEM,
+
+  GET_PROJECTS_REQUEST,
+  GET_PROJECTS_SUCCESS,
+  GET_PROJECTS_FAILURE,
+  GET_PROJECTS_PROBLEM
 } from '../constants/MainPage';
 
 import {
@@ -206,6 +218,97 @@ export function getIssuesQueue() {
           if (tryAgain) {
             getIssuesQueue()(dispatch, getState);
           }
+        }
+      })
+  }
+}
+
+export function toggleNewIssue() {
+  return {
+    type: TOGGLE_NEW_ISSUE
+  }
+}
+
+export function createNewIssue(newIssue) {
+  return (dispatch, getState) => {
+
+    dispatch({
+      type: CREATE_NEW_ISSUE_REQUEST,
+      meta: {
+        remote: true
+      }
+    })
+
+    const API_KEY = getState().app.user.api_key;
+
+    request.post(`${API_ROOT}/issues.json?key=${API_KEY}`)
+      .set('Content-Type', 'application/json')
+      .send({issue: newIssue})
+      .then(res => {
+        if (!res.ok) {
+          dispatch({
+            type: CREATE_NEW_ISSUE_FAILURE,
+            payload: new Error('create new issue failure'),
+            error: true
+          });
+        } else {
+          dispatch({
+            type: CREATE_NEW_ISSUE_SUCCESS,
+            payload: res.body
+          });
+        }
+      }, err => {
+        if (err.status === 401) {
+          alert('Your session has expired');
+          logout()(dispatch, getState);
+        } else {
+          dispatch({
+            type: CREATE_NEW_ISSUE_PROBLEM,
+            payload: err.body.errors,
+            error: true
+          });
+        }
+      })
+
+  }
+}
+
+export function getProjects() {
+  return (dispatch, getState) => {
+
+    dispatch({
+      type: GET_PROJECTS_REQUEST,
+      meta: {
+        remote: true
+      }
+    })
+
+    const API_KEY = getState().app.user.api_key;
+
+    request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=100`)
+      .then(res => {
+        if (!res.ok) {
+          dispatch({
+            type: GET_PROJECTS_FAILURE,
+            payload: new Error('create new issue failure'),
+            error: true
+          });
+        } else {
+          dispatch({
+            type: GET_PROJECTS_SUCCESS,
+            payload: res.body.projects //TODO - limit 100 + новый запрос, как у TE
+          });
+        }
+      }, err => {
+        if (err.status === 401) {
+          alert('Your session has expired');
+          logout()(dispatch, getState);
+        } else {
+          dispatch({
+            type: GET_PROJECTS_PROBLEM,
+            payload: err.body.errors,
+            error: true
+          });
         }
       })
   }

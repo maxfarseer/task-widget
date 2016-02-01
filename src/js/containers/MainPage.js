@@ -1,33 +1,43 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as MainPageActions from '../actions/MainPageActions';
-import {logout} from '../actions/LoginPageActions';
-import * as status from '../constants/Statuses_ids';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as MainPageActions from '../actions/MainPageActions'
+import {logout} from '../actions/LoginPageActions'
+import * as status from '../constants/Statuses_ids'
 
-import Task from '../components/Task';
+import Task from '../components/Task'
+import NewIssue from '../components/NewIssue'
 import {
   API_ROOT
-} from '../constants/Secret';
+} from '../constants/Secret'
 
 class MainPage extends Component {
   constructor(props) {
-    super(props);
-    this.handleChangeStatusClick = this.handleChangeStatusClick.bind(this);
-    this.handleRefreshClick = this.handleRefreshClick.bind(this);
+    super(props)
+    this.handleChangeStatusClick = this.handleChangeStatusClick.bind(this)
+    this.handleRefreshClick = this.handleRefreshClick.bind(this)
   }
 
   componentWillMount() {
-    this.props.actions.getIssuesQueue();
+    this.props.actions.getIssuesQueue()
+    this.props.actions.getProjects()
     window.kgtrckr.logout = this.props.logout; //for developers
   }
 
   handleChangeStatusClick(task,status) {
-    this.props.actions.changeStatus(task, status);
+    this.props.actions.changeStatus(task, status)
   }
 
   handleRefreshClick(task) {
-    this.props.actions.getIssuesQueue(task);
+    this.props.actions.getIssuesQueue(task)
+  }
+
+  handleNewIssueClick() {
+    this.props.actions.toggleNewIssue()
+  }
+
+  handleCreateIssueClick(issue) {
+    this.props.actions.createNewIssue(issue)
   }
 
   _makeTaskComponent(tasksQueue) {
@@ -40,7 +50,7 @@ class MainPage extends Component {
   }
 
   render() {
-    const { fetching } = this.props.mainpage;
+    const { fetching, newIssue } = this.props.mainpage;
     const { issuesQueue, otherTasksLength } = this.props.mainpage.issuesData;
 
     let tasksInProgress = [],
@@ -64,11 +74,21 @@ class MainPage extends Component {
           <div className='stripe cf'>
             <div className='stripe__left'>В работе</div>
             <div className='stripe__right'>
+              <i
+                className={'fa ' + (newIssue.isActive ? 'fa-plus-circle fa-plus-circle_rotate':'fa-plus-circle')}
+                onClick={::this.handleNewIssueClick}>
+              </i>{' '}
               <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>
             </div>
           </div>
         </div>
         <div className='task-queue task-queue_inprogress'>
+          {
+            newIssue.isActive ?
+              <NewIssue createIssueClick={::this.handleCreateIssueClick} projects={newIssue.projects} />
+            :
+              ''
+          }
           {tasksInProgress}
         </div>
         <div className='stripe-wrapper'>
