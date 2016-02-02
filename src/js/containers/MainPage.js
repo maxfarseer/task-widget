@@ -40,6 +40,10 @@ class MainPage extends Component {
     this.props.actions.createNewIssue(issue)
   }
 
+  handleGetMemberships(project_id) {
+    this.props.actions.getMemberships(project_id)
+  }
+
   _makeTaskComponent(tasksQueue) {
     return tasksQueue.map((el,i) => {
       return <Task
@@ -85,7 +89,11 @@ class MainPage extends Component {
         <div className='task-queue task-queue_inprogress'>
           {
             newIssue.isActive ?
-              <NewIssue createIssueClick={::this.handleCreateIssueClick} projects={newIssue.projects} />
+              <NewIssue
+                projects={newIssue.projects}
+                memberships = {newIssue.memberships}
+                createIssueClick={::this.handleCreateIssueClick}
+                getMemberships={::this.handleGetMemberships} />
             :
               ''
           }

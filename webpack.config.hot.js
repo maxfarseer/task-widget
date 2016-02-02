@@ -2,6 +2,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 var config = {
   devtool: 'eval',
@@ -44,7 +45,8 @@ var config = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new NpmInstallPlugin()
   ]
 };
 

@@ -11,6 +11,12 @@
   font-size: 14px;
   line-height: 16px;
 }
+.new-issue__select {
+  width: 100%;
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  line-height: 16px;
+}
 .new-issue__textarea {
   margin: 5px 0 0 0;
   font-size: 14px;
@@ -38,4 +44,31 @@
     background: #15B9F0;
     color: #FFF;
   }
+}
+
+// override react-select
+.Select-control {
+  border-radius: 0;
+}
+.Select-placeholder, :not(.Select--multi) > .Select-control .Select-value {
+  line-height: 24px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.has-value .Select-placeholder, :not(.Select--multi) > .Select-control .Select-value {
+  color: #000;
+}
+.is-open .Select-placeholder {
+  color: #AAA;
+}
+.Select-control {
+  height: 24px;
+}
+.Select-input {
+  height: 24px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.Select-input > input {
+  height: 24px;
 }

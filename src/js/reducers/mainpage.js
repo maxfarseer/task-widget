@@ -6,7 +6,8 @@ import {
   GET_ISSUES_QUEUE_REQUEST,
   GET_ISSUES_QUEUE_SUCCESS,
   TOGGLE_NEW_ISSUE,
-  GET_PROJECTS_SUCCESS
+  GET_PROJECTS_SUCCESS,
+  GET_MEMBERSHIPS_SUCCESS
 } from '../constants/MainPage';
 
 const initialState = {
@@ -19,7 +20,7 @@ const initialState = {
   newIssue: {
     isActive: false,
     projects: [],
-    users: []
+    memberships: []
   }
 };
 
@@ -56,6 +57,9 @@ export default function mainpage(state = initialState, action) {
 
     case GET_PROJECTS_SUCCESS:
       return { ...state, newIssue: { ...state.newIssue, projects: action.payload} }
+
+    case GET_MEMBERSHIPS_SUCCESS:
+      return { ...state, newIssue: { ...state.newIssue, memberships: action.payload} }
 
     default:
       return state;

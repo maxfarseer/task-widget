@@ -1,23 +1,23 @@
 import React, { PropTypes, Component } from 'react'
+import Select from 'react-select'
 import * as status from '../constants/Statuses_ids'
 import { findDOMNode } from 'react-dom'
+import '../../styles/react-select.scss'
 import '../../styles/new-issue.scss'
 
 export default class NewIssue extends Component {
-
-  componentDidMount() {
-    console.log('mount')
-  }
-
-  componentWillUnmount() {
-    console.log('unmount')
+  constructor(props) {
+    super(props);
+    this.state = {
+      project_id: window.localStorage.getItem('kgtckr_project_id') || ''
+    }
   }
 
   onBtnClick() {
     let issue = {
-      project_id: 172,
+      project_id: this.refs.selectProject.refs.value.value, // because use react-select
+      assigned_to_id: this.refs.selectAssignee.refs.value.value, // because use react-select
       subject: findDOMNode(this.refs.subject).value,
-      //assignee: findDOMNode(this.refs.assignee).value,
       description: findDOMNode(this.refs.desc).value,
       status_id: status.NEW,
       tracker_id: 2, // 'Task'
@@ -26,12 +26,39 @@ export default class NewIssue extends Component {
     this.props.createIssueClick(issue);
   }
 
+  chooseProject(project_id) {
+    if (project_id) {
+      this.setState({project_id: project_id}, () => window.localStorage.setItem('kgtckr_project_id',project_id))
+      this.props.getMemberships(project_id)
+    }
+  }
+
   render() {
+    const { projects, memberships } = this.props
     return (
       <div className='new-issue'>
-        <input className='new-issue__input' type='text' placeholder='Project' ref='project'/>
+
+        <Select
+          labelKey='name'
+          valueKey='id'
+          className='new-issue__select'
+          name='choose-project'
+          value={this.state.project_id}
+          ref='selectProject'
+          options={projects}
+          onChange={::this.chooseProject} />
+
         <input className='new-issue__input' type='text' placeholder='Issue subject' ref='subject'/>
-        <input className='new-issue__input' type='text' placeholder='Assignee' ref='assignee'/>
+
+        <Select
+          labelKey='_username'
+          valueKey='_user_id'
+          className='new-issue__select'
+          name='choose-assignee'
+          value=''
+          ref='selectAssignee'
+          options={memberships} />
+
         <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc'></textarea>
         <button className='new-issue__btn' onClick={::this.onBtnClick}>Create Issue</button>
       </div>
@@ -40,6 +67,8 @@ export default class NewIssue extends Component {
 }
 
 NewIssue.propTypes = {
+  projects: PropTypes.array.isRequired,
+  memberships: PropTypes.array.isRequired,
   createIssueClick: PropTypes.func.isRequired,
-  projects: PropTypes.array.isRequired
+  getMemberships: PropTypes.func.isRequired
 }

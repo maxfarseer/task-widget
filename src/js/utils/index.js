@@ -5,3 +5,17 @@ export function makeHumanTime(serverTime) {
   minutes = minutes < 10 ? '0'+minutes : minutes;
   return {hours, minutes};
 }
+
+export function makeMembershipsForReactSelect(memberships) {
+  memberships.forEach(item => {
+    if (item.user) {
+      item._username = item.user.name
+      item._user_id = item.user.id
+    } else if (item.group) {
+      item._username = item.group.name;
+      item._user_id = item.group.id;
+    }
+  })
+
+  return memberships
+}
