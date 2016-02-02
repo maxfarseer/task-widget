@@ -1,9 +1,27 @@
+.newissue-appear {
+  opacity: 0;
+  top: 20px;
+}
+.newissue-appear.newissue-appear-active {
+  opacity: 1;
+  top: 37px;
+  transition: opacity 300ms ease-in, top 300ms ease-in;
+}
+.newissue-leave {
+  opacity: 1;
+}
+.newissue-leave.newissue-leave-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+}
+
 .new-issue {
   width: 100%;
-  height: 201px;
+  height: 205px;
   background: #FFF;
   position: absolute;
   z-index: 1;
+  border-bottom: 4px solid #CCC;
 }
 .new-issue__input {
   width: 98%;
@@ -21,7 +39,7 @@
   margin: 5px 0 0 0;
   font-size: 14px;
   width: 98%;
-  height: 70px;
+  height: 64px;
   border-color: #CCC;
 }
 .fa-plus-circle {

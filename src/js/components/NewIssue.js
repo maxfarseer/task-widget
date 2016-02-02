@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import TransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Select from 'react-select'
 import * as status from '../constants/Statuses_ids'
 import { findDOMNode } from 'react-dom'
@@ -36,32 +37,38 @@ export default class NewIssue extends Component {
   render() {
     const { projects, memberships } = this.props
     return (
-      <div className='new-issue'>
+      <TransitionGroup transitionName='newissue'
+        transitionAppear={true}
+        transitionAppearTimeout={300} transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}>
 
-        <Select
-          labelKey='name'
-          valueKey='id'
-          className='new-issue__select'
-          name='choose-project'
-          value={this.state.project_id}
-          ref='selectProject'
-          options={projects}
-          onChange={::this.chooseProject} />
+        <div className='new-issue'>
 
-        <input className='new-issue__input' type='text' placeholder='Issue subject' ref='subject'/>
+          <Select
+            labelKey='name'
+            valueKey='id'
+            className='new-issue__select'
+            name='choose-project'
+            value={this.state.project_id}
+            ref='selectProject'
+            options={projects}
+            onChange={::this.chooseProject} />
 
-        <Select
-          labelKey='_username'
-          valueKey='_user_id'
-          className='new-issue__select'
-          name='choose-assignee'
-          value=''
-          ref='selectAssignee'
-          options={memberships} />
+          <input className='new-issue__input' type='text' placeholder='Issue subject' ref='subject'/>
 
-        <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc'></textarea>
-        <button className='new-issue__btn' onClick={::this.onBtnClick}>Create Issue</button>
-      </div>
+          <Select
+            labelKey='_username'
+            valueKey='_user_id'
+            className='new-issue__select'
+            name='choose-assignee'
+            value=''
+            ref='selectAssignee'
+            options={memberships} />
+
+          <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc'></textarea>
+          <button className='new-issue__btn' onClick={::this.onBtnClick}>Create Issue</button>
+        </div>
+      </TransitionGroup>
     )
   }
 }
