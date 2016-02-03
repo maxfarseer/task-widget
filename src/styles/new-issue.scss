@@ -23,6 +23,17 @@
   z-index: 1;
   border-bottom: 4px solid #CCC;
 }
+.new-issue_errors {
+  padding: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.new-issue_errors {
+  line-height: 18px;
+}
+.error-item {
+
+}
 .new-issue__input {
   width: 98%;
   margin: 5px 0 0 0;
@@ -61,6 +72,15 @@
   &:hover {
     background: #15B9F0;
     color: #FFF;
+  }
+  &:disabled {
+    color: #CCC;
+    border-color: #CCC;
+    &:hover {
+      color: #CCC;
+      border-color: #CCC;
+      background: #FFF;
+    }
   }
 }
 

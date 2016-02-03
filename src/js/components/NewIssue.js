@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react'
-import TransitionGroup from 'react/lib/ReactCSSTransitionGroup';
+import TransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import Select from 'react-select'
 import * as status from '../constants/Statuses_ids'
 import { findDOMNode } from 'react-dom'
+import {API_ROOT} from '../constants/Secret'
 import '../../styles/react-select.scss'
 import '../../styles/new-issue.scss'
 
@@ -42,13 +43,21 @@ export default class NewIssue extends Component {
   }
 
   render() {
-    const { projects, memberships } = this.props
-    return (
-      <TransitionGroup transitionName='newissue'
-        transitionAppear={true}
-        transitionAppearTimeout={200} transitionEnterTimeout={200}
-        transitionLeaveTimeout={200}>
+    const { projects, memberships, errors } = this.props
+    let project_id = this.state.project_id
+    let template;
 
+    if (errors.length > 0) {
+      let errorsP = errors.map((err,i) => <p key={i}>- {err};</p>)
+      template = (
+        <div className='new-issue new-issue_errors'>
+          <p>Errors: </p>
+          {errorsP}
+          <p><a href={`${API_ROOT}/projects/${project_id}/issues/new`} target='_blank'>Try in redmine</a></p>
+        </div>
+      )
+    } else {
+      template = (
         <div className='new-issue'>
 
           <Select
@@ -58,6 +67,7 @@ export default class NewIssue extends Component {
             name='choose-project'
             value={this.state.project_id}
             ref='selectProject'
+            placeholder='Project...'
             options={projects}
             onChange={::this.chooseProject} />
 
@@ -70,11 +80,23 @@ export default class NewIssue extends Component {
             name='choose-assignee'
             value=''
             ref='selectAssignee'
+            placeholder='Assignee...'
             options={memberships} />
 
           <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc'></textarea>
           <button className='new-issue__btn' onClick={::this.onBtnClick}>Create Issue</button>
         </div>
+      )
+    }
+
+    return (
+      <TransitionGroup transitionName='newissue'
+        transitionAppear={true}
+        transitionAppearTimeout={200} transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}>
+
+        {template}
+
       </TransitionGroup>
     )
   }

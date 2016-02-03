@@ -8,7 +8,8 @@ import {
   TOGGLE_NEW_ISSUE,
   GET_PROJECTS_SUCCESS,
   GET_MEMBERSHIPS_REQUEST,
-  GET_MEMBERSHIPS_SUCCESS
+  GET_MEMBERSHIPS_SUCCESS,
+  CREATE_NEW_ISSUE_PROBLEM
 } from '../constants/MainPage';
 
 const initialState = {
@@ -21,7 +22,8 @@ const initialState = {
   newIssue: {
     isActive: false,
     projects: [],
-    memberships: []
+    memberships: [],
+    errors: []
   }
 };
 
@@ -55,13 +57,16 @@ export default function mainpage(state = initialState, action) {
       return {...state, issuesData: nextIssuesData, fetching: false};
 
     case TOGGLE_NEW_ISSUE:
-      return { ...state, newIssue: { ...state.newIssue, isActive: !state.newIssue.isActive} }
+      return { ...state, newIssue: { ...state.newIssue, isActive: !state.newIssue.isActive, errors: []} }
 
     case GET_PROJECTS_SUCCESS:
       return { ...state, newIssue: { ...state.newIssue, projects: action.payload} }
 
     case GET_MEMBERSHIPS_SUCCESS:
       return { ...state, newIssue: { ...state.newIssue, memberships: action.payload}, fetching: false }
+
+    case CREATE_NEW_ISSUE_PROBLEM:
+      return { ...state, newIssue: {...state.newIssue, errors: action.payload} }
 
     default:
       return state;

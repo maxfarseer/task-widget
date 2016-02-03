@@ -92,6 +92,7 @@ class MainPage extends Component {
               <NewIssue
                 projects={newIssue.projects}
                 memberships = {newIssue.memberships}
+                errors = {newIssue.errors}
                 createIssueClick={::this.handleCreateIssueClick}
                 getMemberships={::this.handleGetMemberships} />
             :
