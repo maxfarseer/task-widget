@@ -39,8 +39,8 @@ export default class NewIssue extends Component {
     return (
       <TransitionGroup transitionName='newissue'
         transitionAppear={true}
-        transitionAppearTimeout={300} transitionEnterTimeout={300}
-        transitionLeaveTimeout={300}>
+        transitionAppearTimeout={200} transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}>
 
         <div className='new-issue'>
 

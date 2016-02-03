@@ -5,14 +5,14 @@
 .newissue-appear.newissue-appear-active {
   opacity: 1;
   top: 37px;
-  transition: opacity 300ms ease-in, top 300ms ease-in;
+  transition: opacity .2s ease-in, top .2s ease-in;
 }
 .newissue-leave {
   opacity: 1;
 }
 .newissue-leave.newissue-leave-active {
   opacity: 0;
-  transition: opacity 300ms ease-in;
+  transition: opacity .2s ease-in;
 }
 
 .new-issue {

@@ -21,7 +21,7 @@ import {
   CREATE_NEW_ISSUE_PROBLEM,
 
   GET_PROJECTS_REQUEST,
-  GET_PROJECTS_SUCCESS,
+  GET_PROJECTS_SUCCESS, //eslint-disable-line no-unused-vars
   GET_PROJECTS_FAILURE,
   GET_PROJECTS_PROBLEM,
 
@@ -46,8 +46,8 @@ const API_QUEUE = 'issues.json?c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%
 
 /**
  * get issue
- * @param  {function}   dispatch - redux lib function
- * @param  {function}   getState - redux lib function
+ * @param  {Function}   dispatch - redux lib function
+ * @param  {Function}   getState - redux lib function
  * @param  {string|number}   id - issue id
  */
 function getIssue(dispatch, getState, id) { // eslint-disable-line no-unused-vars
@@ -82,6 +82,7 @@ function getIssue(dispatch, getState, id) { // eslint-disable-line no-unused-var
 
 /**
  * get time entreis
+ * @param  {Function}   dispatch - redux store.dispatch method
  * @param  {Object}   user - redmine user
  * @param  {Object}   issue - issue
  * @param  {string|number}   offset - offset for timeentries request
@@ -221,7 +222,7 @@ export function getIssuesQueue() {
           alert('Your session has expired');
           logout()(dispatch, getState);
         } else {
-          let tryAgain = window.confirm('Network error with load issues queue, try again?');
+          let tryAgain = window.confirm(`Can not load issues queue: error ${err.status}`);
           if (tryAgain) {
             getIssuesQueue()(dispatch, getState);
           }
@@ -292,32 +293,57 @@ export function getProjects() {
 
     const API_KEY = getState().app.user.api_key;
 
-    request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=100`)
-      .then(res => {
-        if (!res.ok) {
-          dispatch({
-            type: GET_PROJECTS_FAILURE,
-            payload: new Error('create new issue failure'),
-            error: true
-          });
-        } else {
-          dispatch({
-            type: GET_PROJECTS_SUCCESS,
-            payload: res.body.projects //TODO - limit 100 + новый запрос, как у TE
-          });
-        }
-      }, err => {
-        if (err.status === 401) {
-          alert('Your session has expired');
-          logout()(dispatch, getState);
-        } else {
-          dispatch({
-            type: GET_PROJECTS_PROBLEM,
-            payload: err.body.errors,
-            error: true
-          });
-        }
-      })
+    function getProjects(offset = 0) {
+      return request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=1&offset=${offset}`)
+    }
+
+    function collectProjects() {
+      let projects = [];
+      return new Promise((resolve, reject) => {
+        (function loop(offset) {
+
+          getProjects(offset)
+            .then(res => {
+              if (!res.ok) {
+                dispatch({
+                  type: GET_PROJECTS_FAILURE,
+                  payload: new Error('get projects failure'),
+                  error: true
+                });
+                alert('Redmine server problem: can\'t collect projects')
+              }
+
+              if (res.body.total_count > res.body.offset + res.body.limit) {
+                [].push.apply(projects,res.body.projects)
+                offset += 1
+                loop(offset)
+              } else {
+                [].push.apply(projects,res.body.projects)
+
+                dispatch({
+                  type: GET_PROJECTS_SUCCESS,
+                  payload: projects
+                });
+
+              }
+            }, err => {
+              if (err.status === 401) {
+                alert('Your session has expired')
+                logout()(dispatch, getState)
+              } else {
+                dispatch({
+                  type: GET_PROJECTS_PROBLEM,
+                  error: true
+                })
+                alert(`Can not collect projects: error ${err.status}`)
+              }
+            }).catch(reject)
+
+        })(0)
+      });
+    }
+
+    collectProjects()
   }
 }
 
