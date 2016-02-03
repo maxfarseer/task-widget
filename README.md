@@ -20,28 +20,24 @@ open [localhost:3000](http://localhost:3000)
 
 3) Start desktop
 
-    npm install webpack -g
+    npm install electron-prebuilt
 
 a) copy webpack static config to main config
 
     cp webpack.config.static.js webpack.config.js
 
-b) create main .js file
+b) create static bundle.js
 
     webpack
 
-c) create & start desktop version
+c) start desktop version
 
-    npm install nw -g
     cd desktop/
-    npm install
-    nw
+    ./node_modules/.bin/electron .
 
 --
 
-4) create build for OS X
+4) [create build for OS X](http://electron.atom.io/docs/v0.36.5/tutorial/application-distribution/)
 
-    npm install nw-builder -g
-    nwbuild -p osx32 -v 0.12.3 /Users/user/developments/local/task-widget/desktop
 
 ![Tracker for redmine](http://cs633516.vk.me/v633516237/f8d7/VXegWMdD3A0.jpg)
