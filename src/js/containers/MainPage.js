@@ -78,11 +78,11 @@ class MainPage extends Component {
           <div className='stripe cf'>
             <div className='stripe__left'>В работе</div>
             <div className='stripe__right'>
+              <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>{' '}
               <i
                 className={'fa ' + (newIssue.isActive ? 'fa-plus-circle fa-plus-circle_rotate':'fa-plus-circle')}
                 onClick={::this.handleNewIssueClick}>
-              </i>{' '}
-              <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>
+              </i>
             </div>
           </div>
         </div>

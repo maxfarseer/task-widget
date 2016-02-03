@@ -7,6 +7,7 @@ import {
   GET_ISSUES_QUEUE_SUCCESS,
   TOGGLE_NEW_ISSUE,
   GET_PROJECTS_SUCCESS,
+  GET_MEMBERSHIPS_REQUEST,
   GET_MEMBERSHIPS_SUCCESS
 } from '../constants/MainPage';
 
@@ -30,6 +31,7 @@ export default function mainpage(state = initialState, action) {
 
     case CHANGE_STATUS_REQUEST:
     case GET_ISSUES_QUEUE_REQUEST:
+    case GET_MEMBERSHIPS_REQUEST:
       return {...state, fetching: true}
 
     case GET_ISSUES_QUEUE_SUCCESS:
@@ -59,7 +61,7 @@ export default function mainpage(state = initialState, action) {
       return { ...state, newIssue: { ...state.newIssue, projects: action.payload} }
 
     case GET_MEMBERSHIPS_SUCCESS:
-      return { ...state, newIssue: { ...state.newIssue, memberships: action.payload} }
+      return { ...state, newIssue: { ...state.newIssue, memberships: action.payload}, fetching: false }
 
     default:
       return state;

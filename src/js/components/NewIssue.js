@@ -14,6 +14,13 @@ export default class NewIssue extends Component {
     }
   }
 
+  componentWillMount() {
+    const project_id = window.localStorage.getItem('kgtckr_project_id')
+    if (project_id) {
+      this.props.getMemberships(project_id)
+    }
+  }
+
   onBtnClick() {
     let issue = {
       project_id: this.refs.selectProject.refs.value.value, // because use react-select

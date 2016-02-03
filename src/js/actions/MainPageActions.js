@@ -293,16 +293,16 @@ export function getProjects() {
 
     const API_KEY = getState().app.user.api_key;
 
-    function getProjects(offset = 0) {
+    function getData(offset = 0) {
       return request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=100&offset=${offset}`)
     }
 
-    function collectProjects() {
+    function collectData() {
       let projects = [];
       return new Promise((resolve, reject) => {
         (function loop(offset) {
 
-          getProjects(offset)
+          getData(offset)
             .then(res => {
               if (!res.ok) {
                 dispatch({
@@ -343,7 +343,7 @@ export function getProjects() {
       });
     }
 
-    collectProjects()
+    collectData()
   }
 }
 
@@ -359,32 +359,58 @@ export function getMemberships(project_id) {
 
     const API_KEY = getState().app.user.api_key;
 
-    request.get(`${API_ROOT}/projects/${project_id}/memberships.json?key=${API_KEY}&limit=100`)
-      .then(res => {
-        if (!res.ok) {
-          dispatch({
-            type: GET_MEMBERSHIPS_FAILURE,
-            payload: new Error('create new issue failure'),
-            error: true
-          });
-        } else {
-          let memberships = makeMembershipsForReactSelect(res.body.memberships);
-          dispatch({
-            type: GET_MEMBERSHIPS_SUCCESS,
-            payload: memberships //TODO - limit 100 + новый запрос, как у TE
-          });
-        }
-      }, err => {
-        if (err.status === 401) {
-          alert('Your session has expired');
-          logout()(dispatch, getState);
-        } else {
-          dispatch({
-            type: GET_MEMBERSHIPS_PROBLEM,
-            payload: err.body.errors,
-            error: true
-          });
-        }
-      })
+    function getData(offset = 0) {
+      return request.get(`${API_ROOT}/projects/${project_id}/memberships.json?key=${API_KEY}&limit=100&offset=${offset}`)
+    }
+
+    function collectData() {
+      let memberships = [];
+      return new Promise((resolve, reject) => {
+        (function loop(offset) {
+
+          getData(offset)
+            .then(res => {
+              if (!res.ok) {
+                dispatch({
+                  type: GET_MEMBERSHIPS_FAILURE,
+                  payload: new Error('get memberships failure'),
+                  error: true
+                });
+                alert('Redmine server problem: can\'t collect memberships')
+              }
+
+              if (res.body.total_count > res.body.offset + res.body.limit) {
+                [].push.apply(memberships,res.body.memberships)
+                offset += 100
+                loop(offset)
+              } else {
+                [].push.apply(memberships,res.body.memberships)
+
+                let membershipsForSelect = makeMembershipsForReactSelect(memberships);
+
+                dispatch({
+                  type: GET_MEMBERSHIPS_SUCCESS,
+                  payload: membershipsForSelect
+                });
+
+              }
+            }, err => {
+              if (err.status === 401) {
+                alert('Your session has expired')
+                logout()(dispatch, getState)
+              } else {
+                dispatch({
+                  type: GET_MEMBERSHIPS_PROBLEM,
+                  error: true
+                })
+                alert(`Can not collect memberships: error ${err.status}`)
+              }
+            }).catch(reject)
+
+        })(0)
+      });
+    }
+
+    collectData()
   }
 }
