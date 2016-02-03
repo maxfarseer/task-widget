@@ -294,7 +294,7 @@ export function getProjects() {
     const API_KEY = getState().app.user.api_key;
 
     function getProjects(offset = 0) {
-      return request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=1&offset=${offset}`)
+      return request.get(`${API_ROOT}/projects.json?key=${API_KEY}&limit=100&offset=${offset}`)
     }
 
     function collectProjects() {
@@ -315,7 +315,7 @@ export function getProjects() {
 
               if (res.body.total_count > res.body.offset + res.body.limit) {
                 [].push.apply(projects,res.body.projects)
-                offset += 1
+                offset += 100
                 loop(offset)
               } else {
                 [].push.apply(projects,res.body.projects)
