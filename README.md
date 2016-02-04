@@ -39,5 +39,7 @@ c) start desktop version
 
 4) [create build for OS X](http://electron.atom.io/docs/v0.36.5/tutorial/application-distribution/)
 
+    npm install -g electron-packager
+    electron-packager . Tracker --platform=darwin --arch=x64 --version=0.36.5 --out=./build
 
 ![Tracker for redmine](http://cs633516.vk.me/v633516237/f8d7/VXegWMdD3A0.jpg)
