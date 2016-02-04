@@ -147,12 +147,18 @@ export function changeStatus(issue, status_id) {
         if (err.status === 401) {
           alert('Your session has expired');
           logout()(dispatch, getState);
-        } else {
+        } else  if (err.body && err.body.errors) {
           dispatch({
             type: CHANGE_STATUS_PROBLEM,
             payload: {...issue, _error: true, _errorArr: err.body.errors},
             error: true
           });
+        } else {
+          if (err.status) {
+            alert(`Can not change status: error ${err.status}`)
+          } else {
+            alert(`Can not change status: network connection problem`)
+          }
         }
       })
     }
@@ -269,12 +275,18 @@ export function createNewIssue(newIssue) {
         if (err.status === 401) {
           alert('Your session has expired');
           logout()(dispatch, getState);
-        } else {
+        } else if (err.body && err.body.errors) {
           dispatch({
             type: CREATE_NEW_ISSUE_PROBLEM,
             payload: err.body.errors,
             error: true
           });
+        } else {
+          if (err.status) {
+            alert(`Can not create issue: error ${err.status}`)
+          } else {
+            alert(`Can not create issue: network connection problem`)
+          }
         }
       })
 
@@ -335,7 +347,12 @@ export function getProjects() {
                   type: GET_PROJECTS_PROBLEM,
                   error: true
                 })
-                alert(`Can not collect projects: error ${err.status}`)
+                if (err.status) {
+                  alert(`Can not collect projects: error ${err.status}`)
+                } else {
+                  alert(`Can not collect projects: network connection problem`)
+                }
+
               }
             }).catch(reject)
 
@@ -403,7 +420,11 @@ export function getMemberships(project_id) {
                   type: GET_MEMBERSHIPS_PROBLEM,
                   error: true
                 })
-                alert(`Can not collect memberships: error ${err.status}`)
+                if (err.status) {
+                  alert(`Can not collect memberships: error ${err.status}`)
+                } else {
+                  alert(`Can not collect memberships: network connection problem`)
+                }
               }
             }).catch(reject)
 
