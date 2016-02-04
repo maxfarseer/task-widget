@@ -49,11 +49,12 @@ export default class NewIssue extends Component {
 
     if (errors.length > 0) {
       let errorsP = errors.map((err,i) => <p key={i}>- {err};</p>)
+      let url = project_id ? `${API_ROOT}/projects/${project_id}/issues/new` : `${API_ROOT}/projects/`
       template = (
         <div className='new-issue new-issue_errors'>
           <p>Errors: </p>
           {errorsP}
-          <p><a href={`${API_ROOT}/projects/${project_id}/issues/new`} target='_blank'>Try in redmine</a></p>
+          <p><a href={url} target='_blank'>Try in redmine</a></p>
         </div>
       )
     } else {

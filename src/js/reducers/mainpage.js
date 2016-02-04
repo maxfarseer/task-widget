@@ -9,6 +9,8 @@ import {
   GET_PROJECTS_SUCCESS,
   GET_MEMBERSHIPS_REQUEST,
   GET_MEMBERSHIPS_SUCCESS,
+  CREATE_NEW_ISSUE_REQUEST,
+  CREATE_NEW_ISSUE_SUCCESS,
   CREATE_NEW_ISSUE_PROBLEM
 } from '../constants/MainPage';
 
@@ -66,7 +68,13 @@ export default function mainpage(state = initialState, action) {
       return { ...state, newIssue: { ...state.newIssue, memberships: action.payload}, fetching: false }
 
     case CREATE_NEW_ISSUE_PROBLEM:
-      return { ...state, newIssue: {...state.newIssue, errors: action.payload} }
+      return { ...state, newIssue: {...state.newIssue, isActive: true, errors: action.payload}, fetching: false }
+
+    case CREATE_NEW_ISSUE_REQUEST:
+      return { ...state, newIssue: {...state.newIssue, isActive: false}, fetching: true }
+
+    case CREATE_NEW_ISSUE_SUCCESS:
+      return { ...state, fetching: false }
 
     default:
       return state;
