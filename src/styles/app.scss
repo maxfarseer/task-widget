@@ -78,6 +78,11 @@ body {
 }
 
 //UPDATE from 17.12.2015 все что выше не проверял нужно ли еще
+.opacity-01 {
+  transition: all .3s ease-in;
+  opacity: .1;
+}
+
 .task-queue {
   max-height: 300px;
 }

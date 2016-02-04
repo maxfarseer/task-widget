@@ -11,6 +11,8 @@ import {
   API_ROOT
 } from '../constants/Secret'
 
+import classNames from 'classnames'
+
 class MainPage extends Component {
   constructor(props) {
     super(props)
@@ -76,7 +78,7 @@ class MainPage extends Component {
         <div className='stripe-wrapper'>
           <div className='badge'></div>
           <div className='stripe cf'>
-            <div className='stripe__left'>В работе</div>
+            <div className='stripe__left'>{newIssue.isActive ? 'Create' : 'In Progress'}</div>
             <div className='stripe__right'>
               <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>{' '}
               <i
@@ -86,30 +88,30 @@ class MainPage extends Component {
             </div>
           </div>
         </div>
-        <div className='task-queue task-queue_inprogress'>
-          {
-            newIssue.isActive ?
-              <NewIssue
-                projects={newIssue.projects}
-                memberships = {newIssue.memberships}
-                errors = {newIssue.errors}
-                createIssueClick={::this.handleCreateIssueClick}
-                getMemberships={::this.handleGetMemberships} />
-            :
-              ''
-          }
+        {
+          newIssue.isActive ?
+            <NewIssue
+              projects={newIssue.projects}
+              memberships = {newIssue.memberships}
+              errors = {newIssue.errors}
+              createIssueClick={::this.handleCreateIssueClick}
+              getMemberships={::this.handleGetMemberships} />
+          :
+            ''
+        }
+        <div className={ classNames('task-queue', 'task-queue_inprogress', { 'opacity-01': newIssue.isActive }) }>
           {tasksInProgress}
         </div>
-        <div className='stripe-wrapper'>
+        <div className={classNames('stripe-wrapper', { 'opacity-01': newIssue.isActive })}>
           <div className='badge'></div>
-          <div className='stripe'>Другие задачи</div>
+          <div className='stripe'>Other issues</div>
         </div>
-        <div className='task-queue'>
+        <div className={ classNames('task-queue', { 'opacity-01': newIssue.isActive }) }>
           {otherTasks}
         </div>
-        <div className='stripe-wrapper'>
+        <div className={classNames('stripe-wrapper', { 'opacity-01': newIssue.isActive })}>
           <div className='badge'></div>
-          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Все задачи ({otherTasksLength})</a></div>
+          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Another issues ({otherTasksLength})</a></div>
         </div>
       </div>
     );

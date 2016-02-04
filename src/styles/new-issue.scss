@@ -35,10 +35,11 @@
 
 }
 .new-issue__input {
-  width: 98%;
+  width: 97%;
   margin: 5px 0 0 0;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 19px;
+  padding-left: 5px;
 }
 .new-issue__select {
   width: 100%;
@@ -49,9 +50,10 @@
 .new-issue__textarea {
   margin: 5px 0 0 0;
   font-size: 14px;
-  width: 98%;
-  height: 64px;
+  width: 96%;
+  height: 63px;
   border-color: #CCC;
+  padding: 2px 5px;
 }
 .fa-plus-circle {
   cursor: pointer;
@@ -90,8 +92,8 @@
 }
 .Select-placeholder, :not(.Select--multi) > .Select-control .Select-value {
   line-height: 24px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .has-value .Select-placeholder, :not(.Select--multi) > .Select-control .Select-value {
   color: #000;
@@ -104,8 +106,8 @@
 }
 .Select-input {
   height: 24px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .Select-input > input {
   height: 24px;
