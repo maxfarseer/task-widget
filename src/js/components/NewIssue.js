@@ -22,6 +22,10 @@ export default class NewIssue extends Component {
     }
   }
 
+  componentDidMount() {
+    findDOMNode(this.refs.subject).focus()
+  }
+
   onBtnClick() {
     let issue = {
       project_id: this.refs.selectProject.refs.value.value, // because use react-select
