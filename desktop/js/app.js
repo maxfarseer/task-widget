@@ -1,5 +1,14 @@
 'use strict';
 
+//global
+window.APP = {
+  timers: {
+    logInterval: 1000*10 //10 sec
+  },
+  host: 'https://new-redmine-qa.kama.gs',
+  idleFlag: true
+};
+
 const remote = require('electron').remote;
 const app = remote.app;
 const Menu = remote.Menu;
@@ -91,6 +100,12 @@ var template = [
     ]
   },
   {
+    label: 'Issues',
+    submenu: [
+
+    ]
+  },
+  {
     label: 'Window',
     role: 'window',
     submenu: [
@@ -178,15 +193,7 @@ if (process.platform == 'darwin') {
 var trackerMenu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(trackerMenu);
 
-//global
-window.APP = {
-  timers: {
-    logInterval: 1000*10 //10 sec
-  },
-  host: 'https://new-redmine-qa.kama.gs',
-  idleFlag: true
-};
-
+const issuesMenu = trackerMenu.items[4];
 const shell = require('electron').shell;
 
 APP.showNoInprogressWarning = function() {
@@ -205,8 +212,6 @@ $(function() {
   $('body').on('issuesLoad', function(values) {
 
     console.log('issuesLoad');
-
-    debugger
 
     function makeHumanTime(serverTime) {
       if (serverTime) {
@@ -233,11 +238,12 @@ $(function() {
         },
         success: function() {
           window.localStorage.setItem(lsRecordName, hours);
+
           $el.attr('data-server-time', +$el.attr('data-server-time') + 0.05);
           var time = makeHumanTime( +$el.attr('data-server-time') );
-
           $('.te-hours',$el).text(time.hours);
           $('.te-minutes',$el).text(time.minutes);
+
         },
         error: function() {
           alert('Tracker: Problem with update time entry for issue with ID ' + id);
@@ -313,6 +319,21 @@ $(function() {
   $('body').on('logout', function() {
     global.clearInterval(APP.ticker);
     delete APP.ticker;
-    console.log(APP.ticker)
+    console.log(APP.ticker);
   });
+
+  $('body').on('createIssueSuccess', function(e) {
+    let issue = e.originalEvent.detail.issue;
+
+    let menuItem = new MenuItem({
+      label: ( issue.subject.length < 40 ? issue.subject : issue.subject.slice(0,37).concat('...') ),
+      click: function(item, focusedWindow) {
+        shell.openExternal(APP.host+'/issues/'+issue.id);
+      }
+    })
+
+    issuesMenu.submenu.insert(0, menuItem);
+    Menu.setApplicationMenu(trackerMenu);
+  });
+
 });

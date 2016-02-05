@@ -270,6 +270,8 @@ export function createNewIssue(newIssue) {
             type: CREATE_NEW_ISSUE_SUCCESS,
             payload: res.body
           });
+          let createIssueSuccess = new CustomEvent('createIssueSuccess', {'detail': res.body});
+          document.body.dispatchEvent(createIssueSuccess);
         }
       }, err => {
         if (err.status === 401) {
