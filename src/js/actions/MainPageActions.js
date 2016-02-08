@@ -28,7 +28,9 @@ import {
   GET_MEMBERSHIPS_REQUEST,
   GET_MEMBERSHIPS_SUCCESS,
   GET_MEMBERSHIPS_FAILURE,
-  GET_MEMBERSHIPS_PROBLEM
+  GET_MEMBERSHIPS_PROBLEM,
+
+  CLOSE_NEW_ISSUE_REMINDER
 } from '../constants/MainPage'
 
 import {
@@ -268,7 +270,7 @@ export function createNewIssue(newIssue) {
         } else {
           dispatch({
             type: CREATE_NEW_ISSUE_SUCCESS,
-            payload: res.body
+            payload: res.body.issue
           });
           let createIssueSuccess = new CustomEvent('createIssueSuccess', {'detail': res.body});
           document.body.dispatchEvent(createIssueSuccess);
@@ -435,5 +437,11 @@ export function getMemberships(project_id) {
     }
 
     collectData()
+  }
+}
+
+export function closeNewIssueReminder() {
+  return {
+    type: CLOSE_NEW_ISSUE_REMINDER
   }
 }

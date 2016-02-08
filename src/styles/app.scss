@@ -13,6 +13,9 @@ body {
 .none {
   display: none;
 }
+.fa-close {
+  cursor: pointer;
+}
 
 //APP
 .app {
@@ -99,6 +102,9 @@ body {
   left: 0px;
   top: 0px;
 }
+.badge_success {
+  background: #6FB783
+}
 .badge-priority-High, {
   background: #FB64A4;
 }
@@ -109,6 +115,20 @@ body {
   background: #F8F8F8;
   height: 35px;
   margin: 0 0 2px;
+  position: relative;
+  left: 0;
+  transition: all .2s ease-in;
+}
+.stripe-wrapper_created {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #6FB783;
+  box-sizing: border-box;
+  width: 290px;
+  overflow: hidden;
+}
+.stripe-wrapper_invisible {
+  left: -300px;
 }
 .stripe {
   color: #A3A3A5;

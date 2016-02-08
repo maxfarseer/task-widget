@@ -11,7 +11,8 @@ import {
   GET_MEMBERSHIPS_SUCCESS,
   CREATE_NEW_ISSUE_REQUEST,
   CREATE_NEW_ISSUE_SUCCESS,
-  CREATE_NEW_ISSUE_PROBLEM
+  CREATE_NEW_ISSUE_PROBLEM,
+  CLOSE_NEW_ISSUE_REMINDER
 } from '../constants/MainPage';
 
 const initialState = {
@@ -26,7 +27,9 @@ const initialState = {
     projects: [],
     memberships: [],
     errors: []
-  }
+  },
+  issueCreated: false,
+  issueCreatedId: 0
 };
 
 export default function mainpage(state = initialState, action) {
@@ -74,7 +77,10 @@ export default function mainpage(state = initialState, action) {
       return { ...state, newIssue: {...state.newIssue, isActive: false}, fetching: true }
 
     case CREATE_NEW_ISSUE_SUCCESS:
-      return { ...state, fetching: false }
+      return { ...state, fetching: false, issueCreated: true, issueCreatedId: action.payload.id }
+
+    case CLOSE_NEW_ISSUE_REMINDER:
+      return { ...state, issueCreated: false }
 
     default:
       return state;

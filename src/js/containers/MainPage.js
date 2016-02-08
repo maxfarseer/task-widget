@@ -7,6 +7,7 @@ import * as status from '../constants/Statuses_ids'
 
 import Task from '../components/Task'
 import NewIssue from '../components/NewIssue'
+import IssueCreated from '../components/IssueCreated'
 import {
   API_ROOT
 } from '../constants/Secret'
@@ -46,6 +47,10 @@ class MainPage extends Component {
     this.props.actions.getMemberships(project_id)
   }
 
+  handleCloseBtnClick() {
+    this.props.actions.closeNewIssueReminder()
+  }
+
   _makeTaskComponent(tasksQueue) {
     return tasksQueue.map((el,i) => {
       return <Task
@@ -56,7 +61,7 @@ class MainPage extends Component {
   }
 
   render() {
-    const { fetching, newIssue } = this.props.mainpage;
+    const { fetching, newIssue, issueCreated, issueCreatedId } = this.props.mainpage;
     const { issuesQueue, otherTasksLength } = this.props.mainpage.issuesData;
 
     let tasksInProgress = [],
@@ -75,10 +80,11 @@ class MainPage extends Component {
 
     return (
       <div className='main'>
+        <IssueCreated visible={issueCreated} id={issueCreatedId} onCloseBtnClick={::this.handleCloseBtnClick}/>
         <div className='stripe-wrapper'>
           <div className='badge'></div>
           <div className='stripe cf'>
-            <div className='stripe__left'>{newIssue.isActive ? 'Create' : 'In Progress'}</div>
+            <div className='stripe__left'>{newIssue.isActive ? 'Create issue' : 'In Progress'}</div>
             <div className='stripe__right'>
               <i className={'fa fa-refresh rotate ' + (fetching ? '' : 'none')}></i>{' '}
               <i
@@ -91,11 +97,11 @@ class MainPage extends Component {
         {
           newIssue.isActive ?
             <NewIssue
-              projects={newIssue.projects}
+              projects = {newIssue.projects}
               memberships = {newIssue.memberships}
               errors = {newIssue.errors}
-              createIssueClick={::this.handleCreateIssueClick}
-              getMemberships={::this.handleGetMemberships} />
+              createIssueClick = {::this.handleCreateIssueClick}
+              getMemberships = {::this.handleGetMemberships} />
           :
             ''
         }
