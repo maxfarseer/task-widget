@@ -46,6 +46,12 @@ export default class NewIssue extends Component {
     }
   }
 
+  checkCmdEnter(e) {
+    if (e.metaKey && e.keyCode === 13 ) {
+      this.onBtnClick();
+    }
+  }
+
   render() {
     const { projects, memberships, errors } = this.props
     let project_id = this.state.project_id
@@ -76,7 +82,7 @@ export default class NewIssue extends Component {
             options={projects}
             onChange={::this.chooseProject} />
 
-          <input className='new-issue__input' type='text' placeholder='Issue subject' ref='subject'/>
+          <input className='new-issue__input' type='text' placeholder='Issue subject' ref='subject' onKeyDown={::this.checkCmdEnter}/>
 
           <Select
             labelKey='_username'
@@ -88,7 +94,7 @@ export default class NewIssue extends Component {
             placeholder='Assignee...'
             options={memberships} />
 
-          <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc'></textarea>
+          <textarea className='new-issue__textarea' placeholder='Issue description' ref='desc' onKeyDown={::this.checkCmdEnter}></textarea>
           <button className='new-issue__btn' onClick={::this.onBtnClick}>Create Issue</button>
         </div>
       )
