@@ -11,7 +11,7 @@ var mainWindow = null;
 
 app.on('ready', function() {
 
-  mainWindow = new BrowserWindow({width: 300, height: 600});
+  mainWindow = new BrowserWindow({width: 300, height: 315});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   mainWindow.on('closed', function() {

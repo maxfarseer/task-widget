@@ -231,7 +231,7 @@ $(function() {
         data: {
           'time_entry[issue_id]': id,
           'time_entry[hours]': hours,
-          'time_entry[comments]': 'PUT by tracker app v 1.0.0',
+          'time_entry[comments]': 'PUT by tracker v.1.0.0',
           'key': user.api_key
         },
         success: function() {
@@ -273,7 +273,7 @@ $(function() {
               data: {
                 'time_entry[issue_id]': issue.id,
                 'time_entry[hours]': 0.05,
-                'time_entry[comments]': 'POST by tracker app v 1.0.0',
+                'time_entry[comments]': 'POST by tracker v.1.0.0',
                 'key': user.api_key
               },
               success: function() {

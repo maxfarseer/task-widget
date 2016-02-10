@@ -119,7 +119,7 @@ class MainPage extends Component {
         </div>
         <div className={classNames('stripe-wrapper', { 'opacity-01': newIssue.isActive })}>
           <div className='badge'></div>
-          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Another issues ({otherTasksLength})</a></div>
+          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Remaining issues ({otherTasksLength})</a></div>
         </div>
       </div>
     );

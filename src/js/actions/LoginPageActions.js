@@ -21,7 +21,15 @@ export function login(username, pass) {
 			}
 		});
 
-		const encodedUserInfo = 'Basic '+btoa(username+':'+pass);
+    let encodedUserInfo;
+    let alertAlreadyShown;
+
+    try {
+      encodedUserInfo = 'Basic '+btoa(username+':'+pass);
+    } catch(e) {
+      alert('Login or password contains incorrect symbols');
+      alertAlreadyShown = true;
+    }
 
 		request(`${API_ROOT}/users/current.json`).set('Authorization',encodedUserInfo)
     .then(res => {
@@ -40,7 +48,9 @@ export function login(username, pass) {
       }
     }, err => {
       if (err.status === 401) {
-        alert('Login or password was incorrect');
+        if (!alertAlreadyShown) {
+          alert('Login or password was incorrect');
+        }
       } else {
         alert('Network problem, check your internet connection');
       }
