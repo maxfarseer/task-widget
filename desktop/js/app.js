@@ -84,6 +84,13 @@ var template = [
     label: 'Actions',
     submenu: [
       {
+        label: 'Create new issue',
+        accelerator: 'CmdOrCtrl+N',
+        click: function(item, focusedWindow) {
+          window.kgtrckr.actions.toggleNewIssue()
+        }
+      },
+      {
         label: 'Logout',
         accelerator: 'CmdOrCtrl+L',
         click: function(item, focusedWindow) {
@@ -101,7 +108,7 @@ var template = [
     ]
   },
   {
-    label: 'Issues',
+    label: 'Last issues',
     submenu: [
 
     ]

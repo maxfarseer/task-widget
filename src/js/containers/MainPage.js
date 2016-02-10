@@ -24,7 +24,9 @@ class MainPage extends Component {
   componentWillMount() {
     this.props.actions.getIssuesQueue()
     this.props.actions.getProjects()
-    window.kgtrckr.actions.logout = this.props.logout;
+
+    window.kgtrckr.actions.logout = this.props.logout
+    window.kgtrckr.actions.toggleNewIssue = this.props.actions.toggleNewIssue
   }
 
   handleChangeStatusClick(task,status) {
