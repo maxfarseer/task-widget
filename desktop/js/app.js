@@ -87,7 +87,7 @@ var template = [
         label: 'Logout',
         accelerator: 'CmdOrCtrl+L',
         click: function(item, focusedWindow) {
-          window.kgtrckr.logout()
+          window.kgtrckr.actions.logout()
         }
       },
       {
@@ -95,7 +95,7 @@ var template = [
         accelerator: 'CmdOrCtrl+Alt+L',
         click: function(item, focusedWindow) {
           window.localStorage.clear()
-          window.kgtrckr.logout()
+          window.kgtrckr.actions.logout()
         }
       },
     ]

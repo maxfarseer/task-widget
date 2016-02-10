@@ -11,7 +11,7 @@ export default class IssueCreated extends Component {
         <div className='badge badge_success'></div>
         <div className='stripe cf'>
           <div className='stripe__left'>
-            <a href={`${API_ROOT}/issues/${id}`} className='stripe__link' target='blank'>Issue created</a>
+            <a href={`${API_ROOT}/issues/${id}`} className='stripe__link' target='_blank'>Issue created</a>
           </div>
           <div className='stripe__right'>
             <i

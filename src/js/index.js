@@ -7,7 +7,10 @@ import configureStore from './store/configureStore';
 
 const store = configureStore();
 
-window.kgtrckr = {};
+window.kgtrckr = {
+  actions: {},
+  issues: []
+};
 
 render(
   <Root store={store} />,

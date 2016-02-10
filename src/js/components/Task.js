@@ -51,7 +51,7 @@ export default class Task extends Component {
             onMouseEnter={this.setTooltipVisibility.bind(this,true)}
             onMouseLeave={this.setTooltipVisibility.bind(this,false)}
           >
-            <a href={issueLink} className={`task-modal-ip ${ (tooltip ? 'task-modal-ip_visible' : 'task-modal-ip_hidden') } `}>
+            <a href={issueLink} target='_blank' className={`task-modal-ip ${ (tooltip ? 'task-modal-ip_visible' : 'task-modal-ip_hidden') } `}>
               <div className='task-modal__subject'>
                 <div className='task-modal__project'>{project.name}</div>
                 <div>{subject}</div>
@@ -84,7 +84,7 @@ export default class Task extends Component {
             onMouseEnter={this.setTooltipVisibility.bind(this,true)}
             onMouseLeave={this.setTooltipVisibility.bind(this,false)}
           >
-            <a href={issueLink} className={` task-modal ${ (tooltip ? 'task-modal_visible' : 'task-modal_hidden') } `}>
+            <a href={issueLink} target='_blank' className={` task-modal ${ (tooltip ? 'task-modal_visible' : 'task-modal_hidden') } `}>
               <div className='task-modal__subject'>
                 <div className='task-modal__project'>{project.name}</div>
                 <div>{subject}</div>

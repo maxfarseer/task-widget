@@ -24,7 +24,7 @@ class MainPage extends Component {
   componentWillMount() {
     this.props.actions.getIssuesQueue()
     this.props.actions.getProjects()
-    window.kgtrckr.logout = this.props.logout; //for developers
+    window.kgtrckr.actions.logout = this.props.logout;
   }
 
   handleChangeStatusClick(task,status) {
