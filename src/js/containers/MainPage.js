@@ -64,7 +64,7 @@ class MainPage extends Component {
 
   render() {
     const { fetching, newIssue, issueCreated, issueCreatedId } = this.props.mainpage;
-    const { issuesQueue, otherTasksLength } = this.props.mainpage.issuesData;
+    const { issuesQueue, remainingTasksLength } = this.props.mainpage.issuesData;
 
     let tasksInProgress = [],
         otherTasks = [];
@@ -119,7 +119,9 @@ class MainPage extends Component {
         </div>
         <div className={classNames('stripe-wrapper', { 'opacity-01': newIssue.isActive })}>
           <div className='badge'></div>
-          <div className='stripe'><a href={`${API_ROOT}/issues`} className='stripe__link' target='_blank'>Remaining issues ({otherTasksLength})</a></div>
+          <div className='stripe'>
+            <a href={`${API_ROOT}/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=%3D&v%5Bstatus_id%5D%5B%5D=1&v%5Bstatus_id%5D%5B%5D=7&v%5Bstatus_id%5D%5B%5D=2&v%5Bstatus_id%5D%5B%5D=10&f%5B%5D=tracker_id&op%5Btracker_id%5D=%3D&v%5Btracker_id%5D%5B%5D=2&v%5Btracker_id%5D%5B%5D=1&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%3D&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=&c%5B%5D=project&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=subject&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=fixed_version&c%5B%5D=estimated_hours&group_by=`} className='stripe__link' target='_blank'>Remaining issues ({remainingTasksLength})</a>
+          </div>
         </div>
       </div>
     );

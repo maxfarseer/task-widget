@@ -19,7 +19,7 @@ const initialState = {
   issuesData: {
     issuesQueue: [],
     inProgressTasksLength: 0,
-    otherTasksLength: 0
+    remainingTasksLength: 0
   },
   fetching: false,
   newIssue: {

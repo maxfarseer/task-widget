@@ -187,7 +187,8 @@ export function getIssuesQueue() {
         } else {
           //form tasks IN_PROGRESS and 3 other tasks
           let inProgressFirst = [],
-              otherTasks = [];
+              otherTasks = [],
+              remainingTasksLength;
 
           res.body.issues.forEach(el => {
             if (el.status.id !== status.IN_PROGRESS) {
@@ -197,12 +198,13 @@ export function getIssuesQueue() {
             }
           })
 
-          const otherTasksLength = (otherTasks.length >= 3 ? otherTasks.length - 3 : otherTasks.length);
           const inProgressTasksLength = inProgressFirst.length;
 
           otherTasks = otherTasks.slice(0,3);
 
           [].push.apply(inProgressFirst,otherTasks);
+
+          remainingTasksLength = res.body.total_count - inProgressFirst.length
 
           //get all time logs for issue by user and create startWorkTime record in session storage
           let timeEntreisPromisesArr =[];
@@ -216,7 +218,7 @@ export function getIssuesQueue() {
               type: GET_ISSUES_QUEUE_SUCCESS,
               payload: {
                 issuesQueue: inProgressFirst,
-                otherTasksLength,
+                remainingTasksLength,
                 inProgressTasksLength
               }
             })
