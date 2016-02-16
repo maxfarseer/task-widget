@@ -3,7 +3,7 @@
 //global
 window.APP = {
   timers: {
-    logInterval: 1000*10 //10 sec
+    logInterval: 1000*60*3 //3 min
   },
   host: 'https://new-redmine-qa.kama.gs',
   idleFlag: true
