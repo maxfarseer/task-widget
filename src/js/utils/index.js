@@ -19,3 +19,19 @@ export function makeMembershipsForReactSelect(memberships) {
 
   return memberships
 }
+
+
+/**
+ * show error message
+ * @param  {string}   msg - message
+ * @param  {Function}   callback - callback function for 'try again()'
+ * @param  {Function}   dispatch - redux store.dispatch method
+ * @param  {Function}   dispatch - redux store.getState method
+ */
+export function handleError(msg, callback, dispatch, getState) {
+  let tryAgain = window.confirm(msg)
+
+  if (tryAgain) {
+    return callback(dispatch, getState)
+  }
+}

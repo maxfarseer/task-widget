@@ -40,7 +40,7 @@ import {
 import * as status from '../constants/Statuses_ids'
 import { logout } from './LoginPageActions'
 
-import { makeMembershipsForReactSelect } from '../utils'
+import { makeMembershipsForReactSelect, handleError } from '../utils'
 
 const request = require('superagent-bluebird-promise') //import ?
 
@@ -232,9 +232,16 @@ export function getIssuesQueue() {
           alert('Your session has expired');
           logout()(dispatch, getState);
         } else {
-          let tryAgain = window.confirm(`Can not load issues queue: error ${err.status}`);
-          if (tryAgain) {
-            getIssuesQueue()(dispatch, getState);
+          if (err.status) {
+            handleError(
+              `Can\'t load issues queue: error ${err.status}.\nTry again?`,
+              getIssuesQueue(), dispatch, getState
+            )
+          } else {
+            handleError(
+              `Can\'t load issues queue: network connection problem.\nTry again?`,
+              getIssuesQueue(), dispatch, getState
+            )
           }
         }
       })
@@ -354,11 +361,16 @@ export function getProjects() {
                   error: true
                 })
                 if (err.status) {
-                  alert(`Can not collect projects: error ${err.status}`)
+                  handleError(
+                    `Can\'t collect projects: error ${err.status}.\nTry again?`,
+                    getProjects(), dispatch, getState
+                  )
                 } else {
-                  alert(`Can not collect projects: network connection problem`)
+                  handleError(
+                    `Can\'t collect projects: network connection problem.\nTry again?`,
+                    getProjects(), dispatch, getState
+                  )
                 }
-
               }
             }).catch(reject)
 
@@ -427,9 +439,15 @@ export function getMemberships(project_id) {
                   error: true
                 })
                 if (err.status) {
-                  alert(`Can not collect memberships: error ${err.status}`)
+                  handleError(
+                    `Can not collect memberships: error ${err.status}.\nTry again?`,
+                    getMemberships(project_id), dispatch, getState
+                  )
                 } else {
-                  alert(`Can not collect memberships: network connection problem`)
+                  handleError(
+                    `Can not collect memberships: network connection problem.\nTry again?`,
+                    getMemberships(project_id), dispatch, getState
+                  )
                 }
               }
             }).catch(reject)
