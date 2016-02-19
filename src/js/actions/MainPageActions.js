@@ -111,7 +111,8 @@ function getTimeEntries(dispatch, user, issue, offset = 0, timeEntriesSum = 0) {
       }
     }
   }, err => {
-    console.warn('Load TimeEntries error: ' + err);
+    alert(`Can\'t load time entry for issue ${issue.id}: error ${err.status}\nCheck issue in redmine`)
+    window.location.reload()
   })
 }
 
