@@ -10,6 +10,7 @@ window.APP = {
 };
 
 const remote = require('electron').remote;
+const ipcRenderer = require('electron').ipcRenderer;
 const app = remote.app;
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
@@ -332,6 +333,14 @@ $(function() {
 
     issuesMenu.submenu.insert(0, menuItem);
     Menu.setApplicationMenu(trackerMenu);
+  });
+
+  remote.powerMonitor.on('sleepModeON', function(data) {
+    console.log(data);
+  });
+
+  remote.powerMonitor.on('sleepModeOFF', function(data) {
+    console.log(data);
   });
 
 });
